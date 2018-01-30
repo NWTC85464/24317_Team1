@@ -20,8 +20,7 @@ namespace Test2
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Hello World");
-            MessageBox.Show("It's time to branch");
-            MessageBox.Show("What is this?");
+            MessageBox.Show("The Eagles will win on Sunday. Is this the master?");
 
         }
     }
