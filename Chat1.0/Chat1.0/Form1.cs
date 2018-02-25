@@ -17,9 +17,13 @@ namespace Chat1._0
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void sendBtn_Click(object sender, EventArgs e)
         {
-            //This is a buttonasdf
+            //Send textbox text to listbox
+            messageBox.Items.Add(messageText.Text);
+
+            //Empty textbox after sent to listbox
+            messageText.Text = string.Empty;
         }
     }
 }
