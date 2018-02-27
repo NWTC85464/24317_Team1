@@ -24,6 +24,7 @@ namespace Chat1._0
 
             //Empty textbox after sent to listbox
             messageText.Text = string.Empty;
+
         }
     }
 }
