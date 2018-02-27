@@ -19,8 +19,7 @@ namespace Test2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Hello World");
-            MessageBox.Show("The Eagles will win on Sunday. Is this the master?");
+            MessageBox.Show("I think this will work but I doubt it");
 
         }
     }
