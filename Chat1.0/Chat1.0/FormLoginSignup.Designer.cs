@@ -37,11 +37,12 @@
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblDisplayUsernameError = new System.Windows.Forms.Label();
             this.lblDisplayPasswordError = new System.Windows.Forms.Label();
+            this.titleLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSignUp
             // 
-            this.btnSignUp.Location = new System.Drawing.Point(111, 111);
+            this.btnSignUp.Location = new System.Drawing.Point(111, 117);
             this.btnSignUp.Name = "btnSignUp";
             this.btnSignUp.Size = new System.Drawing.Size(96, 23);
             this.btnSignUp.TabIndex = 0;
@@ -51,7 +52,7 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(213, 111);
+            this.btnLogin.Location = new System.Drawing.Point(213, 117);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(96, 23);
             this.btnLogin.TabIndex = 1;
@@ -60,7 +61,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(9, 111);
+            this.btnExit.Location = new System.Drawing.Point(9, 117);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(96, 23);
             this.btnExit.TabIndex = 2;
@@ -69,14 +70,14 @@
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(74, 36);
+            this.txtUsername.Location = new System.Drawing.Point(74, 43);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(100, 20);
             this.txtUsername.TabIndex = 3;
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(74, 74);
+            this.txtPassword.Location = new System.Drawing.Point(74, 81);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
@@ -85,7 +86,7 @@
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(10, 39);
+            this.lblUserName.Location = new System.Drawing.Point(10, 46);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(58, 13);
             this.lblUserName.TabIndex = 5;
@@ -94,7 +95,7 @@
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(13, 77);
+            this.lblPassword.Location = new System.Drawing.Point(13, 84);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 6;
@@ -104,7 +105,7 @@
             // 
             this.lblDisplayUsernameError.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDisplayUsernameError.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDisplayUsernameError.Location = new System.Drawing.Point(191, 36);
+            this.lblDisplayUsernameError.Location = new System.Drawing.Point(191, 43);
             this.lblDisplayUsernameError.Name = "lblDisplayUsernameError";
             this.lblDisplayUsernameError.Size = new System.Drawing.Size(118, 20);
             this.lblDisplayUsernameError.TabIndex = 7;
@@ -113,16 +114,27 @@
             // 
             this.lblDisplayPasswordError.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblDisplayPasswordError.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDisplayPasswordError.Location = new System.Drawing.Point(191, 74);
+            this.lblDisplayPasswordError.Location = new System.Drawing.Point(191, 81);
             this.lblDisplayPasswordError.Name = "lblDisplayPasswordError";
             this.lblDisplayPasswordError.Size = new System.Drawing.Size(118, 20);
             this.lblDisplayPasswordError.TabIndex = 8;
+            // 
+            // titleLabel
+            // 
+            this.titleLabel.AutoSize = true;
+            this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.titleLabel.Location = new System.Drawing.Point(126, 9);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(65, 24);
+            this.titleLabel.TabIndex = 9;
+            this.titleLabel.Text = "ZChat";
             // 
             // FormLoginSignup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(324, 141);
+            this.ClientSize = new System.Drawing.Size(324, 152);
+            this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.lblDisplayPasswordError);
             this.Controls.Add(this.lblDisplayUsernameError);
             this.Controls.Add(this.lblPassword);
@@ -151,5 +163,6 @@
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Label lblDisplayUsernameError;
         private System.Windows.Forms.Label lblDisplayPasswordError;
+        private System.Windows.Forms.Label titleLabel;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Chat1._0
 {
-    partial class Form1
+    partial class FormChatRoom
     {
         /// <summary>
         /// Required designer variable.
@@ -60,7 +60,7 @@
             this.messageBox.Size = new System.Drawing.Size(401, 316);
             this.messageBox.TabIndex = 2;
             // 
-            // Form1
+            // FormChatRoom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -68,8 +68,8 @@
             this.Controls.Add(this.messageBox);
             this.Controls.Add(this.messageText);
             this.Controls.Add(this.sendBtn);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "FormChatRoom";
+            this.Text = "FormChatRoom";
             this.ResumeLayout(false);
             this.PerformLayout();
 
