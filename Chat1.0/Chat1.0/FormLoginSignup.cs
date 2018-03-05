@@ -30,7 +30,47 @@ namespace Chat1._0
         {
             // Resize the form to allow for addition of a verify password field
             // when the user selects sign up 
-            this.Height += 200;
+            this.Height += 51;
+
+            // Adjusts the controls of the form
+            Point p = new Point(9, 161);
+            this.btnExit.Location = p;
+            p = new Point(111, 161);
+            this.btnSignUp.Location = p;
+            this.btnLogin.Visible = false;
+
+            // Adds the confirm password control label
+            Label lblPasswordConfirm = new Label();
+            lblPasswordConfirm.Width = 58;
+            lblPasswordConfirm.Height = 26;
+            p = new Point(12,112);
+            lblPasswordConfirm.Location = p;
+            lblPasswordConfirm.Text = "Confirm Password:";
+            this.Controls.Add(lblPasswordConfirm);
+
+            // Adds the Password confirmation box
+            TextBox txtPasswordConfirm = new TextBox();
+            txtPasswordConfirm.Width = 100;
+            txtPasswordConfirm.Height = 20;
+            p = new Point(74, 124);
+            txtPasswordConfirm.Location = p;
+            txtPasswordConfirm.PasswordChar = '*';
+            this.Controls.Add(txtPasswordConfirm);
+
+            // Changes the click event on Signup button
+            this.btnSignUp.Click -= btnSignUp_Click;
+            this.btnSignUp.Click += btnSignUp_SecondClick;
+        }
+
+        // New signup method button click
+        private void btnSignUp_SecondClick(object sender, EventArgs e)
+        {
+            // Add the signup protocall to this method;
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
