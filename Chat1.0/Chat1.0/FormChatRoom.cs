@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Chat1._0
 {
-    public partial class Form1 : Form
+    public partial class FormChatRoom : Form
     {
-        public Form1()
+        public FormChatRoom()
         {
             InitializeComponent();
         }
@@ -24,6 +24,7 @@ namespace Chat1._0
 
             //Empty textbox after sent to listbox
             messageText.Text = string.Empty;
+
         }
     }
 }
