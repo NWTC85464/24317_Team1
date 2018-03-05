@@ -16,5 +16,12 @@ namespace Chat1._0
         {
             InitializeComponent();
         }
+
+        private void FormChatManager_Load(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            FormLoginSignup FormLogin = new FormLoginSignup();
+            FormLogin.ShowDialog();
+        }
     }
 }

@@ -65,6 +65,7 @@ namespace Chat1._0
         // New signup method button click
         private void btnSignUp_SecondClick(object sender, EventArgs e)
         {
+            MessageBox.Show("Hi");
             // Add the signup protocall to this method;
         }
 

@@ -121,6 +121,7 @@
             this.Controls.Add(this.chatList);
             this.Name = "FormChatManager";
             this.Text = "FormChatManager";
+            this.Load += new System.EventHandler(this.FormChatManager_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
