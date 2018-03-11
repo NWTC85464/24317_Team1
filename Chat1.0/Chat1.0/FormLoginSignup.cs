@@ -66,12 +66,25 @@ namespace Chat1._0
         private void btnSignUp_SecondClick(object sender, EventArgs e)
         {
             MessageBox.Show("Hi");
-            // Add the signup protocall to this method;
+            // TODO: Add the signup protocall to this method;
+
+            // TODO: Prompt user to login after sign up complete
         }
 
+        // Exit Button Closes the Application
         private void btnExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        // Login Button Logs user into server after checking username and password
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            // TODO: Connect to database in server to confirm user
+
+            // TODO: Add if statement for successful login
+            // Close this form so that chat manager opens
+            this.Close();
         }
     }
 }
