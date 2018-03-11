@@ -37,7 +37,8 @@
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblDisplayUsernameError = new System.Windows.Forms.Label();
             this.lblDisplayPasswordError = new System.Windows.Forms.Label();
-            this.titleLabel = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSignUp
@@ -58,6 +59,7 @@
             this.btnLogin.TabIndex = 1;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // btnExit
             // 
@@ -120,22 +122,22 @@
             this.lblDisplayPasswordError.Size = new System.Drawing.Size(118, 20);
             this.lblDisplayPasswordError.TabIndex = 8;
             // 
-            // titleLabel
+            // pictureBox1
             // 
-            this.titleLabel.AutoSize = true;
-            this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.titleLabel.Location = new System.Drawing.Point(126, 9);
-            this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(65, 24);
-            this.titleLabel.TabIndex = 9;
-            this.titleLabel.Text = "ZChat";
+            this.pictureBox1.Image = global::Chat1._0.Properties.Resources.zchat;
+            this.pictureBox1.Location = new System.Drawing.Point(133, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(74, 34);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
             // 
             // FormLoginSignup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 152);
-            this.Controls.Add(this.titleLabel);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblDisplayPasswordError);
             this.Controls.Add(this.lblDisplayUsernameError);
             this.Controls.Add(this.lblPassword);
@@ -148,6 +150,7 @@
             this.Name = "FormLoginSignup";
             this.Text = "FormLoginSignup";
             this.Load += new System.EventHandler(this.FormLoginSignup_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,6 +167,6 @@
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.Label lblDisplayUsernameError;
         private System.Windows.Forms.Label lblDisplayPasswordError;
-        private System.Windows.Forms.Label titleLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
