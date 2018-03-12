@@ -36,13 +36,14 @@
             this.aliasLabel = new System.Windows.Forms.Label();
             this.friendList = new System.Windows.Forms.ListBox();
             this.friendListLabel = new System.Windows.Forms.Label();
+            this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // chatList
             // 
             this.chatList.Location = new System.Drawing.Point(27, 29);
             this.chatList.Name = "chatList";
-            this.chatList.Size = new System.Drawing.Size(217, 328);
+            this.chatList.Size = new System.Drawing.Size(217, 471);
             this.chatList.TabIndex = 0;
             this.chatList.UseCompatibleStateImageBehavior = false;
             // 
@@ -55,6 +56,7 @@
             this.joinButton.TabIndex = 1;
             this.joinButton.Text = "Join";
             this.joinButton.UseVisualStyleBackColor = true;
+            this.joinButton.Click += new System.EventHandler(this.joinButton_Click);
             // 
             // searchTextbox
             // 
@@ -71,6 +73,7 @@
             this.searchButton.TabIndex = 3;
             this.searchButton.Text = "Search";
             this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // aliasTextbox
             // 
@@ -91,9 +94,9 @@
             // friendList
             // 
             this.friendList.FormattingEnabled = true;
-            this.friendList.Location = new System.Drawing.Point(250, 234);
+            this.friendList.Location = new System.Drawing.Point(250, 230);
             this.friendList.Name = "friendList";
-            this.friendList.Size = new System.Drawing.Size(110, 121);
+            this.friendList.Size = new System.Drawing.Size(110, 212);
             this.friendList.TabIndex = 6;
             // 
             // friendListLabel
@@ -106,11 +109,22 @@
             this.friendListLabel.TabIndex = 7;
             this.friendListLabel.Text = "Friend List";
             // 
+            // btnExit
+            // 
+            this.btnExit.Location = new System.Drawing.Point(250, 477);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(110, 23);
+            this.btnExit.TabIndex = 8;
+            this.btnExit.Text = "Exit";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // FormChatManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 390);
+            this.ClientSize = new System.Drawing.Size(380, 512);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.friendListLabel);
             this.Controls.Add(this.friendList);
             this.Controls.Add(this.aliasLabel);
@@ -137,5 +151,6 @@
         private System.Windows.Forms.Label aliasLabel;
         private System.Windows.Forms.ListBox friendList;
         private System.Windows.Forms.Label friendListLabel;
+        private System.Windows.Forms.Button btnExit;
     }
 }

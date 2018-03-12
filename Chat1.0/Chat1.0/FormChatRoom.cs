@@ -26,5 +26,19 @@ namespace Chat1._0
             messageText.Text = string.Empty;
 
         }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            // Close Application
+            Application.Exit();
+        }
+
+        private void chatManagerButton_Click(object sender, EventArgs e)
+        {
+            // TODO: open chat manager form back up and close this form
+            this.Close();
+            
+            
+        }
     }
 }
