@@ -82,6 +82,8 @@ namespace Chat1._0
         {
             // TODO: Connect to database in server to confirm user
 
+     
+
             // TODO: Add if statement for successful login
             // Close this form so that chat manager opens
             this.Close();
