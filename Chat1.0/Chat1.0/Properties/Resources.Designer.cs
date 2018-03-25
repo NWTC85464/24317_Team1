@@ -63,6 +63,16 @@ namespace Chat1._0.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap greenArrow {
+            get {
+                object obj = ResourceManager.GetObject("greenArrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap zchat {
             get {
                 object obj = ResourceManager.GetObject("zchat", resourceCulture);

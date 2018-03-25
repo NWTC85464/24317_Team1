@@ -49,13 +49,15 @@
             // 
             // joinButton
             // 
-            this.joinButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.joinButton.BackColor = System.Drawing.Color.Green;
+            this.joinButton.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.joinButton.ForeColor = System.Drawing.SystemColors.Control;
             this.joinButton.Location = new System.Drawing.Point(250, 144);
             this.joinButton.Name = "joinButton";
             this.joinButton.Size = new System.Drawing.Size(110, 35);
             this.joinButton.TabIndex = 1;
             this.joinButton.Text = "Join";
-            this.joinButton.UseVisualStyleBackColor = true;
+            this.joinButton.UseVisualStyleBackColor = false;
             this.joinButton.Click += new System.EventHandler(this.joinButton_Click);
             // 
             // searchTextbox
@@ -67,12 +69,15 @@
             // 
             // searchButton
             // 
+            this.searchButton.BackColor = System.Drawing.SystemColors.Highlight;
+            this.searchButton.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchButton.ForeColor = System.Drawing.SystemColors.Control;
             this.searchButton.Location = new System.Drawing.Point(250, 55);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(110, 23);
             this.searchButton.TabIndex = 3;
             this.searchButton.Text = "Search";
-            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.UseVisualStyleBackColor = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // aliasTextbox
@@ -85,9 +90,10 @@
             // aliasLabel
             // 
             this.aliasLabel.AutoSize = true;
-            this.aliasLabel.Location = new System.Drawing.Point(288, 102);
+            this.aliasLabel.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aliasLabel.Location = new System.Drawing.Point(281, 97);
             this.aliasLabel.Name = "aliasLabel";
-            this.aliasLabel.Size = new System.Drawing.Size(29, 13);
+            this.aliasLabel.Size = new System.Drawing.Size(43, 18);
             this.aliasLabel.TabIndex = 5;
             this.aliasLabel.Text = "Alias";
             // 
@@ -102,27 +108,31 @@
             // friendListLabel
             // 
             this.friendListLabel.AutoSize = true;
-            this.friendListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.friendListLabel.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.friendListLabel.Location = new System.Drawing.Point(250, 207);
             this.friendListLabel.Name = "friendListLabel";
-            this.friendListLabel.Size = new System.Drawing.Size(100, 20);
+            this.friendListLabel.Size = new System.Drawing.Size(103, 23);
             this.friendListLabel.TabIndex = 7;
             this.friendListLabel.Text = "Friend List";
             // 
             // btnExit
             // 
+            this.btnExit.BackColor = System.Drawing.Color.Maroon;
+            this.btnExit.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExit.ForeColor = System.Drawing.SystemColors.Control;
             this.btnExit.Location = new System.Drawing.Point(250, 477);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(110, 23);
             this.btnExit.TabIndex = 8;
             this.btnExit.Text = "Exit";
-            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // FormChatManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(380, 512);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.friendListLabel);
@@ -133,6 +143,7 @@
             this.Controls.Add(this.searchTextbox);
             this.Controls.Add(this.joinButton);
             this.Controls.Add(this.chatList);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "FormChatManager";
             this.Text = "FormChatManager";
             this.Load += new System.EventHandler(this.FormChatManager_Load);
