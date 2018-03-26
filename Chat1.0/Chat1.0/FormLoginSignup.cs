@@ -41,18 +41,19 @@ namespace Chat1._0
 
             // Adds the confirm password control label
             Label lblPasswordConfirm = new Label();
-            lblPasswordConfirm.Width = 58;
-            lblPasswordConfirm.Height = 26;
+            lblPasswordConfirm.Width = 89;
+            lblPasswordConfirm.Height = 45;
             p = new Point(12,112);
             lblPasswordConfirm.Location = p;
             lblPasswordConfirm.Text = "Confirm Password:";
+            lblPasswordConfirm.Font = new Font("Arial Black", 10, FontStyle.Bold);
             this.Controls.Add(lblPasswordConfirm);
 
             // Adds the Password confirmation box
             TextBox txtPasswordConfirm = new TextBox();
             txtPasswordConfirm.Width = 100;
             txtPasswordConfirm.Height = 20;
-            p = new Point(74, 124);
+            p = new Point(103, 124);
             txtPasswordConfirm.Location = p;
             txtPasswordConfirm.PasswordChar = '*';
             this.Controls.Add(txtPasswordConfirm);
@@ -81,6 +82,8 @@ namespace Chat1._0
         private void btnLogin_Click(object sender, EventArgs e)
         {
             // TODO: Connect to database in server to confirm user
+
+     
 
             // TODO: Add if statement for successful login
             // Close this form so that chat manager opens
