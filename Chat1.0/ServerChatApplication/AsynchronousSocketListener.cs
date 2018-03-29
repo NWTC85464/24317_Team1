@@ -31,7 +31,7 @@ namespace ServerChatApplication
             IPAddress ipAddress = ipHostInfo.AddressList[0];
 
             // The zero will be changed once I get around to setting up the correct permissions on our server.
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 0);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 80);
 
             // Create the TCP/IP socket.
             Socket listener = new Socket(ipAddress.AddressFamily,
@@ -155,6 +155,12 @@ namespace ServerChatApplication
             {
                 Console.WriteLine(e.ToString());
             }
+        }
+
+        static void Main(string[] args)
+        {
+            StartListening();
+            //return 0;
         }
     }
 }
