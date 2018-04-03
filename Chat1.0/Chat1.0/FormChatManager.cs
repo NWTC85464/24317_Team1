@@ -17,10 +17,26 @@ namespace Chat1._0
             InitializeComponent();
         }
 
+        // This sets up the socket in the proper scope
+        SocketControler sctctrl;
+
         private void FormChatManager_Load(object sender, EventArgs e)
         {
             this.Visible = false;
-            FormLoginSignup FormLogin = new FormLoginSignup();
+
+            // Try catch block for database connection
+            try
+            {
+                sctctrl = new SocketControler();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+                Application.Exit();
+            }
+
+            // creates and displays the login form
+            FormLoginSignup FormLogin = new FormLoginSignup(sctctrl);
             FormLogin.ShowDialog();
         }
 
