@@ -42,12 +42,20 @@ namespace Chat1._0
             sct.BeginSend(sentByte, 0, sentByte.Length, 0, new AsyncCallback(SendCallBack),  sct);
         }
         
+        // Sets up Async object recieve
         private void Recieve()
         {
+            SocketRecievedData DataReciever = new SocketRecievedData();
 
-            sct.BeginReceive();
+            sct.BeginReceive(DataReciever.DataStream, 0, DataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReciever);
         } 
 
+
+        // Data preperation and interpretation methods
+        public void MessageInterpreter(string message)
+        {
+
+        }
         public bool UserSignUp(string username, string password)
         {
             bool SignUpSuccessful = false;
@@ -57,8 +65,8 @@ namespace Chat1._0
             return SignUpSuccessful;
         }
 
-        // Callback opperations
-        // Connect Callback opperation
+        // Callback methods
+        // Connect callback opperation
         private void ConnectCallBack(IAsyncResult results)
         {
             Socket sct = (Socket)results.AsyncState;
@@ -67,11 +75,39 @@ namespace Chat1._0
 
         }
 
-        // Send Callback opperation;
+        // Send callback opperation;
         private void SendCallBack(IAsyncResult results)
         {
             Socket sct = (Socket)results.AsyncState;
             sct.EndSend(results);
+
+        }
+        // Recieve callback opperation
+        private void RecieveCallBack(IAsyncResult results)
+        {
+            SocketRecievedData DataReciever = (SocketRecievedData)results.AsyncState;
+            Socket sct = DataReciever.Sct;
+
+            int bytesRecieved = sct.EndReceive(results);
+
+            // Checks for continued connection
+            if (bytesRecieved > 0)
+            {
+                DataReciever.Message += Encoding.ASCII.GetString(DataReciever.DataStream);
+
+                // Checks for end of file tag
+                if(DataReciever.Message.IndexOf("<EOF>") == -1)
+                {
+                    // Continues Reading
+                    sct.BeginReceive(DataReciever.DataStream, 0, DataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReciever);
+                }
+                // If end of file tag is found
+                else
+                {
+                    // Runs message interpreter
+                    MessageInterpreter(DataReciever.Message);
+                }
+            }
 
         }
     }
