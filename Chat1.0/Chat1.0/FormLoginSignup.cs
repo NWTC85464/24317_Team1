@@ -12,10 +12,15 @@ namespace Chat1._0
 {
     public partial class FormLoginSignup : Form
     {
-        public FormLoginSignup()
+        public FormLoginSignup(SocketControler sctctrl)
         {
             InitializeComponent();
+            this.sctctrl = sctctrl;
         }
+
+        // Declares the reference variable for the SocketControler class in this form
+        SocketControler sctctrl;
+
         //TODO Add verify password field and associated code for sign up attempts
 
         private void FormLoginSignup_Load(object sender, EventArgs e)
@@ -66,10 +71,12 @@ namespace Chat1._0
         // New signup method button click
         private void btnSignUp_SecondClick(object sender, EventArgs e)
         {
-            MessageBox.Show("Hi");
             // TODO: Add the signup protocall to this method;
+            if (sctctrl.UserSignUp(this.txtUsername.Text, this.txtPassword.Text))
+            {
 
-            // TODO: Prompt user to login after sign up complete
+            }
+
         }
 
         // Exit Button Closes the Application

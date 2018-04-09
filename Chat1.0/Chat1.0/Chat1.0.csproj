@@ -66,6 +66,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SocketControler.cs" />
+    <Compile Include="SocketRecievedData.cs" />
     <EmbeddedResource Include="FormChatRoom.resx">
       <DependentUpon>FormChatRoom.cs</DependentUpon>
     </EmbeddedResource>
