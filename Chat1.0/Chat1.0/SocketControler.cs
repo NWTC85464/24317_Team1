@@ -21,7 +21,7 @@ namespace Chat1._0
         public SocketControler()
         {
             // TODO: set up the outgoing and incoming socket info
-            sct = new Socket(SocketType.Stream, ProtocolType.IPv4);
+            sct = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
                 IPHostEntry ipHost = Dns.GetHostEntry(ServerAdress);
                 IPAddress ip = ipHost.AddressList[0];
