@@ -28,10 +28,26 @@ namespace ServerChatApplication
             // This code is setting up the local endpoint for the socket.
             // Changes may be necessary since hosting is AWS.
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
 
-            // The zero will be changed once I get around to setting up the correct permissions on our server.
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 80);
+            Console.WriteLine("List of IP addresses on this machine.");
+
+            // Loop through the list of IP addresses and output them to console with their appropriate number attached
+            for (int i = 0; i < ipHostInfo.AddressList.Length; i++)
+            {
+                Console.WriteLine("IP Address #" + i.ToString() + " " + ipHostInfo.AddressList[i]);
+            }
+
+            Console.WriteLine("Please select the ip Address you desire by inputting the appropriate number after this line.");
+            Console.WriteLine("Select the address that matches the ipv4 pattern.");
+
+            // Grabs user input for the ip address they want to select.
+            int userInput = Convert.ToInt32(Console.ReadLine());
+
+            // Sets the ip address to the choice of the user.
+            IPAddress ipAddress = ipHostInfo.AddressList[userInput];
+
+            // 1100 seems to work well for now. Still subject to change if issues arise.
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 1100);
 
             // Create the TCP/IP socket.
             Socket listener = new Socket(ipAddress.AddressFamily,

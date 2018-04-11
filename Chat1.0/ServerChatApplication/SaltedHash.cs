@@ -73,55 +73,56 @@ namespace ServerChatApplication
         //if the two match than return true if not than return false
         public static bool Validate(string password)
         {
+        // TODO Aaron, I commented this out so I can test the appplication, feel free to uncomment when you work on it.
 
-            //Creates object for hashing salted password
-            HashAlgorithm alg = new SHA256Managed();
+            ////Creates object for hashing salted password
+            //HashAlgorithm alg = new SHA256Managed();
 
-            //convert user password to a byte array
-            byte[] passwordByte = Encoding.UTF8.GetBytes(password);
+            ////convert user password to a byte array
+            //byte[] passwordByte = Encoding.UTF8.GetBytes(password);
 
-            //TODO salt value will need to be retrieved from the database
-            byte[] salt;
+            ////TODO salt value will need to be retrieved from the database
+            //byte[] salt;
 
-            //Create new array to store salted hash
-            byte[] saltedHash = new byte[salt.Length + passwordByte.Length];
+            ////Create new array to store salted hash
+            //byte[] saltedHash = new byte[salt.Length + passwordByte.Length];
 
-            //Insert the salted array values into the hash array using a loop
-            for (int i = 0; i < salt.Length; i++)
-            {
-                saltedHash[i] = salt[i];
-            }
+            ////Insert the salted array values into the hash array using a loop
+            //for (int i = 0; i < salt.Length; i++)
+            //{
+            //    saltedHash[i] = salt[i];
+            //}
 
-            //Insert the password byte array into the hash array using a loop
-            //The salt will always come before the password
-            for (int i = 0; i < passwordByte.Length; i++)
-            {
-                saltedHash[i + salt.Length] = passwordByte[i];
-            }
+            ////Insert the password byte array into the hash array using a loop
+            ////The salt will always come before the password
+            //for (int i = 0; i < passwordByte.Length; i++)
+            //{
+            //    saltedHash[i + salt.Length] = passwordByte[i];
+            //}
 
-            //use the HashAlgorithm ComputeHash method to hash the array that holds the salt and password.
-            alg.ComputeHash(saltedHash);
+            ////use the HashAlgorithm ComputeHash method to hash the array that holds the salt and password.
+            //alg.ComputeHash(saltedHash);
 
-            //TODO saltedHash value will need to be retrieved from the database
-            byte[] saltedHashreal;
+            ////TODO saltedHash value will need to be retrieved from the database
+            //byte[] saltedHashreal;
 
-            //Compare the two hashes for verification
-            if(saltedHash.Length == saltedHashreal.Length)
-            {
-                for(int i = 0; i < saltedHash.Length; i++)
-                {
-                    //return false if a value doesn't match
-                    if(saltedHash[i] != saltedHashreal[i])
-                    {
-                        return false;
-                    }
+            ////Compare the two hashes for verification
+            //if(saltedHash.Length == saltedHashreal.Length)
+            //{
+            //    for(int i = 0; i < saltedHash.Length; i++)
+            //    {
+            //        //return false if a value doesn't match
+            //        if(saltedHash[i] != saltedHashreal[i])
+            //        {
+            //            return false;
+            //        }
                     
-                }
-            }
-            else
-            {
-                return false;
-            }
+            //    }
+            //}
+            //else
+            //{
+            //    return false;
+            //}
 
             //return true if same length and all values match
             return true;

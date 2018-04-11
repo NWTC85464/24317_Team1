@@ -18,7 +18,7 @@ namespace Chat1._0
         }
 
         // This sets up the socket in the proper scope
-        SocketControler sctctrl;
+        SocketController sctctrl;
 
         private void FormChatManager_Load(object sender, EventArgs e)
         {
@@ -27,7 +27,7 @@ namespace Chat1._0
             // Try catch block for database connection
             try
             {
-                sctctrl = new SocketControler();
+                sctctrl = new SocketController();
             }
             catch (Exception exc)
             {

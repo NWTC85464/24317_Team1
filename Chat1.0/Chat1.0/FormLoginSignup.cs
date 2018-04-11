@@ -12,14 +12,14 @@ namespace Chat1._0
 {
     public partial class FormLoginSignup : Form
     {
-        public FormLoginSignup(SocketControler sctctrl)
+        public FormLoginSignup(SocketController sctctrl)
         {
             InitializeComponent();
             this.sctctrl = sctctrl;
         }
 
         // Declares the reference variable for the SocketControler class in this form
-        SocketControler sctctrl;
+        SocketController sctctrl;
 
         //TODO Add verify password field and associated code for sign up attempts
 
@@ -95,6 +95,18 @@ namespace Chat1._0
             // TODO: Add if statement for successful login
             // Close this form so that chat manager opens
             this.Close();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                txtPassword.PasswordChar = '\0';
+            }
+            else
+            {
+                txtPassword.PasswordChar = '*';
+            }
         }
     }
 }
