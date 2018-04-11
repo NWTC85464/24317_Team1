@@ -99,14 +99,7 @@ namespace Chat1._0
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
-            {
-                txtPassword.PasswordChar = '\0';
-            }
-            else
-            {
-                txtPassword.PasswordChar = '*';
-            }
+            txtPassword.PasswordChar = (checkBox1.Checked ? '\0' : '*');
         }
     }
 }
