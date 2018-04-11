@@ -38,6 +38,7 @@
             this.lblDisplayUsernameError = new System.Windows.Forms.Label();
             this.lblDisplayPasswordError = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             this.btnSignUp.BackColor = System.Drawing.Color.Green;
             this.btnSignUp.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSignUp.ForeColor = System.Drawing.SystemColors.Control;
-            this.btnSignUp.Location = new System.Drawing.Point(133, 117);
+            this.btnSignUp.Location = new System.Drawing.Point(133, 133);
             this.btnSignUp.Name = "btnSignUp";
             this.btnSignUp.Size = new System.Drawing.Size(96, 23);
             this.btnSignUp.TabIndex = 4;
@@ -59,7 +60,7 @@
             this.btnLogin.BackColor = System.Drawing.Color.Green;
             this.btnLogin.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.ForeColor = System.Drawing.SystemColors.Control;
-            this.btnLogin.Location = new System.Drawing.Point(248, 117);
+            this.btnLogin.Location = new System.Drawing.Point(248, 133);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(96, 23);
             this.btnLogin.TabIndex = 5;
@@ -72,7 +73,7 @@
             this.btnExit.BackColor = System.Drawing.Color.Maroon;
             this.btnExit.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExit.ForeColor = System.Drawing.SystemColors.Control;
-            this.btnExit.Location = new System.Drawing.Point(15, 117);
+            this.btnExit.Location = new System.Drawing.Point(15, 133);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(96, 23);
             this.btnExit.TabIndex = 3;
@@ -143,13 +144,25 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(103, 110);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(102, 17);
+            this.checkBox1.TabIndex = 10;
+            this.checkBox1.Text = "Show Password";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // FormLoginSignup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(370, 152);
+            this.ClientSize = new System.Drawing.Size(370, 168);
             this.ControlBox = false;
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblDisplayPasswordError);
             this.Controls.Add(this.lblDisplayUsernameError);
@@ -181,5 +194,6 @@
         private System.Windows.Forms.Label lblDisplayUsernameError;
         private System.Windows.Forms.Label lblDisplayPasswordError;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
