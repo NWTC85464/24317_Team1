@@ -9,23 +9,23 @@ using System.Windows.Forms;
 
 namespace Chat1._0
 {
-    public class SocketControler
+    public class SocketController
     {
 
         // Data fields.
         private Socket sct;
         // TODO: Add Server Address
-        private string ServerAdress = "";
+        private string ServerAdress = "ec2-13-59-47-57.us-east-2.compute.amazonaws.com";
         private static ManualResetEvent connectMarker =new ManualResetEvent(false);
 
-        public SocketControler()
+        public SocketController()
         {
             // TODO: set up the outgoing and incoming socket info
             sct = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
                 IPHostEntry ipHost = Dns.GetHostEntry(ServerAdress);
                 IPAddress ip = ipHost.AddressList[0];
-                IPEndPoint endPoint = new IPEndPoint(ip, 80);
+                IPEndPoint endPoint = new IPEndPoint(ip, 1100);
 
                 // Conect to server with a wait to confirm connection;
                 sct.BeginConnect(endPoint, new AsyncCallback(ConnectCallBack ) , sct);
@@ -45,7 +45,7 @@ namespace Chat1._0
         // Sets up Async object recieve
         private void Recieve()
         {
-            SocketRecievedData DataReciever = new SocketRecievedData();
+            SocketReceivedData DataReciever = new SocketReceivedData();
 
             sct.BeginReceive(DataReciever.DataStream, 0, DataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReciever);
         } 
@@ -85,27 +85,27 @@ namespace Chat1._0
         // Recieve callback opperation
         private void RecieveCallBack(IAsyncResult results)
         {
-            SocketRecievedData DataReciever = (SocketRecievedData)results.AsyncState;
-            Socket sct = DataReciever.Sct;
+            SocketReceivedData DataReceiver = (SocketReceivedData)results.AsyncState;
+            Socket sct = DataReceiver.Sct;
 
             int bytesRecieved = sct.EndReceive(results);
 
             // Checks for continued connection
             if (bytesRecieved > 0)
             {
-                DataReciever.Message += Encoding.ASCII.GetString(DataReciever.DataStream);
+                DataReceiver.Message += Encoding.ASCII.GetString(DataReceiver.DataStream);
 
                 // Checks for end of file tag
-                if(DataReciever.Message.IndexOf("<EOF>") == -1)
+                if(DataReceiver.Message.IndexOf("<EOF>") == -1)
                 {
                     // Continues Reading
-                    sct.BeginReceive(DataReciever.DataStream, 0, DataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReciever);
+                    sct.BeginReceive(DataReceiver.DataStream, 0, DataReceiver.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReceiver);
                 }
                 // If end of file tag is found
                 else
                 {
                     // Runs message interpreter
-                    MessageInterpreter(DataReciever.Message);
+                    MessageInterpreter(DataReceiver.Message);
                 }
             }
 

@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace Chat1._0
 {
-    class SocketRecievedData
+    class SocketReceivedData
     {
         private const int dataSize = 256;
         private Byte[] dataStream = new byte[dataSize];

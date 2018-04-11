@@ -12,14 +12,14 @@ namespace Chat1._0
 {
     public partial class FormLoginSignup : Form
     {
-        public FormLoginSignup(SocketControler sctctrl)
+        public FormLoginSignup(SocketController sctctrl)
         {
             InitializeComponent();
             this.sctctrl = sctctrl;
         }
 
         // Declares the reference variable for the SocketControler class in this form
-        SocketControler sctctrl;
+        SocketController sctctrl;
 
         //TODO Add verify password field and associated code for sign up attempts
 
