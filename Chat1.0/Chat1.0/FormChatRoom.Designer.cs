@@ -105,6 +105,7 @@
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "FormChatRoom";
             this.Text = "FormChatRoom";
+            this.Load += new System.EventHandler(this.FormChatRoom_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

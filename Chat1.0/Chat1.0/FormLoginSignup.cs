@@ -97,9 +97,10 @@ namespace Chat1._0
             this.Close();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        // Shows password if checked
+        private void pwd_check_box_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
+            if (pwd_check_box.Checked)
             {
                 txtPassword.PasswordChar = '\0';
             }
