@@ -56,6 +56,48 @@ namespace Chat1._0
         {
 
         }
+
+        //Input screener method
+        //Screens for <EOF> and | then removes them
+        public String Screen(string input)
+        {
+            if (input.Contains("<EOF>"))
+            {
+                //Find where "<EOF>" occurs
+                int index = input.IndexOf("<EOF>");
+
+                do
+                {
+                    //Removes "<EOF>" from input string
+                    input = input.Remove(index, 5);
+
+                    //Checks for another occurance
+                    index = input.IndexOf("<EOF>");
+
+                } while (index != -1); //Continues until all "<EOF>"'s are removed
+
+            }
+
+            if (input.Contains('|'))
+            {
+                //Find where '|' occurs
+                int index = input.IndexOf('|');
+                do
+                {                    
+                    //Removes '|' from input string
+                    input = input.Remove(index, 1);
+
+                    //Checks for another occurance
+                    index = input.IndexOf('|');
+
+                } while (index != -1); //Continues until all '|'s are removed
+
+            }
+            return input;
+            
+        }
+
+        //Sign up Method
         public bool UserSignUp(string username, string password)
         {
             bool SignUpSuccessful = false;

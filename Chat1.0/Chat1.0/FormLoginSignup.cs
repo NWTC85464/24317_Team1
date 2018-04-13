@@ -12,6 +12,9 @@ namespace Chat1._0
 {
     public partial class FormLoginSignup : Form
     {
+        //Create textbox
+        TextBox txtPasswordConfirm = new TextBox();
+
         public FormLoginSignup(SocketController sctctrl)
         {
             InitializeComponent();
@@ -55,12 +58,11 @@ namespace Chat1._0
             this.Controls.Add(lblPasswordConfirm);
 
             // Adds the Password confirmation box
-            TextBox txtPasswordConfirm = new TextBox();
-            txtPasswordConfirm.Width = 100;
-            txtPasswordConfirm.Height = 20;
+            this.txtPasswordConfirm.Width = 100;
+            this.txtPasswordConfirm.Height = 20;
             p = new Point(103, 124);
-            txtPasswordConfirm.Location = p;
-            txtPasswordConfirm.PasswordChar = '*';
+            this.txtPasswordConfirm.Location = p;
+            this.txtPasswordConfirm.PasswordChar = '*';
             this.Controls.Add(txtPasswordConfirm);
 
             // Changes the click event on Signup button
@@ -71,11 +73,21 @@ namespace Chat1._0
         // New signup method button click
         private void btnSignUp_SecondClick(object sender, EventArgs e)
         {
-            // TODO: Add the signup protocall to this method;
-            if (sctctrl.UserSignUp(this.txtUsername.Text, this.txtPassword.Text))
+            if(sctctrl.Screen(txtPassword.Text) == sctctrl.Screen(txtPasswordConfirm.Text))
             {
+                MessageBox.Show(sctctrl.Screen(txtPassword.Text));
+                MessageBox.Show(sctctrl.Screen(txtPasswordConfirm.Text));
+                // TODO: Add the signup protocall to this method;
+                //if (sctctrl.UserSignUp(this.txtUsername.Text, this.txtPassword.Text))
+                //{
 
+                //}
             }
+            else
+            {
+                MessageBox.Show("Passwords don't match.");
+            }
+            
 
         }
 
