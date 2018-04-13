@@ -55,10 +55,11 @@ namespace Chat1._0
 
         private void joinButton_Click(object sender, EventArgs e)
         {
-            // TODO: connect to room in server using sockets?
-
-            // Make sure alias text isn't empty
-            if (aliasTextbox.Text != string.Empty)
+            //check list box for selected chatroom
+            string chatroom = chatList.SelectedItems.ToString();
+             
+            // Need to use join method in socket controller
+            if (true)
             {
                 //Make chat manager invisible
                 this.Visible = false;
@@ -71,7 +72,7 @@ namespace Chat1._0
             // Tell user to enter alias
             else
             {
-                MessageBox.Show("Please enter an Alias.");
+                MessageBox.Show("Join unsuccessful");
             }
 
             

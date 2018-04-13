@@ -75,13 +75,14 @@ namespace Chat1._0
         {
             if(sctctrl.Screen(txtPassword.Text) == sctctrl.Screen(txtPasswordConfirm.Text))
             {
-                MessageBox.Show(sctctrl.Screen(txtPassword.Text));
-                MessageBox.Show(sctctrl.Screen(txtPasswordConfirm.Text));
-                // TODO: Add the signup protocall to this method;
-                //if (sctctrl.UserSignUp(this.txtUsername.Text, this.txtPassword.Text))
-                //{
-
-                //}
+                if (sctctrl.UserSignUp(sctctrl.Screen(this.txtUsername.Text), sctctrl.Screen(this.txtPassword.Text)))
+                {
+                    MessageBox.Show("Sign Up successful. Please Login.");
+                }
+                else
+                {
+                    MessageBox.Show("Sign up Unsuccessful.");
+                }
             }
             else
             {
@@ -100,13 +101,21 @@ namespace Chat1._0
         // Login Button Logs user into server after checking username and password
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            // TODO: Connect to database in server to confirm user
+            if(sctctrl.UserLogin(sctctrl.Screen(txtUsername.Text), sctctrl.Screen(txtPassword.Text)))
+            {
+                //Login successful-Open Chat Manager
+                User user1 = new User(sctctrl.Screen(txtUsername.Text));
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Login Unsuccessful.");
 
-     
-
-            // TODO: Add if statement for successful login
-            // Close this form so that chat manager opens
-            this.Close();
+                //For now have login go to chat manager for testing purposes
+                //TODO remove before usage or when testing signup/login
+                this.Close();
+            }
+            
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

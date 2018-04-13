@@ -14,6 +14,9 @@ namespace Chat1._0
 
         // Data fields.
         private Socket sct;
+        private char token = '|';
+        private string eof = "<EOF>";
+
         // TODO: Add Server Address
         private string ServerAdress = "ec2-13-59-47-57.us-east-2.compute.amazonaws.com";
         private static ManualResetEvent connectMarker =new ManualResetEvent(false);
@@ -96,16 +99,54 @@ namespace Chat1._0
             return input;
             
         }
+        //Message template method
+        private string Template(string action, string user, string message)
+        {
+            string output = (action + token + user + token + message + eof);
+            return output;
+        }
 
         //Sign up Method
         public bool UserSignUp(string username, string password)
         {
             bool SignUpSuccessful = false;
-            
-            // TODO: Set up server communications for signup;
+
+            string message = this.Template("signup", username, password);
+            this.Send(message);
+
+            //Todo if user created successfully then
+            //SignUpSuccessful = true;
+
 
             return SignUpSuccessful;
         }
+
+        //Log in Method
+        public bool UserLogin(string username, string password)
+        {
+            bool LoginSuccessful = false;
+
+            string message = this.Template("login", username, password);
+            this.Send(message);
+
+            //Todo if user login successfully then
+            //LoginSuccessful = true;
+
+
+            return LoginSuccessful;
+        }
+
+        //Join Chatroom method
+        public bool JoinChatroom(string username, string chatroom)
+        {
+            bool JoinSuccessful = false;
+
+            //Todo if join successful then
+            //JoinSuccessful = true;
+
+            return JoinSuccessful;
+        }
+
 
         // Callback methods
         // Connect callback opperation
