@@ -70,14 +70,14 @@ namespace Chat1._0
         {
             // TODO: open chat manager form back up and close this form
             this.Close();
-            
+            Application.Exit();
             
         }
 
         //TODO: Testing of message hostory will be done after database completion
         private void FormChatRoom_Load(object sender, EventArgs e)
         {
-            loadMessages();
+           // loadMessages();
         }
 
 
@@ -90,26 +90,30 @@ namespace Chat1._0
             // Making database connection
             con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
 
-            // Receiving messages of user and his/her friend
-            using (System.Data.SQLite.SQLiteCommand cmd = new System.Data.SQLite.SQLiteCommand(con))
+            if(user != null)
             {
-                con.Open();
-                cmd.CommandText = "select * from message where (msg_senderID = '" + user.user_ID.ToString() + "' and msg_receiverID = '" + frnd.id.ToString() + "') or (msg_senderID = '" + frnd.id.ToString() + "' and msg_receiverID = '" + user.user_ID.ToString() + "');";
-                using (System.Data.SQLite.SQLiteDataReader reader = cmd.ExecuteReader())
+                // Receiving messages of user and his/her friend
+                using (System.Data.SQLite.SQLiteCommand cmd = new System.Data.SQLite.SQLiteCommand(con))
                 {
-                    while (reader.Read())
+                    con.Open();
+                    cmd.CommandText = "select * from message where (msg_senderID = '" + user.user_ID.ToString() + "' and msg_receiverID = '" + frnd.id.ToString() + "') or (msg_senderID = '" + frnd.id.ToString() + "' and msg_receiverID = '" + user.user_ID.ToString() + "');";
+                    using (System.Data.SQLite.SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        // Resizing mesage array
-                        Array.Resize<message>(ref msgs, msgs.Count<message>() + 1);
-                        msgs[j].body = reader["msg_description"].ToString();
-                        msgs[j].date = reader["msg_date"].ToString();
-                        msgs[j].sender = int.Parse(reader["msg_senderID"].ToString());
-                        msgs[j++].receiver = int.Parse(reader["msg_receiverID"].ToString());
+                        while (reader.Read())
+                        {
+                            // Resizing mesage array
+                            Array.Resize<message>(ref msgs, msgs.Count<message>() + 1);
+                            msgs[j].body = reader["msg_description"].ToString();
+                            msgs[j].date = reader["msg_date"].ToString();
+                            msgs[j].sender = int.Parse(reader["msg_senderID"].ToString());
+                            msgs[j++].receiver = int.Parse(reader["msg_receiverID"].ToString());
+                        }
                     }
-                }
-                con.Close();
+                    con.Close();
 
+                }
             }
+            
 
             // Adding messages to messageBox list
             messageBox.BeginUpdate();
