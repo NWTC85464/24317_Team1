@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chat1._0
 {
-    class User
+    public class User
     {
         //field that holds username
         private string username;
@@ -22,5 +22,17 @@ namespace Chat1._0
         {
             this.username = username;
         }
+
+        public int user_ID { set; get; }
+        public string user_name { set; get; }
+        public bool user_online { set; get; }
+        public string fname { set; get; }
+        public string lname { set; get; }
+        public string email { set; get; }
+        public string password { set; get; }
+        public string state { set; get; }
+        public string address1 { set; get; }
+        public string city { set; get; }
+        public int zip_code { set; get; }
     }
 }

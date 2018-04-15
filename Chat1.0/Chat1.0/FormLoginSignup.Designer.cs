@@ -38,7 +38,7 @@
             this.lblDisplayUsernameError = new System.Windows.Forms.Label();
             this.lblDisplayPasswordError = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.pwd_show_chk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,7 +102,7 @@
             this.lblUserName.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUserName.Location = new System.Drawing.Point(12, 43);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(86, 18);
+            this.lblUserName.Size = new System.Drawing.Size(87, 18);
             this.lblUserName.TabIndex = 5;
             this.lblUserName.Text = "Username:";
             // 
@@ -144,16 +144,16 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
-            // checkBox1
+            // pwd_show_chk
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(103, 110);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(102, 17);
-            this.checkBox1.TabIndex = 10;
-            this.checkBox1.Text = "Show Password";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.pwd_show_chk.AutoSize = true;
+            this.pwd_show_chk.Location = new System.Drawing.Point(103, 110);
+            this.pwd_show_chk.Name = "pwd_show_chk";
+            this.pwd_show_chk.Size = new System.Drawing.Size(102, 17);
+            this.pwd_show_chk.TabIndex = 10;
+            this.pwd_show_chk.Text = "Show Password";
+            this.pwd_show_chk.UseVisualStyleBackColor = true;
+            this.pwd_show_chk.CheckedChanged += new System.EventHandler(this.pwd_show_chk_CheckedChanged);
             // 
             // FormLoginSignup
             // 
@@ -162,7 +162,7 @@
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(370, 168);
             this.ControlBox = false;
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.pwd_show_chk);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblDisplayPasswordError);
             this.Controls.Add(this.lblDisplayUsernameError);
@@ -194,6 +194,6 @@
         private System.Windows.Forms.Label lblDisplayUsernameError;
         private System.Windows.Forms.Label lblDisplayPasswordError;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox pwd_show_chk;
     }
 }

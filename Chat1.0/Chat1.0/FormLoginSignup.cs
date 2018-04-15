@@ -88,8 +88,6 @@ namespace Chat1._0
             {
                 MessageBox.Show("Passwords don't match.");
             }
-            
-
         }
 
         // Exit Button Closes the Application
@@ -118,9 +116,11 @@ namespace Chat1._0
             
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+
+        //Password show checkbox if checked then it will show password
+        private void pwd_show_chk_CheckedChanged(object sender, EventArgs e)
         {
-            txtPassword.PasswordChar = (checkBox1.Checked ? '\0' : '*');
+            txtPassword.PasswordChar = (pwd_show_chk.Checked ? '\0' : '*');
         }
     }
 }
