@@ -152,6 +152,7 @@ namespace ServerChatApplication
                 new AsyncCallback(SendCallBack), handler);
         }
 
+        // TODO Modify this method to avoid socket shutdown
         private static void SendCallBack(IAsyncResult ar)
         {
             try
@@ -173,10 +174,9 @@ namespace ServerChatApplication
             }
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            StartListening();
-            //return 0;
+            StartListening();            
         }
     }
 }

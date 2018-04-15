@@ -33,15 +33,44 @@ namespace ServerChatApplication
             switch (tokenizedMessage[0])
             {
                 case "<Message>":
-                    // TODO setup appropriate methods
+                    ProcessMessage();
                     break;
                 case "<Login>":
-                    // TODO setup appropriate methods
+                    ProcessLogin();
                     break;
                 case "<Signup>":
-                    // TODO setup appropriate methods
+                    ProcessSignup();
+                    break;
+                case "ClientRequestInfo":
+                    ProcessClientRequestInfo();
                     break;
             }
+        }
+
+        private static void ProcessMessage()
+        {
+            // TODO Entity framework code for placing message into database 
+            
+            // TODO request chatroom information about who is participating in the chat so we can redistribute the messages
+            // This process will involve grabbing the usernames which will then be matched up with a list of all clients connected.
+            // Loop logic will pick out the usernames that are connected to the chat and verify that their connections are still active,
+            // then route the message to the active users.
+        }
+
+        private static void ProcessLogin()
+        {
+            // TODO entity code for checking login info against the accounts we hold in the DB
+
+        }
+
+        private static void ProcessSignup()
+        {
+            // TODO entity code for registering the user
+        }
+
+        private static void ProcessClientRequestInfo()
+        {
+            // TODO entity code for returning user information like the chatrooms they participate in and so on.
         }
     }
 }
