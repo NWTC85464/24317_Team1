@@ -43,13 +43,29 @@ namespace Chat1._0
         // friend object for storing friend's information
         public friend frnd;
 
+        // Private data fields
+        private string chatRoomID;
+
         // SQLite connection object
         // Making database connection
         System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
 
-        public FormChatRoom()
+        // Gets and Sets to access private fields
+        public string ChatRoomID
+        {
+            get {return chatRoomID;}
+            set {chatRoomID = value;}
+        }
+
+        public FormChatRoom(string chatRoomID)
         {
             InitializeComponent();
+            this.chatRoomID = chatRoomID;
+        }
+
+        public void AddMessageToChatBox(string username, string message) {
+
+            this.messageBox.Items.Add(username + ": " + DateTime.Now.TimeOfDay + "\n" + message);
         }
 
         private void sendBtn_Click(object sender, EventArgs e)
@@ -122,6 +138,11 @@ namespace Chat1._0
                 messageBox.Items.Add((msgs[i].sender == user.user_ID ? user.user_name : frnd.user_name) + ": " + msgs[i].body + "          At: " + msgs[i].date);
             }
             messageBox.EndUpdate();
+        }
+
+        private void messageBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

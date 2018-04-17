@@ -13,16 +13,18 @@ namespace Chat1._0
     {
 
         // Data fields.
+        private FormChatManager chatManager;
         private Socket sct;
         private char token = '|';
         private string eof = "<EOF>";
-
-        // TODO: Add Server Address
         private string ServerAdress = "ec2-13-59-47-57.us-east-2.compute.amazonaws.com";
         private static ManualResetEvent connectMarker =new ManualResetEvent(false);
+        private static ManualResetEvent loginMarker = new ManualResetEvent(false);
+        private bool loginSuccessful = false;
 
-        public SocketController()
+        public SocketController(FormChatManager chatManager)
         {
+            this.chatManager = chatManager;
             // TODO: set up the outgoing and incoming socket info
             sct = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
@@ -36,7 +38,7 @@ namespace Chat1._0
 
         }
 
-        // Basic data send and recieve methods of the socket; 
+    // Basic data send and recieve methods of the socket; 
         // Can only accept formatted strings
         private void Send(string sentString)
         {
@@ -54,20 +56,17 @@ namespace Chat1._0
         } 
 
 
-        // Data preperation and interpretation methods
-        public void MessageInterpreter(string message)
-        {
-
-        }
+    // Data preperation and interpretation methods
+      // Data prep methods;
 
         //Input screener method
         //Screens for <EOF> and | then removes them
         public String Screen(string input)
         {
-            if (input.Contains("<EOF>"))
+            if (input.Contains(eof))
             {
                 //Find where "<EOF>" occurs
-                int index = input.IndexOf("<EOF>");
+                int index = input.IndexOf(eof);
 
                 do
                 {
@@ -75,7 +74,7 @@ namespace Chat1._0
                     input = input.Remove(index, 5);
 
                     //Checks for another occurance
-                    index = input.IndexOf("<EOF>");
+                    index = input.IndexOf(eof);
 
                 } while (index != -1); //Continues until all "<EOF>"'s are removed
 
@@ -109,31 +108,21 @@ namespace Chat1._0
         //Sign up Method
         public bool UserSignUp(string username, string password)
         {
-            bool SignUpSuccessful = false;
 
             string message = this.Template("signup", username, password);
             this.Send(message);
-
-            //Todo if user created successfully then
-            //SignUpSuccessful = true;
-
-
-            return SignUpSuccessful;
+            loginMarker.WaitOne();
+            return loginSuccessful;
         }
 
         //Log in Method
         public bool UserLogin(string username, string password)
         {
-            bool LoginSuccessful = false;
 
             string message = this.Template("login", username, password);
             this.Send(message);
-
-            //Todo if user login successfully then
-            //LoginSuccessful = true;
-
-
-            return LoginSuccessful;
+            loginMarker.WaitOne();
+            return loginSuccessful;
         }
 
         //Join Chatroom method
@@ -147,8 +136,50 @@ namespace Chat1._0
             return JoinSuccessful;
         }
 
+     // Recieved message interpretation;
+        private void MessageInterpreter(string message) {
+            string[] splitMessage = message.Split(token);
 
-        // Callback methods
+            // Switch for determining message type
+            switch (splitMessage[0]) 
+            {
+                case "<Message>":
+                    ChatMessageHandler(splitMessage);
+                    break;
+                case "<Login>":
+                    LoginHandler(splitMessage);
+                    break;
+                default:
+                    UnknownMessage(splitMessage);
+                    break;
+            }
+
+        }
+
+        private void LoginHandler(string[] message) {
+
+            if (message[1] == "fail") 
+            {
+                loginSuccessful = false;
+                loginMarker.Set();
+                loginMarker.Reset();
+            }
+            else 
+            {
+                chatManager.FillChatList(message);
+            }
+            
+        }
+
+        private void ChatMessageHandler(string[] message) {
+
+            chatManager.MessageReciever(message[1], message[2], message[3]);
+        }
+
+        private void UnknownMessage(string[] message) {
+            MessageBox.Show("Unknown Message Recieved. Tag: " + message[0]);
+        }
+    // Callback methods
         // Connect callback opperation
         private void ConnectCallBack(IAsyncResult results)
         {
@@ -179,7 +210,7 @@ namespace Chat1._0
                 DataReceiver.Message += Encoding.ASCII.GetString(DataReceiver.DataStream);
 
                 // Checks for end of file tag
-                if(DataReceiver.Message.IndexOf("<EOF>") == -1)
+                if(DataReceiver.Message.IndexOf(eof) == -1)
                 {
                     // Continues Reading
                     sct.BeginReceive(DataReceiver.DataStream, 0, DataReceiver.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReceiver);

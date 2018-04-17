@@ -50,6 +50,7 @@
             this.messageBox.Name = "messageBox";
             this.messageBox.Size = new System.Drawing.Size(755, 381);
             this.messageBox.TabIndex = 2;
+            this.messageBox.SelectedIndexChanged += new System.EventHandler(this.messageBox_SelectedIndexChanged);
             // 
             // exitButton
             // 

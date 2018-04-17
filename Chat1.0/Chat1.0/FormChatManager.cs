@@ -35,14 +35,14 @@ namespace Chat1._0
         public User user;
 
         // Parameterized constructor
-        public FormChatManager(User u)
+        public FormChatManager()
         {
             InitializeComponent();
-            user = u;
         }
 
-        // This sets up the socket in the proper scope
+        // Private Fields of the Chat manager
         SocketController sctctrl;
+        List<FormChatRoom> ChatRoomForms = new List<FormChatRoom>();
 
         private void FormChatManager_Load(object sender, EventArgs e)
         {
@@ -50,16 +50,17 @@ namespace Chat1._0
 
             //TODO: Testing will be done after database completion
 
+            // Why is this here? The Client will have no connection to the database and this is even before the socket connects to the server or the user logs in.
             // Finding friends
-            findFriends();
+            //findFriends();
 
             // Making list
-            makeFriendList();
+            //makeFriendList();
 
-            // Try catch block for database connection
+            // Try catch block for Server connection
             try
             {
-                sctctrl = new SocketController();
+                sctctrl = new SocketController(this);
             }
             catch (Exception exc)
             {
@@ -97,8 +98,9 @@ namespace Chat1._0
                 this.Visible = false;
 
                 // Open Chat Manager form if connection is complete
-                FormChatRoom FormChat = new FormChatRoom();
-                FormChat.ShowDialog();
+                FormChatRoom FormChat = new FormChatRoom(chatroom);
+                ChatRoomForms.Add(FormChat);
+                FormChat.Show();
             }
 
             // Tell user to enter alias
@@ -108,6 +110,33 @@ namespace Chat1._0
             }
 
             
+        }
+
+        // Method for sending recieved messages to the propper chat window.
+        public void MessageReciever(string username, string chatRoomID, string message) 
+        {
+
+            int i = 0;
+            while ((i < ChatRoomForms.Count) && (ChatRoomForms.ElementAt(i).ChatRoomID != chatRoomID))
+            {
+                i++;
+            }
+
+            if (i == ChatRoomForms.Count) {
+                MessageBox.Show("Message sent to nonexistent chat room " + chatRoomID);
+            }
+            else 
+            {
+                ChatRoomForms.ElementAt(i).AddMessageToChatBox(username, message);
+            }
+        }
+
+        public void FillChatList(string[] recievedChatList) 
+        {
+            for( int i = 2; i < recievedChatList.Length; i++) 
+            {
+                this.chatList.Items.Add(recievedChatList[i]);
+            }
         }
 
         private void friendList_SelectedIndexChanged(object sender, EventArgs e)
