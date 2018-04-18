@@ -143,7 +143,7 @@ namespace Chat1._0
         {
             if(friendList.Items.Count != 0)
             {
-                FormChatRoom room = new FormChatRoom();
+                FormChatRoom room = new FormChatRoom("d");
 #pragma warning disable CS1690 // Accessing a member on a field of a marshal-by-reference class may cause a runtime exception
                 room.frnd.id = frnd_data[friendList.SelectedIndex].id;
 #pragma warning restore CS1690 // Accessing a member on a field of a marshal-by-reference class may cause a runtime exception
