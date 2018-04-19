@@ -21,6 +21,8 @@ namespace Chat1._0
         private static ManualResetEvent connectMarker =new ManualResetEvent(false);
         private static ManualResetEvent loginMarker = new ManualResetEvent(false);
         private bool loginSuccessful = false;
+        private string userID;
+        private IPEndPoint endPoint;
 
         public SocketController(FormChatManager chatManager)
         {
@@ -30,12 +32,11 @@ namespace Chat1._0
 
                 IPHostEntry ipHost = Dns.GetHostEntry(ServerAdress);
                 IPAddress ip = ipHost.AddressList[0];
-                IPEndPoint endPoint = new IPEndPoint(ip, 1100);
+                endPoint = new IPEndPoint(ip, 1100);
 
                 // Conect to server with a wait to confirm connection;
                 sct.BeginConnect(endPoint, new AsyncCallback(ConnectCallBack ) , sct);
                 connectMarker.WaitOne();
-
         }
 
     // Basic data send and recieve methods of the socket; 
@@ -98,10 +99,17 @@ namespace Chat1._0
             return input;
             
         }
-        //Message template method
+        //Message template method for Login and SignUp
         private string Template(string action, string user, string message)
         {
             string output = (action + token + user + token + message + eof);
+            return output;
+        }
+
+        // Message template for sending messages
+        private string Template(string chatroom, string message)
+        {
+            string output = ("<Message>" + token + userID + token + chatroom + token + message + eof);
             return output;
         }
 
@@ -109,9 +117,13 @@ namespace Chat1._0
         public bool UserSignUp(string username, string password)
         {
 
-            string message = this.Template("signup", username, password);
+            string message = this.Template("<Signup>", this.Screen(username), this.Screen(password));
             this.Send(message);
             loginMarker.WaitOne();
+            if (loginSuccessful)
+            {
+                this.userID = this.Screen(username);
+            }
             return loginSuccessful;
         }
 
@@ -119,9 +131,13 @@ namespace Chat1._0
         public bool UserLogin(string username, string password)
         {
 
-            string message = this.Template("login", username, password);
+            string message = this.Template("<Login>", this.Screen(username), this.Screen(password));
             this.Send(message);
             loginMarker.WaitOne();
+            if (loginSuccessful)
+            {
+                this.userID = this.Screen(username);
+            }
             return loginSuccessful;
         }
 
@@ -134,6 +150,12 @@ namespace Chat1._0
             //JoinSuccessful = true;
 
             return JoinSuccessful;
+        }
+
+        // Sending Message method
+        public void SendMessage(string chatroom, string message)
+        {
+            this.Send(this.Template(chatroom, message));
         }
 
      // Recieved message interpretation;
@@ -160,6 +182,7 @@ namespace Chat1._0
 
             if (message[1] == "fail") 
             {
+                MessageBox.Show("Login Failed: " + message[2]);
                 loginSuccessful = false;
                 loginMarker.Set();
                 loginMarker.Reset();
@@ -183,10 +206,18 @@ namespace Chat1._0
         // Connect callback opperation
         private void ConnectCallBack(IAsyncResult results)
         {
-            Socket sct = (Socket)results.AsyncState;
-            sct.EndConnect(results);
-            connectMarker.Set();
-
+            try
+            {
+                Socket sct = (Socket)results.AsyncState;
+                sct.EndConnect(results);
+                connectMarker.Set();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                connectMarker.Set();
+            }
+            this.ConnectionMaintinence();
         }
 
         // Send callback opperation;
@@ -223,6 +254,17 @@ namespace Chat1._0
                 }
             }
 
+        }
+
+        // Checks that the socket is still connected to the server;
+        public void ConnectionMaintinence()
+        {
+            do
+            {
+                Thread.Sleep(10000);
+            } while (sct.Poll(2000000, SelectMode.SelectWrite));
+            connectMarker.Reset();
+            sct.BeginConnect(endPoint, new AsyncCallback(ConnectCallBack), sct);
         }
     }
 }

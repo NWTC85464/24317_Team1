@@ -14,6 +14,7 @@ namespace Chat1._0
     public partial class FormChatRoom : Form
     {
 
+        // Why is the client storing friend information that the server won't even have?
         // Structure for friend's information
         public struct friend
         {

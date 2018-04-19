@@ -13,7 +13,8 @@ namespace Chat1._0
     public partial class FormLoginSignup : Form
     {
         //Create textbox
-        TextBox txtPasswordConfirm = new TextBox();
+        TextBox txtPasswordConfirm;
+        Label lblPasswordConfirm;
 
         public FormLoginSignup(SocketController sctctrl)
         {
@@ -38,26 +39,28 @@ namespace Chat1._0
         {
             // Resize the form to allow for addition of a verify password field
             // when the user selects sign up 
-            this.Height += 51;
+            this.Height += 31;
 
             // Adjusts the controls of the form
             Point p = new Point(9, 161);
             this.btnExit.Location = p;
             p = new Point(111, 161);
             this.btnSignUp.Location = p;
-            this.btnLogin.Visible = false;
+            p = new Point(213, 161);
+            this.btnLogin.Location = p;
 
             // Adds the confirm password control label
-            Label lblPasswordConfirm = new Label();
-            lblPasswordConfirm.Width = 89;
-            lblPasswordConfirm.Height = 45;
+            this.lblPasswordConfirm = new Label();
+            this.lblPasswordConfirm.Width = 89;
+            this.lblPasswordConfirm.Height = 45;
             p = new Point(12,112);
-            lblPasswordConfirm.Location = p;
-            lblPasswordConfirm.Text = "Confirm Password:";
-            lblPasswordConfirm.Font = new Font("Arial Black", 10, FontStyle.Bold);
+            this.lblPasswordConfirm.Location = p;
+            this.lblPasswordConfirm.Text = "Confirm Password:";
+            this.lblPasswordConfirm.Font = new Font("Arial Black", 10, FontStyle.Bold);
             this.Controls.Add(lblPasswordConfirm);
 
             // Adds the Password confirmation box
+            this.txtPasswordConfirm = new TextBox();
             this.txtPasswordConfirm.Width = 100;
             this.txtPasswordConfirm.Height = 20;
             p = new Point(103, 124);
@@ -65,19 +68,22 @@ namespace Chat1._0
             this.txtPasswordConfirm.PasswordChar = '*';
             this.Controls.Add(txtPasswordConfirm);
 
-            // Changes the click event on Signup button
+            // Changes the click event on Signup and Login button
             this.btnSignUp.Click -= btnSignUp_Click;
             this.btnSignUp.Click += btnSignUp_SecondClick;
+            this.btnLogin.Click -= btnLogin_Click;
+            this.btnLogin.Click += btnLogin_SecondClick;
         }
 
         // New signup method button click
         private void btnSignUp_SecondClick(object sender, EventArgs e)
         {
-            if(sctctrl.Screen(txtPassword.Text) == sctctrl.Screen(txtPasswordConfirm.Text))
+            if(txtPassword.Text == txtPasswordConfirm.Text)
             {
-                if (sctctrl.UserSignUp(sctctrl.Screen(this.txtUsername.Text), sctctrl.Screen(this.txtPassword.Text)))
+                if (sctctrl.UserSignUp(this.txtUsername.Text, this.txtPassword.Text))
                 {
-                    MessageBox.Show("Sign Up successful. Please Login.");
+                    User user1 = new User(sctctrl.Screen(txtUsername.Text));
+                    this.Close();
                 }
                 else
                 {
@@ -90,6 +96,29 @@ namespace Chat1._0
             }
         }
 
+        // New Login button click to reset the form;
+        private void btnLogin_SecondClick(object sender, EventArgs e)
+        {
+            this.Height -= 31;
+            Point p = new Point(9, 131);
+            this.btnExit.Location = p;
+            p = new Point(111, 131);
+            this.btnSignUp.Location = p;
+            p = new Point(213, 131);
+            this.btnLogin.Location = p;
+
+            // Hides password confirmation
+            this.txtPasswordConfirm.Visible = false;
+            this.lblPasswordConfirm.Visible = false;
+
+            // Changes the click event on Signup and Login button
+            this.btnSignUp.Click += btnSignUp_Click;
+            this.btnSignUp.Click -= btnSignUp_SecondClick;
+            this.btnLogin.Click += btnLogin_Click;
+            this.btnLogin.Click -= btnLogin_SecondClick;
+
+        }
+
         // Exit Button Closes the Application
         private void btnExit_Click(object sender, EventArgs e)
         {
@@ -99,7 +128,7 @@ namespace Chat1._0
         // Login Button Logs user into server after checking username and password
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if(sctctrl.UserLogin(sctctrl.Screen(txtUsername.Text), sctctrl.Screen(txtPassword.Text)))
+            if(sctctrl.UserLogin(txtUsername.Text, txtPassword.Text))
             {
                 //Login successful-Open Chat Manager
                 User user1 = new User(sctctrl.Screen(txtUsername.Text));

@@ -25,14 +25,14 @@ namespace Chat1._0
 
         }
         // Array for soring friend's data 
-        friend[] frnd_data;
+        private friend[] frnd_data;
 
         // SQLite connection object
         // Making database connection
-        public System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
+        private System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
 
         // User object to store logged in user information
-        public User user;
+        private User user;
 
         // Parameterized constructor
         public FormChatManager()
