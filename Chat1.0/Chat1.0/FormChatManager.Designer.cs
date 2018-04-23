@@ -50,7 +50,7 @@
             this.joinButton.BackColor = System.Drawing.Color.Green;
             this.joinButton.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.joinButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.joinButton.Location = new System.Drawing.Point(250, 144);
+            this.joinButton.Location = new System.Drawing.Point(250, 84);
             this.joinButton.Name = "joinButton";
             this.joinButton.Size = new System.Drawing.Size(110, 35);
             this.joinButton.TabIndex = 1;
@@ -85,7 +85,6 @@
             this.friendList.Name = "friendList";
             this.friendList.Size = new System.Drawing.Size(110, 212);
             this.friendList.TabIndex = 6;
-            //this.friendList.SelectedIndexChanged += new System.EventHandler(this.friendList_SelectedIndexChanged);
             // 
             // friendListLabel
             // 
@@ -93,7 +92,7 @@
             this.friendListLabel.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.friendListLabel.Location = new System.Drawing.Point(250, 207);
             this.friendListLabel.Name = "friendListLabel";
-            this.friendListLabel.Size = new System.Drawing.Size(103, 23);
+            this.friendListLabel.Size = new System.Drawing.Size(104, 23);
             this.friendListLabel.TabIndex = 7;
             this.friendListLabel.Text = "Friend List";
             // 
