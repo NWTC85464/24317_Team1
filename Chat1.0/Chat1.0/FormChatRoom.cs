@@ -14,7 +14,6 @@ namespace Chat1._0
     public partial class FormChatRoom : Form
     {
 
-        // Why is the client storing friend information that the server won't even have?
         // Structure for friend's information
         public struct friend
         {
@@ -104,6 +103,7 @@ namespace Chat1._0
 
 
         // Function for loading messages
+
         //private void loadMessages()
         //{
         //    msgs = new message[0];
@@ -148,5 +148,5 @@ namespace Chat1._0
     }
 
     //TODO: Update messageBOX if message is received from friend/group member (trigger)
-
 }
+

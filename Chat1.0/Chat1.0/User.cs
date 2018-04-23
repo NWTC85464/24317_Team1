@@ -22,7 +22,6 @@ namespace Chat1._0
         {
             this.username = username;
         }
-
         public int user_ID { set; get; }
         public string user_name { set; get; }
         public bool user_online { set; get; }
