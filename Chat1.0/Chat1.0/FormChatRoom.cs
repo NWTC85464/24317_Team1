@@ -43,11 +43,29 @@ namespace Chat1._0
         // friend object for storing friend's information
         public friend frnd;
 
+        // Private data fields
+        private string chatRoomID;
+
         // SQLite connection object
-        System.Data.SQLite.SQLiteConnection con;
-        public FormChatRoom()
+        // Making database connection
+        System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
+
+        // Gets and Sets to access private fields
+        public string ChatRoomID
+        {
+            get {return chatRoomID;}
+            set {chatRoomID = value;}
+        }
+
+        public FormChatRoom(string chatRoomID)
         {
             InitializeComponent();
+            this.chatRoomID = chatRoomID;
+        }
+
+        public void AddMessageToChatBox(string username, string message) {
+
+            this.messageBox.Items.Add(username + ": " + DateTime.Now.TimeOfDay + "\n" + message);
         }
 
         private void sendBtn_Click(object sender, EventArgs e)
@@ -77,55 +95,57 @@ namespace Chat1._0
         //TODO: Testing of message hostory will be done after database completion
         private void FormChatRoom_Load(object sender, EventArgs e)
         {
-           // loadMessages();
+            if(user != null)
+            {
+              // loadMessages();
+            }
         }
 
 
         // Function for loading messages
-        public void loadMessages()
+
+        //private void loadMessages()
+        //{
+        //    msgs = new message[0];
+        //    int j = 0;
+
+        //    con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
+
+        //    // Receiving messages of user and his/her friend
+        //    using (System.Data.SQLite.SQLiteCommand cmd = new System.Data.SQLite.SQLiteCommand(con))
+        //    {
+        //        con.Open();
+        //        cmd.CommandText = "select * from message where (msg_senderID = '" + user.user_ID.ToString() + "' and msg_receiverID = '" + frnd.id.ToString() + "') or (msg_senderID = '" + frnd.id.ToString() + "' and msg_receiverID = '" + user.user_ID.ToString() + "');";
+        //        using (System.Data.SQLite.SQLiteDataReader reader = cmd.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                // Resizing mesage array
+        //                Array.Resize<message>(ref msgs, msgs.Count<message>() + 1);
+        //                msgs[j].body = reader["msg_description"].ToString();
+        //                msgs[j].date = reader["msg_date"].ToString();
+        //                msgs[j].sender = int.Parse(reader["msg_senderID"].ToString());
+        //                msgs[j++].receiver = int.Parse(reader["msg_receiverID"].ToString());
+        //            }
+        //        }
+        //        con.Close();
+
+        //    }
+
+        //    // Adding messages to messageBox list
+        //    messageBox.BeginUpdate();
+        //    for (int i = 0; i < msgs.Count<message>(); i++)
+        //    {
+        //        messageBox.Items.Add((msgs[i].sender == user.user_ID ? user.user_name : frnd.user_name) + ": " + msgs[i].body + "          At: " + msgs[i].date);
+        //    }
+        //    messageBox.EndUpdate();
+        //}
+
+        private void messageBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            msgs = new message[0];
-            int j = 0;
 
-            // Making database connection
-            con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
-
-            if(user != null)
-            {
-                // Receiving messages of user and his/her friend
-                using (System.Data.SQLite.SQLiteCommand cmd = new System.Data.SQLite.SQLiteCommand(con))
-                {
-                    con.Open();
-                    cmd.CommandText = "select * from message where (msg_senderID = '" + user.user_ID.ToString() + "' and msg_receiverID = '" + frnd.id.ToString() + "') or (msg_senderID = '" + frnd.id.ToString() + "' and msg_receiverID = '" + user.user_ID.ToString() + "');";
-                    using (System.Data.SQLite.SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            // Resizing mesage array
-                            Array.Resize<message>(ref msgs, msgs.Count<message>() + 1);
-                            msgs[j].body = reader["msg_description"].ToString();
-                            msgs[j].date = reader["msg_date"].ToString();
-                            msgs[j].sender = int.Parse(reader["msg_senderID"].ToString());
-                            msgs[j++].receiver = int.Parse(reader["msg_receiverID"].ToString());
-                        }
-                    }
-                    con.Close();
-
-                }
-            }
-            
-
-            // Adding messages to messageBox list
-            messageBox.BeginUpdate();
-            for (int i = 0; i < msgs.Count<message>(); i++)
-            {
-                messageBox.Items.Add((msgs[i].sender == user.user_ID ? user.user_name : frnd.user_name) + ": " + msgs[i].body + "          At: " + msgs[i].date);
-            }
-            messageBox.EndUpdate();
         }
     }
-
-    
 
     //TODO: Update messageBOX if message is received from friend/group member (trigger)
 }

@@ -6,9 +6,22 @@ using System.Threading.Tasks;
 
 namespace Chat1._0
 {
-    //User class for storing logged in user details
     public class User
     {
+        //field that holds username
+        private string username;
+
+        //get username
+        public string Username
+        {
+            get { return username; }
+        }
+
+        //constructor that creates user after successful login
+        public User(string username)
+        {
+            this.username = username;
+        }
         public int user_ID { set; get; }
         public string user_name { set; get; }
         public bool user_online { set; get; }

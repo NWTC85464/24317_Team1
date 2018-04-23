@@ -38,7 +38,7 @@
             this.lblDisplayUsernameError = new System.Windows.Forms.Label();
             this.lblDisplayPasswordError = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pwd_check_box = new System.Windows.Forms.CheckBox();
+            this.pwd_show_chk = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -144,16 +144,16 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
-            // pwd_check_box
+            // pwd_show_chk
             // 
-            this.pwd_check_box.AutoSize = true;
-            this.pwd_check_box.Location = new System.Drawing.Point(103, 110);
-            this.pwd_check_box.Name = "pwd_check_box";
-            this.pwd_check_box.Size = new System.Drawing.Size(102, 17);
-            this.pwd_check_box.TabIndex = 10;
-            this.pwd_check_box.Text = "Show Password";
-            this.pwd_check_box.UseVisualStyleBackColor = true;
-            this.pwd_check_box.CheckedChanged += new System.EventHandler(this.pwd_check_box_CheckedChanged);
+            this.pwd_show_chk.AutoSize = true;
+            this.pwd_show_chk.Location = new System.Drawing.Point(103, 110);
+            this.pwd_show_chk.Name = "pwd_show_chk";
+            this.pwd_show_chk.Size = new System.Drawing.Size(102, 17);
+            this.pwd_show_chk.TabIndex = 10;
+            this.pwd_show_chk.Text = "Show Password";
+            this.pwd_show_chk.UseVisualStyleBackColor = true;
+            this.pwd_show_chk.CheckedChanged += new System.EventHandler(this.pwd_show_chk_CheckedChanged);
             // 
             // FormLoginSignup
             // 
@@ -162,7 +162,7 @@
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(370, 168);
             this.ControlBox = false;
-            this.Controls.Add(this.pwd_check_box);
+            this.Controls.Add(this.pwd_show_chk);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblDisplayPasswordError);
             this.Controls.Add(this.lblDisplayUsernameError);
@@ -194,6 +194,6 @@
         private System.Windows.Forms.Label lblDisplayUsernameError;
         private System.Windows.Forms.Label lblDisplayPasswordError;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.CheckBox pwd_check_box;
+        private System.Windows.Forms.CheckBox pwd_show_chk;
     }
 }

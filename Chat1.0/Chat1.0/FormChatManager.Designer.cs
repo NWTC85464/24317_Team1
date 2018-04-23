@@ -32,8 +32,6 @@
             this.joinButton = new System.Windows.Forms.Button();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.searchButton = new System.Windows.Forms.Button();
-            this.aliasTextbox = new System.Windows.Forms.TextBox();
-            this.aliasLabel = new System.Windows.Forms.Label();
             this.friendList = new System.Windows.Forms.ListBox();
             this.friendListLabel = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
@@ -52,7 +50,7 @@
             this.joinButton.BackColor = System.Drawing.Color.Green;
             this.joinButton.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.joinButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.joinButton.Location = new System.Drawing.Point(250, 144);
+            this.joinButton.Location = new System.Drawing.Point(250, 84);
             this.joinButton.Name = "joinButton";
             this.joinButton.Size = new System.Drawing.Size(110, 35);
             this.joinButton.TabIndex = 1;
@@ -80,23 +78,6 @@
             this.searchButton.UseVisualStyleBackColor = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
-            // aliasTextbox
-            // 
-            this.aliasTextbox.Location = new System.Drawing.Point(250, 118);
-            this.aliasTextbox.Name = "aliasTextbox";
-            this.aliasTextbox.Size = new System.Drawing.Size(110, 20);
-            this.aliasTextbox.TabIndex = 4;
-            // 
-            // aliasLabel
-            // 
-            this.aliasLabel.AutoSize = true;
-            this.aliasLabel.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aliasLabel.Location = new System.Drawing.Point(281, 97);
-            this.aliasLabel.Name = "aliasLabel";
-            this.aliasLabel.Size = new System.Drawing.Size(43, 18);
-            this.aliasLabel.TabIndex = 5;
-            this.aliasLabel.Text = "Alias";
-            // 
             // friendList
             // 
             this.friendList.FormattingEnabled = true;
@@ -112,7 +93,7 @@
             this.friendListLabel.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.friendListLabel.Location = new System.Drawing.Point(250, 207);
             this.friendListLabel.Name = "friendListLabel";
-            this.friendListLabel.Size = new System.Drawing.Size(103, 23);
+            this.friendListLabel.Size = new System.Drawing.Size(104, 23);
             this.friendListLabel.TabIndex = 7;
             this.friendListLabel.Text = "Friend List";
             // 
@@ -138,8 +119,6 @@
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.friendListLabel);
             this.Controls.Add(this.friendList);
-            this.Controls.Add(this.aliasLabel);
-            this.Controls.Add(this.aliasTextbox);
             this.Controls.Add(this.searchButton);
             this.Controls.Add(this.searchTextbox);
             this.Controls.Add(this.joinButton);
@@ -159,8 +138,6 @@
         private System.Windows.Forms.Button joinButton;
         private System.Windows.Forms.TextBox searchTextbox;
         private System.Windows.Forms.Button searchButton;
-        private System.Windows.Forms.TextBox aliasTextbox;
-        private System.Windows.Forms.Label aliasLabel;
         private System.Windows.Forms.ListBox friendList;
         private System.Windows.Forms.Label friendListLabel;
         private System.Windows.Forms.Button btnExit;
