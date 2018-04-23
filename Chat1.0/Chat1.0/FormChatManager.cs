@@ -24,6 +24,7 @@ namespace Chat1._0
             public string user_name;
 
         }
+
         // Array for soring friend's data 
         private friend[] frnd_data;
 
