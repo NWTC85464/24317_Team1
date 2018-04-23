@@ -16,7 +16,7 @@ namespace Chat1._0
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormChatManager());
+            Application.Run(new FormChatManager(new User()));
         }
     }
 }

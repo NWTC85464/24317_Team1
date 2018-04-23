@@ -39,7 +39,7 @@ namespace Chat1._0
                 connectMarker.WaitOne();
         }
 
-    // Basic data send and recieve methods of the socket; 
+// Basic data send and recieve methods of the socket; 
         // Can only accept formatted strings
         private void Send(string sentString)
         {
@@ -60,6 +60,7 @@ namespace Chat1._0
 
     // Data preperation and interpretation methods
       // Data prep methods;
+
 
         //Input screener method
         //Screens for <EOF> and | then removes them
@@ -110,7 +111,7 @@ namespace Chat1._0
         // Message template for sending messages
         private string Template(string chatroom, string message)
         {
-            string output = ("<Message>" + token + userID + token + chatroom + token + message + eof);
+            string output = ("<Message>" + token + userID + token + chatroom + token + message + token + eof);
             return output;
         }
 
@@ -159,7 +160,7 @@ namespace Chat1._0
             this.Send(this.Template(chatroom, message));
         }
 
-     // Recieved message interpretation;
+// Recieved message interpretation;
         private void MessageInterpreter(string message) {
             string[] splitMessage = message.Split(token);
 
@@ -169,8 +170,23 @@ namespace Chat1._0
                 case "<Message>":
                     ChatMessageHandler(splitMessage);
                     break;
+                case "<RoomJoin>":
+
+                    break;
                 case "<Login>":
                     LoginHandler(splitMessage);
+                    break;
+                case "<SignUp>":
+
+                    break;
+                case "<Friends>":
+
+                    break;
+                case "<FriendRequest>":
+
+                    break;
+                case "<Chatrooms>":
+
                     break;
                 default:
                     UnknownMessage(splitMessage);
@@ -203,7 +219,7 @@ namespace Chat1._0
         private void UnknownMessage(string[] message) {
             MessageBox.Show("Unknown Message Recieved. Tag: " + message[0]);
         }
-    // Callback methods
+// Callback methods
         // Connect callback opperation
         private void ConnectCallBack(IAsyncResult results)
         {
