@@ -25,6 +25,7 @@ namespace Chat1._0
 
         }
 
+
         // Structure for message details
         public struct message
         {
@@ -62,6 +63,7 @@ namespace Chat1._0
             InitializeComponent();
             this.chatRoomID = chatRoomID;
         }
+
 
         public void AddMessageToChatBox(string username, string message) {
 

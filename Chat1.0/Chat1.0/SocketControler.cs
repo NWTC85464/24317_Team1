@@ -57,8 +57,10 @@ namespace Chat1._0
         } 
 
 
-// Data preperation and interpretation methods
-// Data prep methods;
+
+    // Data preperation and interpretation methods
+      // Data prep methods;
+
 
         //Input screener method
         //Screens for <EOF> and | then removes them

@@ -17,6 +17,7 @@ namespace Chat1._0
             get { return username; }
         }
 
+
         //constructor that creates user after successful login
         public User(string username)
         {

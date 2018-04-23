@@ -20,6 +20,7 @@ namespace Chat1._0
             get {return dataSize;}
         }
 
+
         public byte[] DataStream
         {
             get {return dataStream;}
