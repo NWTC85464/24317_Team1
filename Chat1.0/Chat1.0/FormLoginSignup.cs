@@ -82,7 +82,6 @@ namespace Chat1._0
             {
                 if (sctctrl.UserSignUp(this.txtUsername.Text, this.txtPassword.Text))
                 {
-                    User user1 = new User(sctctrl.Screen(txtUsername.Text));
                     this.Close();
                 }
                 else
@@ -131,7 +130,6 @@ namespace Chat1._0
             if(sctctrl.UserLogin(txtUsername.Text, txtPassword.Text))
             {
                 //Login successful-Open Chat Manager
-                User user1 = new User(sctctrl.Screen(txtUsername.Text));
                 this.Close();
             }
             else

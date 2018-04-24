@@ -38,9 +38,6 @@ namespace Chat1._0
         // message array for related messages
         message[] msgs;
 
-        // User object for storing user's information
-        public User user;
-
         // friend object for storing friend's information
         public friend frnd;
 
@@ -97,10 +94,7 @@ namespace Chat1._0
         //TODO: Testing of message hostory will be done after database completion
         private void FormChatRoom_Load(object sender, EventArgs e)
         {
-            if(user != null)
-            {
               // loadMessages();
-            }
         }
 
 

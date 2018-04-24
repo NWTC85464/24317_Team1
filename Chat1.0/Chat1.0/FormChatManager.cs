@@ -32,9 +32,6 @@ namespace Chat1._0
         // Making database connection
         private System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection("data source=teamChat.sqlite");
 
-        // User object to store logged in user information
-        private User user;
-
         // Parameterized constructor
         public FormChatManager()
         {
