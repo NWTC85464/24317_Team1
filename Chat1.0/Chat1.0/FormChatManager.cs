@@ -86,27 +86,34 @@ namespace Chat1._0
 
         private void joinButton_Click(object sender, EventArgs e)
         {
-            //check list box for selected chatroom
-            string chatroom = chatList.SelectedItems.ToString();
-
-            // Need to use join method in socket controller
-            if (true)
+            //check for selection
+            if (chatList1.SelectedItem != null)
             {
-                //Make chat manager invisible
-                this.Visible = false;
+                //check list box for selected chatroom
+                string chatroom = chatList1.SelectedItem.ToString();
 
-                // Open Chat Manager form if connection is complete
-                FormChatRoom FormChat = new FormChatRoom(chatroom);
-                ChatRoomForms.Add(FormChat);
-                FormChat.Show();
+                // Need to use join method in socket controller
+                if (sctctrl.JoinChatroom(chatroom))
+                {
+                    //Make chat manager invisible
+                    this.Visible = false;
+
+                    // Open Chat Manager form if connection is complete
+                    FormChatRoom FormChat = new FormChatRoom(chatroom);
+                    ChatRoomForms.Add(FormChat);
+                    FormChat.Show();
+                }
+
+                // tell user join failed
+                else
+                {
+                    MessageBox.Show("Join unsuccessful");
+                }
             }
-
-            // Tell user to enter alias
             else
             {
-                MessageBox.Show("Join unsuccessful");
+                MessageBox.Show("Select a Chatroom to join.");
             }
-
 
         }
 
@@ -134,7 +141,7 @@ namespace Chat1._0
         {
             for (int i = 2; i < recievedChatList.Length; i++)
             {
-                this.chatList.Items.Add(recievedChatList[i]);
+                this.chatList1.Items.Add(recievedChatList[i]);
             }
         }
 
@@ -158,6 +165,37 @@ namespace Chat1._0
             }
             //TODO: close ChatManger form
         }
+        //Create chat Button first click
+        private void createChatBtn_Click(object sender, EventArgs e)
+        {
+            this.createText.Visible = true;
+            this.createChatBtn.Text = "Create";
+            Point p = new Point(250, 106);
+            this.joinButton.Location = p;
+
+            //changes click even for second click
+            this.createChatBtn.Click -= createChatBtn_Click;
+            this.createChatBtn.Click += createChatBtn_SecondClick;
+        }
+
+        //create chat button second click
+        private void createChatBtn_SecondClick(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrWhiteSpace(createText.Text))
+            {
+                //get number of chatrooms and add 1
+                string count = (chatList1.Items.Count+1).ToString("D6");
+
+
+                //create chat method in socket controller
+                sctctrl.CreateChatroom(count+createText.Text);
+            }
+            else
+            {
+                MessageBox.Show("Please name Chat.");
+            }
+        }
+
 
 
         // Function for making friend list 

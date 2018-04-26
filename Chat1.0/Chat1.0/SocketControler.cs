@@ -21,7 +21,8 @@ namespace Chat1._0
         private static ManualResetEvent connectMarker =new ManualResetEvent(false);
         private static ManualResetEvent loginMarker = new ManualResetEvent(false);
         private bool loginSuccessful = false;
-        private string userID;
+        private string userID = "default";
+        private string currentRoom;
         private IPEndPoint endPoint;
 
         public SocketController(FormChatManager chatManager)
@@ -43,9 +44,16 @@ namespace Chat1._0
         // Can only accept formatted strings
         private void Send(string sentString)
         {
-            byte[] sentByte = Encoding.ASCII.GetBytes(sentString);
+            try
+            {
+                byte[] sentByte = Encoding.ASCII.GetBytes(sentString);
 
-            sct.BeginSend(sentByte, 0, sentByte.Length, 0, new AsyncCallback(SendCallBack),  sct);
+                sct.BeginSend(sentByte, 0, sentByte.Length, 0, new AsyncCallback(SendCallBack), sct);
+            }
+            catch
+            {
+                MessageBox.Show("Server Connection Failed.");
+            }
         }
         
         // Sets up Async object recieve
@@ -144,14 +152,35 @@ namespace Chat1._0
         }
 
         //Join Chatroom method
-        public bool JoinChatroom(string username, string chatroom)
+        public bool JoinChatroom(string chatroom)
         {
             bool JoinSuccessful = false;
-
-            //Todo if join successful then
-            //JoinSuccessful = true;
-
+            string message = this.Template("<RoomJoin>", this.Screen(userID), chatroom);
+            this.Send(message);
+            loginMarker.WaitOne();
+            //todo need a way to turn JoinSuccessful true if feedback succeeded
+            //also need this for loginSuccessful above and createchat below
+            //Nate did you have an idea for how this would work?
+            if (JoinSuccessful)
+            {
+                this.currentRoom = chatroom;
+            }
             return JoinSuccessful;
+        }
+
+        //Create Chatroom method
+        public bool CreateChatroom(string name)
+        {
+            bool CreateSuccessful = false;
+            string message = this.Template("<RoomCreate>", this.Screen(userID), this.Screen(name));
+            this.Send(message);
+            if (CreateSuccessful)
+            {
+                MessageBox.Show("Congrats you created " + name);
+
+                //todo reload listbox
+            }
+            return CreateSuccessful;
         }
 
         // Sending Message method
