@@ -127,7 +127,7 @@ namespace Chat1._0
         // Login Button Logs user into server after checking username and password
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            //if(sctctrl.UserLogin(txtUsername.Text, txtPassword.Text))
+            //if (sctctrl.UserLogin(txtUsername.Text, txtPassword.Text))
             //{
             //    //Login successful-Open Chat Manager
             //    this.Close();
@@ -141,9 +141,11 @@ namespace Chat1._0
             //    this.Close();
             //}
 
-            //commented out above to test other parts of form feel free to uncomment and delete this.Close(); below
+            //for testing-delete when need to test login
             this.Close();
-            
+
+
+
         }
 
 

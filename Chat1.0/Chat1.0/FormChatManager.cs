@@ -87,34 +87,38 @@ namespace Chat1._0
         private void joinButton_Click(object sender, EventArgs e)
         {
             //check for selection
-            if (chatList1.SelectedItem != null)
-            {
-                //check list box for selected chatroom
-                string chatroom = chatList1.SelectedItem.ToString();
+            //if (chatList1.SelectedItem != null)
+            //{
+            //    //check list box for selected chatroom
+            //    string chatroom = chatList1.SelectedItem.ToString();
 
-                // Need to use join method in socket controller
-                if (sctctrl.JoinChatroom(chatroom))
-                {
-                    //Make chat manager invisible
-                    this.Visible = false;
+            //    // Need to use join method in socket controller
+            //    if (sctctrl.JoinChatroom(chatroom))
+            //    {
+            //        //Make chat manager invisible
+            //        this.Visible = false;
 
-                    // Open Chat Manager form if connection is complete
-                    FormChatRoom FormChat = new FormChatRoom(chatroom);
-                    ChatRoomForms.Add(FormChat);
-                    FormChat.Show();
-                }
+            //        // Open Chat Manager form if connection is complete
+            //        FormChatRoom FormChat = new FormChatRoom(sctctrl, chatroom);
+            //        ChatRoomForms.Add(FormChat);
+            //        FormChat.Show();
+            //    }
 
-                // tell user join failed
-                else
-                {
-                    MessageBox.Show("Join unsuccessful");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Select a Chatroom to join.");
-            }
+            //    // tell user join failed
+            //    else
+            //    {
+            //        MessageBox.Show("Join unsuccessful");
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Select a Chatroom to join.");
+            //}
 
+            //Used for testing chatroom form - feel free to delete and uncomment above
+            FormChatRoom FormChat = new FormChatRoom(sctctrl, "chatroom");
+            ChatRoomForms.Add(FormChat);
+            FormChat.Show();
         }
 
         // Method for sending recieved messages to the propper chat window.
@@ -188,7 +192,7 @@ namespace Chat1._0
 
 
                 //create chat method in socket controller
-                sctctrl.CreateChatroom(count+createText.Text);
+                sctctrl.CreateChatroom(count+" "+createText.Text);
             }
             else
             {

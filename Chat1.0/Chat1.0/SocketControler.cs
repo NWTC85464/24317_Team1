@@ -112,7 +112,7 @@ namespace Chat1._0
         //Message template method for Login and SignUp
         private string Template(string action, string user, string message)
         {
-            string output = (action + token + user + token + message + eof);
+            string output = (action + token + user + token + message + token + eof);
             return output;
         }
 
@@ -174,6 +174,7 @@ namespace Chat1._0
             bool CreateSuccessful = false;
             string message = this.Template("<RoomCreate>", this.Screen(userID), this.Screen(name));
             this.Send(message);
+            loginMarker.WaitOne();
             if (CreateSuccessful)
             {
                 MessageBox.Show("Congrats you created " + name);

@@ -43,6 +43,7 @@ namespace Chat1._0
 
         // Private data fields
         private string chatRoomID;
+        SocketController sctctrl;
 
         // SQLite connection object
         // Making database connection
@@ -55,10 +56,11 @@ namespace Chat1._0
             set {chatRoomID = value;}
         }
 
-        public FormChatRoom(string chatRoomID)
+        public FormChatRoom(SocketController sctctrl, string chatRoomID)
         {
             InitializeComponent();
             this.chatRoomID = chatRoomID;
+            this.sctctrl = sctctrl;
         }
 
 
@@ -69,11 +71,15 @@ namespace Chat1._0
 
         private void sendBtn_Click(object sender, EventArgs e)
         {
+            //send message to method in socket controller
+            sctctrl.SendMessage(ChatRoomID, messageText.Text);
+
             //Send textbox text to listbox
             messageBox.Items.Add(messageText.Text);
 
             //Empty textbox after sent to listbox
             messageText.Text = string.Empty;
+
 
         }
 
