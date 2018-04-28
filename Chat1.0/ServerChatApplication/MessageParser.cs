@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace ServerChatApplication
 {
     public static class MessageParser
     {
+        // Setup DB object
+        private static ChatRoomEntities1 db = new ChatRoomEntities1();
+
         // Holds the original message that's sent to the server before any tokenizing occurs
         private static string completeMessage;
 
@@ -41,8 +45,8 @@ namespace ServerChatApplication
                 case "<Signup>":
                     ProcessSignup();
                     break;
-                case "ClientRequestInfo":
-                    ProcessClientRequestInfo();
+                case "Chatrooms":
+                    ProcessChatroomsRequest();
                     break;
             }
         }
@@ -59,18 +63,57 @@ namespace ServerChatApplication
 
         private static void ProcessLogin()
         {
-            // TODO entity code for checking login info against the accounts we hold in the DB
+            // TDB based off tokenizing pattern. When design is concluded,
+            // variable dataStartLocation will indicate where the data portion is held in the array
+            int dataStartLocation = 0;
 
+            // The bool that's returned to the client stating if the login has succeeded or failed.
+            bool isValidLogin = false;
+
+            // To list the user table to allow for easier access
+            List<User> users = db.Users.ToList();
+            
+            foreach (User u in users)
+            {
+                if (u.UserName == tokenizedMessage[dataStartLocation])
+                {
+                    // TODO run password through salted hash system to see if there's a match on the password.   
+                    // Aaron, all I need is a method call where I can place the incoming password as a parameter
+                    // so it's run through the salted hash functions and a return value is setup to 
+                    // receive the result of the crypto function for comparison to verify that this user 
+                    // has the correct password.
+                } 
+            }
         }
 
         private static void ProcessSignup()
         {
-            // TODO entity code for registering the user
+            // TDB based off tokenizing pattern. When design is concluded,
+            // variable dataStartLocation will indicate where the data portion is held in the array
+            int dataStartLocation = 0;
+
+            User u = new User();
+            u.UserName = tokenizedMessage[dataStartLocation];
+
+            /* TODO Aaron. Could you hook your salted hash function into here and another
+            spot in the login method so we can compare the user's password to a stored salted hash 
+            and also create said salted hash during signup attempt. Just return a string or variable
+            holding the result of said salted hash function so I can place it in the database. */
+            
         }
 
-        private static void ProcessClientRequestInfo()
+        private static void ProcessChatroomsRequest()
         {
-            // TODO entity code for returning user information like the chatrooms they participate in and so on.
+            // TDB based off tokenizing pattern. When design is concluded,
+            // variable dataStartLocation will indicate where the data portion is held in the array
+            int dataStartLocation = 0;
+
+            IEnumerable<ChatRoomRoster> roster = db.ChatRoomRosters
+            .ToList()
+            .Where(x => x.UserName == tokenizedMessage[dataStartLocation]);
+
+            List<ChatRoom> chatRooms = null;
+            var temp = db.ChatRooms.ToList();
         }
     }
 }
