@@ -82,6 +82,11 @@ namespace ServerChatApplication
                     // so it's run through the salted hash functions and a return value is setup to 
                     // receive the result of the crypto function for comparison to verify that this user 
                     // has the correct password.
+                    byte[] salt = new byte[0]; //needs to be retrieved from database
+                    string pw = "user entered password"; //user entered password from client
+                    byte[] saltedHash = new byte[0]; //needs to be retrieved from database
+                    isValidLogin = SaltedHash.Validate(salt, pw, saltedHash);  //Pass in salt, user password, then salted hash. this should return true/false depending on if password validates
+                    //These methods will need to be tested and tweaked if necessary. I'm not sure if they work 100% as I am not able to test them
                 } 
             }
         }
@@ -99,6 +104,10 @@ namespace ServerChatApplication
             spot in the login method so we can compare the user's password to a stored salted hash 
             and also create said salted hash during signup attempt. Just return a string or variable
             holding the result of said salted hash function so I can place it in the database. */
+            byte[] salt = SaltedHash.CreateSalt();                        //Store this value in the database for each user
+            string pw = "user entered password";                          //this needs to be the user entered password sent from client
+            byte[] saltedpw = SaltedHash.CreateSaltedHash(salt, pw);      //They will then be passed into the method to convert to the saltedhash
+            //both salt and saltedpw need to be stored in db for each user
             
         }
 
