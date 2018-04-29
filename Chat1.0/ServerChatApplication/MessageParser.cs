@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,8 +54,12 @@ namespace ServerChatApplication
 
         private static void ProcessMessage()
         {
-            // TODO Entity framework code for placing message into database 
+            // TDB based off tokenizing pattern. When design is concluded,
+            // variable dataStartLocation will indicate where the data portion is held in the array
+            int dataStartLocation = 0;
+
             
+
             // TODO request chatroom information about who is participating in the chat so we can redistribute the messages
             // This process will involve grabbing the usernames which will then be matched up with a list of all clients connected.
             // Loop logic will pick out the usernames that are connected to the chat and verify that their connections are still active,
@@ -92,14 +97,25 @@ namespace ServerChatApplication
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 0;
 
+            // Holds result of signup attempt
+            bool isValidSignup = false;
+
             User u = new User();
             u.UserName = tokenizedMessage[dataStartLocation];
 
-            /* TODO Aaron. Could you hook your salted hash function into here and another
-            spot in the login method so we can compare the user's password to a stored salted hash 
-            and also create said salted hash during signup attempt. Just return a string or variable
-            holding the result of said salted hash function so I can place it in the database. */
+
+            // Checks if the username exists in the database
+            if (!db.Users.Any(x => x.UserName == u.UserName))
+            {
+                /* TODO Aaron. Could you hook your salted hash function into here and another
+                spot in the login method so we can compare the user's password to a stored salted hash 
+                and also create said salted hash during signup attempt. Just return a string or variable
+                holding the result of said salted hash function so I can place it in the database. */
             
+                string saltedHash = ""; // will be hooked into Aaron's salted class 
+                
+                // Set boolean if the operation succeeds  
+            }
         }
 
         private static void ProcessChatroomsRequest()
@@ -108,12 +124,23 @@ namespace ServerChatApplication
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 0;
 
+            // Grabs all of the chatroom rosters that match the userName passed in
             IEnumerable<ChatRoomRoster> roster = db.ChatRoomRosters
             .ToList()
             .Where(x => x.UserName == tokenizedMessage[dataStartLocation]);
 
-            List<ChatRoom> chatRooms = null;
-            var temp = db.ChatRooms.ToList();
+            // List that holds all of the chatroomID's and names to be passed back to the client
+            List<string> chatRoomInfo = new List<string>();
+
+            // Iterates through the roster list and grabs the ID's and names while also dividing the
+            // data with two different sets of tokens. The foward slash is meant to divide sets of data
+            // and the vertical bar divides the ID and name in each set of data.
+            foreach (ChatRoomRoster r in roster)
+            {
+                chatRoomInfo.Add(r.Chat_Id + "|" + r.ChatRoom.ChatName + "/");    
+            }
+
+            string concatMessage = String.Join("", chatRoomInfo);
         }
     }
 }
