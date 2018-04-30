@@ -84,6 +84,7 @@
             // txtUsername
             // 
             this.txtUsername.Location = new System.Drawing.Point(103, 43);
+            this.txtUsername.MaxLength = 20;
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(100, 20);
             this.txtUsername.TabIndex = 1;
@@ -91,6 +92,7 @@
             // txtPassword
             // 
             this.txtPassword.Location = new System.Drawing.Point(103, 81);
+            this.txtPassword.MaxLength = 20;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
@@ -102,7 +104,7 @@
             this.lblUserName.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUserName.Location = new System.Drawing.Point(12, 43);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(87, 18);
+            this.lblUserName.Size = new System.Drawing.Size(86, 18);
             this.lblUserName.TabIndex = 5;
             this.lblUserName.Text = "Username:";
             // 

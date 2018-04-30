@@ -68,9 +68,8 @@ namespace Chat1._0
 
 
     // Data preperation and interpretation methods
+
       // Data prep methods;
-
-
         //Input screener method
         //Screens for <EOF> and | then removes them
         public String Screen(string input)
@@ -120,7 +119,7 @@ namespace Chat1._0
         // Message template for sending messages
         private string Template(string chatroom, string message)
         {
-            string output = ("<Message>" + token + userID + token + chatroom + token + message + token + eof);
+            string output = ("<Message>" + token + userID + token + chatroom + token + this.Screen(message) + token + eof);
             return output;
         }
 
@@ -156,7 +155,7 @@ namespace Chat1._0
         public bool SendJoinChatroomRequest(string chatroom)
         {
             bool JoinSuccessful;
-            string message = this.Template("<RoomJoin>", this.Screen(userID), chatroom);
+            string message = this.Template("<RoomJoin>", userID, chatroom);
             this.Send(message);
             processSync.WaitOne();
             JoinSuccessful = roomJoinSuccessful;
@@ -167,7 +166,7 @@ namespace Chat1._0
         //Create Chatroom method
         public string sendCreateChatroomRequest(string name)
         {
-            string message = this.Template("<RoomCreate>", this.Screen(userID), this.Screen(name));
+            string message = this.Template("<RoomCreate>", userID, "00" + token + this.Screen(name));
             this.Send(message);
             processSync.WaitOne();
             string CreateSuccessful = this.newRoomid;
@@ -195,6 +194,12 @@ namespace Chat1._0
         public void SendFriendRequest(string friendID)
         {
             this.Send(this.Template("<FriendRequest>", this.userID, friendID));
+        }
+
+        public void SendLeaveChatroomRequest(string roomId)
+        {
+            this.Send(this.Template("<RoomLeave>", this.userID, roomId));
+            this.chatManager.LeaveChatroom(roomId);
         }
 
 // Recieved message interpretation;

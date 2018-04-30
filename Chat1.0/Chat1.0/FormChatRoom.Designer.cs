@@ -31,7 +31,6 @@
             this.messageText = new System.Windows.Forms.TextBox();
             this.messageBox = new System.Windows.Forms.ListBox();
             this.exitButton = new System.Windows.Forms.Button();
-            this.chatManagerButton = new System.Windows.Forms.Button();
             this.sendBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -64,19 +63,6 @@
             this.exitButton.UseVisualStyleBackColor = false;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
-            // chatManagerButton
-            // 
-            this.chatManagerButton.BackColor = System.Drawing.Color.Green;
-            this.chatManagerButton.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chatManagerButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.chatManagerButton.Location = new System.Drawing.Point(566, 22);
-            this.chatManagerButton.Name = "chatManagerButton";
-            this.chatManagerButton.Size = new System.Drawing.Size(102, 23);
-            this.chatManagerButton.TabIndex = 4;
-            this.chatManagerButton.Text = "New";
-            this.chatManagerButton.UseVisualStyleBackColor = false;
-            this.chatManagerButton.Click += new System.EventHandler(this.chatManagerButton_Click);
-            // 
             // sendBtn
             // 
             this.sendBtn.BackgroundImage = global::Chat1._0.Properties.Resources.greenArrow;
@@ -97,7 +83,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(794, 512);
-            this.Controls.Add(this.chatManagerButton);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.messageBox);
             this.Controls.Add(this.messageText);
@@ -105,7 +90,6 @@
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "FormChatRoom";
             this.Text = "FormChatRoom";
-            this.Load += new System.EventHandler(this.FormChatRoom_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -117,7 +101,6 @@
         private System.Windows.Forms.TextBox messageText;
         private System.Windows.Forms.ListBox messageBox;
         private System.Windows.Forms.Button exitButton;
-        private System.Windows.Forms.Button chatManagerButton;
     }
 }
 
