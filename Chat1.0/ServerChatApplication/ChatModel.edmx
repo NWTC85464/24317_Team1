@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ChatRoomModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=D:\ChatRoom.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ChatLog">
+          <Key>
+            <PropertyRef Name="ChatLog_Id" />
+          </Key>
+          <Property Name="ChatLog_Id" Type="int" Nullable="false" />
+          <Property Name="Message_Id" Type="int" Nullable="false" />
+          <Property Name="Chat_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChatRoom">
+          <Key>
+            <PropertyRef Name="Chat_Id" />
+          </Key>
+          <Property Name="Chat_Id" Type="int" Nullable="false" />
+          <Property Name="ChatName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ChatRoomRoster">
+          <Key>
+            <PropertyRef Name="Roster_Id" />
+          </Key>
+          <Property Name="Roster_Id" Type="int" Nullable="false" />
+          <Property Name="Chat_Id" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Friends">
+          <Key>
+            <PropertyRef Name="Friendship_Id" />
+          </Key>
+          <Property Name="Friendship_Id" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Friend_UserName" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Message_Id" />
+          </Key>
+          <Property Name="Message_Id" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Chat_Id" Type="int" Nullable="false" />
+          <Property Name="Time_Sent" Type="datetime" Nullable="false" />
+          <Property Name="Message_Body" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="IP_Address" Type="decimal" Precision="53" Scale="0" Nullable="false" />
+          <Property Name="Salt" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="Salt_Hashed" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Start_Date" Type="datetime" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <Association Name="FK_ChatLog_0_0">
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
+          <End Role="ChatLog" Type="Self.ChatLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatRoom">
+              <PropertyRef Name="Chat_Id" />
+            </Principal>
+            <Dependent Role="ChatLog">
+              <PropertyRef Name="Chat_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatLog_1_0">
+          <End Role="Message" Type="Self.Message" Multiplicity="1" />
+          <End Role="ChatLog" Type="Self.ChatLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Message">
+              <PropertyRef Name="Message_Id" />
+            </Principal>
+            <Dependent Role="ChatLog">
+              <PropertyRef Name="Message_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatRoomRoster_0_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ChatRoomRoster" Type="Self.ChatRoomRoster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="ChatRoomRoster">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatRoomRoster_1_0">
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
+          <End Role="ChatRoomRoster" Type="Self.ChatRoomRoster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatRoom">
+              <PropertyRef Name="Chat_Id" />
+            </Principal>
+            <Dependent Role="ChatRoomRoster">
+              <PropertyRef Name="Chat_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friends_0_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_0_0">
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatRoom">
+              <PropertyRef Name="Chat_Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="Chat_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_1_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ChatRoomModelStoreContainer">
+          <EntitySet Name="ChatLog" EntityType="Self.ChatLog" store:Type="Tables" />
+          <EntitySet Name="ChatRoom" EntityType="Self.ChatRoom" store:Type="Tables" />
+          <EntitySet Name="ChatRoomRoster" EntityType="Self.ChatRoomRoster" store:Type="Tables" />
+          <EntitySet Name="Friends" EntityType="Self.Friends" store:Type="Tables" />
+          <EntitySet Name="Message" EntityType="Self.Message" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" store:Type="Tables" />
+          <AssociationSet Name="FK_ChatLog_0_0" Association="Self.FK_ChatLog_0_0">
+            <End Role="ChatRoom" EntitySet="ChatRoom" />
+            <End Role="ChatLog" EntitySet="ChatLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatLog_1_0" Association="Self.FK_ChatLog_1_0">
+            <End Role="Message" EntitySet="Message" />
+            <End Role="ChatLog" EntitySet="ChatLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatRoomRoster_0_0" Association="Self.FK_ChatRoomRoster_0_0">
+            <End Role="User" EntitySet="User" />
+            <End Role="ChatRoomRoster" EntitySet="ChatRoomRoster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatRoomRoster_1_0" Association="Self.FK_ChatRoomRoster_1_0">
+            <End Role="ChatRoom" EntitySet="ChatRoom" />
+            <End Role="ChatRoomRoster" EntitySet="ChatRoomRoster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friends_0_0" Association="Self.FK_Friends_0_0">
+            <End Role="User" EntitySet="User" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_0_0" Association="Self.FK_Message_0_0">
+            <End Role="ChatRoom" EntitySet="ChatRoom" />
+            <End Role="Message" EntitySet="Message" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_1_0" Association="Self.FK_Message_1_0">
+            <End Role="User" EntitySet="User" />
+            <End Role="Message" EntitySet="Message" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ChatRoomModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ChatLog">
+          <Key>
+            <PropertyRef Name="ChatLog_Id" />
+          </Key>
+          <Property Name="ChatLog_Id" Type="Int32" Nullable="false" />
+          <Property Name="Message_Id" Type="Int32" Nullable="false" />
+          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ChatRoom" Relationship="Self.FK_ChatLog_0_0" FromRole="ChatLog" ToRole="ChatRoom" />
+          <NavigationProperty Name="Message" Relationship="Self.FK_ChatLog_1_0" FromRole="ChatLog" ToRole="Message" />
+        </EntityType>
+        <EntityType Name="ChatRoom">
+          <Key>
+            <PropertyRef Name="Chat_Id" />
+          </Key>
+          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
+          <Property Name="ChatName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ChatLogs" Relationship="Self.FK_ChatLog_0_0" FromRole="ChatRoom" ToRole="ChatLog" />
+          <NavigationProperty Name="ChatRoomRosters" Relationship="Self.FK_ChatRoomRoster_1_0" FromRole="ChatRoom" ToRole="ChatRoomRoster" />
+          <NavigationProperty Name="Messages" Relationship="Self.FK_Message_0_0" FromRole="ChatRoom" ToRole="Message" />
+        </EntityType>
+        <EntityType Name="ChatRoomRoster">
+          <Key>
+            <PropertyRef Name="Roster_Id" />
+          </Key>
+          <Property Name="Roster_Id" Type="Int32" Nullable="false" />
+          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ChatRoom" Relationship="Self.FK_ChatRoomRoster_1_0" FromRole="ChatRoomRoster" ToRole="ChatRoom" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ChatRoomRoster_0_0" FromRole="ChatRoomRoster" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Friend">
+          <Key>
+            <PropertyRef Name="Friendship_Id" />
+          </Key>
+          <Property Name="Friendship_Id" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Friend_UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Friends_0_0" FromRole="Friends" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Message_Id" />
+          </Key>
+          <Property Name="Message_Id" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
+          <Property Name="Time_Sent" Type="DateTime" Nullable="false" />
+          <Property Name="Message_Body" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="ChatLogs" Relationship="Self.FK_ChatLog_1_0" FromRole="Message" ToRole="ChatLog" />
+          <NavigationProperty Name="ChatRoom" Relationship="Self.FK_Message_0_0" FromRole="Message" ToRole="ChatRoom" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Message_1_0" FromRole="Message" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IP_Address" Type="Decimal" Precision="53" Scale="0" Nullable="false" />
+          <Property Name="Salt" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Salt_Hashed" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Start_Date" Type="DateTime" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="ChatRoomRosters" Relationship="Self.FK_ChatRoomRoster_0_0" FromRole="User" ToRole="ChatRoomRoster" />
+          <NavigationProperty Name="Friends" Relationship="Self.FK_Friends_0_0" FromRole="User" ToRole="Friends" />
+          <NavigationProperty Name="Messages" Relationship="Self.FK_Message_1_0" FromRole="User" ToRole="Message" />
+        </EntityType>
+        <Association Name="FK_ChatLog_0_0">
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
+          <End Role="ChatLog" Type="Self.ChatLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatRoom">
+              <PropertyRef Name="Chat_Id" />
+            </Principal>
+            <Dependent Role="ChatLog">
+              <PropertyRef Name="Chat_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatLog_1_0">
+          <End Role="Message" Type="Self.Message" Multiplicity="1" />
+          <End Role="ChatLog" Type="Self.ChatLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Message">
+              <PropertyRef Name="Message_Id" />
+            </Principal>
+            <Dependent Role="ChatLog">
+              <PropertyRef Name="Message_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatRoomRoster_1_0">
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
+          <End Role="ChatRoomRoster" Type="Self.ChatRoomRoster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatRoom">
+              <PropertyRef Name="Chat_Id" />
+            </Principal>
+            <Dependent Role="ChatRoomRoster">
+              <PropertyRef Name="Chat_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_0_0">
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatRoom">
+              <PropertyRef Name="Chat_Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="Chat_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ChatRoomRoster_0_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="ChatRoomRoster" Type="Self.ChatRoomRoster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="ChatRoomRoster">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friends_0_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_1_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ChatRoomEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ChatLogs" EntityType="Self.ChatLog" />
+          <EntitySet Name="ChatRooms" EntityType="Self.ChatRoom" />
+          <EntitySet Name="ChatRoomRosters" EntityType="Self.ChatRoomRoster" />
+          <EntitySet Name="Friends" EntityType="Self.Friend" />
+          <EntitySet Name="Messages" EntityType="Self.Message" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_ChatLog_0_0" Association="Self.FK_ChatLog_0_0">
+            <End Role="ChatRoom" EntitySet="ChatRooms" />
+            <End Role="ChatLog" EntitySet="ChatLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatLog_1_0" Association="Self.FK_ChatLog_1_0">
+            <End Role="Message" EntitySet="Messages" />
+            <End Role="ChatLog" EntitySet="ChatLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatRoomRoster_1_0" Association="Self.FK_ChatRoomRoster_1_0">
+            <End Role="ChatRoom" EntitySet="ChatRooms" />
+            <End Role="ChatRoomRoster" EntitySet="ChatRoomRosters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_0_0" Association="Self.FK_Message_0_0">
+            <End Role="ChatRoom" EntitySet="ChatRooms" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ChatRoomRoster_0_0" Association="Self.FK_ChatRoomRoster_0_0">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ChatRoomRoster" EntitySet="ChatRoomRosters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friends_0_0" Association="Self.FK_Friends_0_0">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_1_0" Association="Self.FK_Message_1_0">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ChatRoomModelStoreContainer" CdmEntityContainer="ChatRoomEntities1">
+          <EntitySetMapping Name="ChatLogs">
+            <EntityTypeMapping TypeName="ChatRoomModel.ChatLog">
+              <MappingFragment StoreEntitySet="ChatLog">
+                <ScalarProperty Name="ChatLog_Id" ColumnName="ChatLog_Id" />
+                <ScalarProperty Name="Message_Id" ColumnName="Message_Id" />
+                <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChatRooms">
+            <EntityTypeMapping TypeName="ChatRoomModel.ChatRoom">
+              <MappingFragment StoreEntitySet="ChatRoom">
+                <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
+                <ScalarProperty Name="ChatName" ColumnName="ChatName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChatRoomRosters">
+            <EntityTypeMapping TypeName="ChatRoomModel.ChatRoomRoster">
+              <MappingFragment StoreEntitySet="ChatRoomRoster">
+                <ScalarProperty Name="Roster_Id" ColumnName="Roster_Id" />
+                <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Friends">
+            <EntityTypeMapping TypeName="ChatRoomModel.Friend">
+              <MappingFragment StoreEntitySet="Friends">
+                <ScalarProperty Name="Friendship_Id" ColumnName="Friendship_Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Friend_UserName" ColumnName="Friend_UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="ChatRoomModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="Message_Id" ColumnName="Message_Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
+                <ScalarProperty Name="Time_Sent" ColumnName="Time_Sent" />
+                <ScalarProperty Name="Message_Body" ColumnName="Message_Body" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ChatRoomModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="IP_Address" ColumnName="IP_Address" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Salt_Hashed" ColumnName="Salt_Hashed" />
+                <ScalarProperty Name="Start_Date" ColumnName="Start_Date" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

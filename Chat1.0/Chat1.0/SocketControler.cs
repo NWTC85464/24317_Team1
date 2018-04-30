@@ -19,10 +19,12 @@ namespace Chat1._0
         private string eof = "<EOF>";
         private string ServerAdress = "ec2-13-59-47-57.us-east-2.compute.amazonaws.com";
         private static ManualResetEvent connectMarker =new ManualResetEvent(false);
-        private static ManualResetEvent loginMarker = new ManualResetEvent(false);
+        private static ManualResetEvent processSync = new ManualResetEvent(false);
         private bool loginSuccessful = false;
-        private string userID;
+        private bool roomJoinSuccessful = false;
+        private string userID = "default";
         private IPEndPoint endPoint;
+        private string newRoomid;
 
         public SocketController(FormChatManager chatManager)
         {
@@ -43,9 +45,16 @@ namespace Chat1._0
         // Can only accept formatted strings
         private void Send(string sentString)
         {
-            byte[] sentByte = Encoding.ASCII.GetBytes(sentString);
+            try
+            {
+                byte[] sentByte = Encoding.ASCII.GetBytes(sentString);
 
-            sct.BeginSend(sentByte, 0, sentByte.Length, 0, new AsyncCallback(SendCallBack),  sct);
+                sct.BeginSend(sentByte, 0, sentByte.Length, 0, new AsyncCallback(SendCallBack), sct);
+            }
+            catch
+            {
+                MessageBox.Show("Server Connection Failed.");
+            }
         }
         
         // Sets up Async object recieve
@@ -59,9 +68,8 @@ namespace Chat1._0
 
 
     // Data preperation and interpretation methods
+
       // Data prep methods;
-
-
         //Input screener method
         //Screens for <EOF> and | then removes them
         public String Screen(string input)
@@ -104,24 +112,24 @@ namespace Chat1._0
         //Message template method for Login and SignUp
         private string Template(string action, string user, string message)
         {
-            string output = (action + token + user + token + message + eof);
+            string output = (action + token + user + token + message + token + eof);
             return output;
         }
 
         // Message template for sending messages
         private string Template(string chatroom, string message)
         {
-            string output = ("<Message>" + token + userID + token + chatroom + token + message + token + eof);
+            string output = ("<Message>" + token + userID + token + chatroom + token + this.Screen(message) + token + eof);
             return output;
         }
 
         //Sign up Method
-        public bool UserSignUp(string username, string password)
+        public bool SendUserSignUpRequest(string username, string password)
         {
 
             string message = this.Template("<Signup>", this.Screen(username), this.Screen(password));
             this.Send(message);
-            loginMarker.WaitOne();
+            processSync.WaitOne();
             if (loginSuccessful)
             {
                 this.userID = this.Screen(username);
@@ -130,12 +138,12 @@ namespace Chat1._0
         }
 
         //Log in Method
-        public bool UserLogin(string username, string password)
+        public bool SendUserLoginRequest(string username, string password)
         {
 
             string message = this.Template("<Login>", this.Screen(username), this.Screen(password));
             this.Send(message);
-            loginMarker.WaitOne();
+            processSync.WaitOne();
             if (loginSuccessful)
             {
                 this.userID = this.Screen(username);
@@ -144,14 +152,26 @@ namespace Chat1._0
         }
 
         //Join Chatroom method
-        public bool JoinChatroom(string username, string chatroom)
+        public bool SendJoinChatroomRequest(string chatroom)
         {
-            bool JoinSuccessful = false;
-
-            //Todo if join successful then
-            //JoinSuccessful = true;
-
+            bool JoinSuccessful;
+            string message = this.Template("<RoomJoin>", userID, chatroom);
+            this.Send(message);
+            processSync.WaitOne();
+            JoinSuccessful = roomJoinSuccessful;
+            roomJoinSuccessful = false;
             return JoinSuccessful;
+        }
+
+        //Create Chatroom method
+        public string sendCreateChatroomRequest(string name)
+        {
+            string message = this.Template("<RoomCreate>", userID, "00" + token + this.Screen(name));
+            this.Send(message);
+            processSync.WaitOne();
+            string CreateSuccessful = this.newRoomid;
+            this.newRoomid = "";
+            return CreateSuccessful;
         }
 
         // Sending Message method
@@ -160,65 +180,136 @@ namespace Chat1._0
             this.Send(this.Template(chatroom, message));
         }
 
+        // Request chatroom data method
+        public void SendChatroomsRequest()
+        {
+            this.Send(this.Template("<Chatrooms>", this.userID, "Request for active Chatrooms"));
+        }
+
+        public void SendFriendslistRequest()
+        {
+            this.Send(this.Template("<FriendsList>", this.userID, "Request for current friends"));
+        }
+        
+        public void SendFriendRequest(string friendID)
+        {
+            this.Send(this.Template("<FriendRequest>", this.userID, friendID));
+        }
+
+        public void SendLeaveChatroomRequest(string roomId)
+        {
+            this.Send(this.Template("<RoomLeave>", this.userID, roomId));
+            this.chatManager.LeaveChatroom(roomId);
+        }
+
 // Recieved message interpretation;
-        private void MessageInterpreter(string message) {
+        private void MessageInterpreter(string message)
+        {
             string[] splitMessage = message.Split(token);
 
             // Switch for determining message type
             switch (splitMessage[0]) 
             {
                 case "<Message>":
-                    ChatMessageHandler(splitMessage);
+                    this.ChatMessageHandler(splitMessage);
                     break;
                 case "<RoomJoin>":
-
+                    this.RoomJoinHandler(splitMessage);
+                    break;
+                case "<RoomCreate>":
+                    this.RoomCreateHandler(splitMessage);
                     break;
                 case "<Login>":
-                    LoginHandler(splitMessage);
+                    this.LoginHandler(splitMessage);
                     break;
                 case "<SignUp>":
-
+                    this.LoginHandler(splitMessage);
                     break;
-                case "<Friends>":
-
+                case "<FriendsList>":
+                    this.FriendsListHandler(splitMessage);
                     break;
                 case "<FriendRequest>":
-
+                    this.FriendRequestHandler(splitMessage);
                     break;
                 case "<Chatrooms>":
-
+                    this.ChatroomsListHandler(splitMessage);
                     break;
                 default:
-                    UnknownMessage(splitMessage);
+                    this.UnknownMessage(splitMessage);
                     break;
             }
 
         }
 
-        private void LoginHandler(string[] message) {
-
-            if (message[1] == "fail") 
-            {
-                MessageBox.Show("Login Failed: " + message[2]);
-                loginSuccessful = false;
-                loginMarker.Set();
-                loginMarker.Reset();
-            }
-            else 
-            {
-                chatManager.FillChatList(message);
-            }
-            
-        }
-
-        private void ChatMessageHandler(string[] message) {
+        private void ChatMessageHandler(string[] message)
+        {
 
             chatManager.MessageReciever(message[1], message[2], message[3]);
         }
 
-        private void UnknownMessage(string[] message) {
+        private void RoomJoinHandler(string[] message)
+        {
+            if (message[1] == "false")
+            {
+                roomJoinSuccessful = false;
+                processSync.Set();
+                processSync.Reset();
+            }
+            else
+            {
+                roomJoinSuccessful = true;
+                processSync.Set();
+                processSync.Reset();
+            }
+        }
+
+        private void RoomCreateHandler(string[] message)
+        {
+            //TODO: add handler code
+        }
+
+        private void LoginHandler(string[] message)
+        {
+
+            if (message[1] == "fail") 
+            {
+                loginSuccessful = false;
+                processSync.Set();
+                processSync.Reset();
+            }
+            else 
+            {
+                loginSuccessful = true;
+                processSync.Set();
+                processSync.Reset();
+            }
+            
+        }
+
+        private void FriendsListHandler(string[] message)
+        {
+            this.chatManager.FillFriendsList(message);
+        }
+
+        private void FriendRequestHandler(string[] message)
+        {
+            if(message[1] == "true")
+            {
+                MessageBox.Show("Friend Request successful.");
+                this.SendFriendslistRequest();
+            }
+        }
+        private void ChatroomsListHandler(string[] message)
+        {
+            this.chatManager.FillChatList(message);
+        }
+
+        private void UnknownMessage(string[] message)
+        {
             MessageBox.Show("Unknown Message Recieved. Tag: " + message[0]);
         }
+
+        
 // Callback methods
         // Connect callback opperation
         private void ConnectCallBack(IAsyncResult results)
@@ -228,6 +319,7 @@ namespace Chat1._0
                 Socket sct = (Socket)results.AsyncState;
                 sct.EndConnect(results);
                 connectMarker.Set();
+                this.Recieve();
             }
             catch (Exception e)
             {
@@ -270,18 +362,20 @@ namespace Chat1._0
                     MessageInterpreter(DataReceiver.Message);
                 }
             }
+            this.Recieve();
 
         }
 
         // Checks that the socket is still connected to the server;
         public void ConnectionMaintinence()
         {
-            do
+            while (sct.Poll(2000000, SelectMode.SelectWrite))
             {
                 Thread.Sleep(10000);
-            } while (sct.Poll(2000000, SelectMode.SelectWrite));
-            connectMarker.Reset();
-            sct.BeginConnect(endPoint, new AsyncCallback(ConnectCallBack), sct);
+            }
+            MessageBox.Show("Connection lost.");
+            // TODO: line below commented out for testing.
+            //Application.Restart();
         }
     }
 }

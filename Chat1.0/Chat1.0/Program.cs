@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Chat1._0
@@ -16,7 +13,7 @@ namespace Chat1._0
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormChatManager(new User()));
+            Application.Run(new FormChatManager());
         }
     }
 }
