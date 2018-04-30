@@ -14,6 +14,14 @@ namespace Chat1._0
     public partial class FormChatRoom : Form
     {
 
+        public FormChatRoom(SocketController sctctrl, string chatRoomID)
+        {
+            InitializeComponent();
+            this.chatRoomID = chatRoomID;
+            this.sctctrl = sctctrl;
+        }
+
+
         // Structure for friend's information
         public struct friend
         {
@@ -55,14 +63,6 @@ namespace Chat1._0
             get {return chatRoomID;}
             set {chatRoomID = value;}
         }
-
-        public FormChatRoom(SocketController sctctrl, string chatRoomID)
-        {
-            InitializeComponent();
-            this.chatRoomID = chatRoomID;
-            this.sctctrl = sctctrl;
-        }
-
 
         public void AddMessageToChatBox(string username, string message) {
 
@@ -142,11 +142,6 @@ namespace Chat1._0
         //    }
         //    messageBox.EndUpdate();
         //}
-
-        private void messageBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 
     //TODO: Update messageBOX if message is received from friend/group member (trigger)

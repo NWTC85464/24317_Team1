@@ -20,6 +20,7 @@ namespace Chat1._0
         {
             InitializeComponent();
             this.sctctrl = sctctrl;
+            this.FormClosing += this.loginForm_FormClosing;
         }
 
         // Declares the reference variable for the SocketControler class in this form
@@ -80,8 +81,9 @@ namespace Chat1._0
         {
             if(txtPassword.Text == txtPasswordConfirm.Text)
             {
-                if (sctctrl.UserSignUp(this.txtUsername.Text, this.txtPassword.Text))
+                if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
                 {
+                    this.FormClosing -= this.loginForm_FormClosing;
                     this.Close();
                 }
                 else
@@ -121,7 +123,7 @@ namespace Chat1._0
         // Exit Button Closes the Application
         private void btnExit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Close();
         }
 
         // Login Button Logs user into server after checking username and password
@@ -142,6 +144,8 @@ namespace Chat1._0
             //}
 
             //for testing-delete when need to test login
+            // This removes the application.exit event handler from the formclosing event;
+            this.FormClosing -= this.loginForm_FormClosing;
             this.Close();
 
 
@@ -153,6 +157,10 @@ namespace Chat1._0
         private void pwd_show_chk_CheckedChanged(object sender, EventArgs e)
         {
             txtPassword.PasswordChar = (pwd_show_chk.Checked ? '\0' : '*');
+        }
+        private void loginForm_FormClosing(Object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

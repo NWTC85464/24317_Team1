@@ -36,6 +36,8 @@ namespace Chat1._0
         public FormChatManager()
         {
             InitializeComponent();
+            this.FormClosing += this.formChatManager_FormClosing;
+
         }
 
         // Private Fields of the Chat manager
@@ -95,8 +97,6 @@ namespace Chat1._0
             //    // Need to use join method in socket controller
             //    if (sctctrl.JoinChatroom(chatroom))
             //    {
-            //        //Make chat manager invisible
-            //        this.Visible = false;
 
             //        // Open Chat Manager form if connection is complete
             //        FormChatRoom FormChat = new FormChatRoom(sctctrl, chatroom);
@@ -141,11 +141,24 @@ namespace Chat1._0
             }
         }
 
+        // Method for filling chatlist with array of string data recieved from server side application.
         public void FillChatList(string[] recievedChatList)
         {
-            for (int i = 2; i < recievedChatList.Length; i++)
+            // Clears out old data and refills with new data.
+            this.chatList1.Items.Clear();
+            for (int i = 2; i < recievedChatList.Length - 1; i++)
             {
                 this.chatList1.Items.Add(recievedChatList[i]);
+            }
+        }
+
+        // Method for filling friends list with string data recieved from server side application.
+        public void FillFriendsList(string[] recievedFriendsList)
+        {
+            this.friendList.Items.Clear();
+            for (int i = 2; i < recievedFriendsList.Length - 1; i++)
+            {
+                this.friendList.Items.Add(recievedFriendsList[i]);
             }
         }
 
@@ -187,12 +200,19 @@ namespace Chat1._0
         {
             if(!string.IsNullOrWhiteSpace(createText.Text))
             {
-                //get number of chatrooms and add 1
-                string count = (chatList1.Items.Count+1).ToString("D6");
-
-
                 //create chat method in socket controller
-                sctctrl.CreateChatroom(count+" "+createText.Text);
+                string newChatroomID = sctctrl.sendCreateChatroomRequest(createText.Text);
+                if (newChatroomID != "")
+                {
+                    FormChatRoom tempform = new FormChatRoom(sctctrl, newChatroomID);
+                    tempform.Show();
+                    this.ChatRoomForms.Add(tempform);
+                    this.sctctrl.SendChatroomsRequest();
+                }
+                else
+                {
+                    MessageBox.Show("Failed to create new Chatroom.");
+                }
             }
             else
             {
@@ -200,7 +220,10 @@ namespace Chat1._0
             }
         }
 
-
+        private void formChatManager_FormClosing(Object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
 
         // Function for making friend list 
         //private void makeFriendList()
