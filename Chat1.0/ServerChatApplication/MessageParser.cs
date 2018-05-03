@@ -11,29 +11,23 @@ namespace ServerChatApplication
     public static class MessageParser
     {
         // Setup DB object
-        private static ChatRoomEntities1 db = new ChatRoomEntities1();
-
-        // Holds the original message that's sent to the server before any tokenizing occurs
-        private static string completeMessage;
+        private static ChatRoomEntities db = new ChatRoomEntities();
 
         // Holds the tokenized message
         private static string[] tokenizedMessage;
 
-        // Get and set for the completeMessage field. Once a new value is set, the tokenize method is called
-        public static string CompleteMessage
+        public static string[] TokenizedMessage
         {
-            get { return completeMessage; }
             set
             {
-                completeMessage = value;
-                TokenizeMessage();
+                tokenizedMessage = value;
+                ParseMessage();
             }
         }
 
         // Tokenize the original message and redirect the program flow
-        private static void TokenizeMessage()
+        private static void ParseMessage()
         {
-            tokenizedMessage = completeMessage.Split('|');
 
             switch (tokenizedMessage[0])
             {
@@ -112,18 +106,10 @@ namespace ServerChatApplication
             // Checks if the username exists in the database
             if (!db.Users.Any(x => x.UserName == u.UserName))
             {
-                /* TODO Aaron. Could you hook your salted hash function into here and another
-                spot in the login method so we can compare the user's password to a stored salted hash 
-                and also create said salted hash during signup attempt. Just return a string or variable
-                holding the result of said salted hash function so I can place it in the database. */
-            /* TODO Aaron. Could you hook your salted hash function into here and another
-            spot in the login method so we can compare the user's password to a stored salted hash 
-            and also create said salted hash during signup attempt. Just return a string or variable
-            holding the result of said salted hash function so I can place it in the database. */
-            byte[] salt = SaltedHash.CreateSalt();                        //Store this value in the database for each user
-            string pw = "user entered password";                          //this needs to be the user entered password sent from client
-            byte[] saltedpw = SaltedHash.CreateSaltedHash(salt, pw);      //They will then be passed into the method to convert to the saltedhash
-            //both salt and saltedpw need to be stored in db for each user
+                byte[] salt = SaltedHash.CreateSalt();                        //Store this value in the database for each user
+                string pw = "user entered password";                          //this needs to be the user entered password sent from client
+                byte[] saltedpw = SaltedHash.CreateSaltedHash(salt, pw);      //They will then be passed into the method to convert to the saltedhash
+                //both salt and saltedpw need to be stored in db for each user
             
                 string saltedHash = ""; // will be hooked into Aaron's salted class 
                 
@@ -135,7 +121,7 @@ namespace ServerChatApplication
         {
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
-            int dataStartLocation = 0;
+            int dataStartLocation = 1;
 
             // Grabs all of the chatroom rosters that match the userName passed in
             IEnumerable<ChatRoomRoster> roster = db.ChatRoomRosters
@@ -150,7 +136,7 @@ namespace ServerChatApplication
             // and the vertical bar divides the ID and name in each set of data.
             foreach (ChatRoomRoster r in roster)
             {
-                chatRoomInfo.Add(r.Chat_Id + "|" + r.ChatRoom.ChatName + "/");    
+                chatRoomInfo.Add(r.Chat_Id + "|" + r.ChatRoom.ChatName + "|");    
             }
 
             string concatMessage = String.Join("", chatRoomInfo);

@@ -25,5 +25,7 @@ namespace ServerChatApplication
         // but this will be adapted to save into the database once it's up
         public StringBuilder sb = new StringBuilder();
 
+        public string userID = String.Empty;
+
     }
 }

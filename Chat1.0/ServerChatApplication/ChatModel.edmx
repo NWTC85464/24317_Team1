@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ChatRoomModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=D:\ChatRoom.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ChatRoomModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=C:\Users\Anton\Source\Repos\24317_Team1\Chat1.0\ServerChatApplication\ChatRoom.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ChatLog">
           <Key>
             <PropertyRef Name="ChatLog_Id" />
@@ -336,7 +336,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ChatRoomEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ChatRoomEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ChatLogs" EntityType="Self.ChatLog" />
           <EntitySet Name="ChatRooms" EntityType="Self.ChatRoom" />
           <EntitySet Name="ChatRoomRosters" EntityType="Self.ChatRoomRoster" />
@@ -377,7 +377,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ChatRoomModelStoreContainer" CdmEntityContainer="ChatRoomEntities1">
+        <EntityContainerMapping StorageEntityContainer="ChatRoomModelStoreContainer" CdmEntityContainer="ChatRoomEntities">
           <EntitySetMapping Name="ChatLogs">
             <EntityTypeMapping TypeName="ChatRoomModel.ChatLog">
               <MappingFragment StoreEntitySet="ChatLog">

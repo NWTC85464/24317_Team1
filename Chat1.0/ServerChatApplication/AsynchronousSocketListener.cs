@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,9 @@ namespace ServerChatApplication
     {
         // Documentation lists as "thread signal" still not sure exactly what it does.
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+
+        // Holds all of the active users
+        public static List<StateObject> userList = new List<StateObject>();
 
         // This needs to be left empty for now "maybe forever".
         public AsynchronousSocketListener()
@@ -101,6 +105,11 @@ namespace ServerChatApplication
                 new AsyncCallback(ReadCallBack), state);
         }
 
+        // Either here or one step back, I'm going to add the client side socket to the userList,
+        // or skip this step if the user is already in the list
+        // then redirect this method so it connects to message parser.
+        // Message parser will then call the send callback method after it does its work
+        // and choose the correct socket out of the userList
         public static void ReadCallBack(IAsyncResult ar)
         {
             string content = string.Empty;
@@ -129,8 +138,34 @@ namespace ServerChatApplication
                     Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
                         content.Length, content);
 
-                    // Echo data back to client
-                    Send(handler, content);
+                    // Tokenize the incoming string to prep for messageParser
+                    string[] tokenizedContent = content.Split('|');
+
+                    // Assign the stateID to the second element in the string 
+                    // array which "should" always hold the userName 
+                    state.userID = tokenizedContent[1];
+
+                    // iterates through the user list and checks if user socket is already in the list
+                    // If so, then that specific entry is replaced with the in memory object.
+                    bool userInList = false;
+                    for (int i = 0; i < userList.Count; i++)
+                    {
+                        if (userList[i].userID == tokenizedContent[1])
+                        {
+                            userInList = true;
+                            userList[i] = state;
+                            break;
+                        }
+                    }
+
+                    // If the state object was not found in the loop above, it's then added to the list.
+                    if (!userInList)
+                    {
+                        userList.Add(state);    
+                    }
+                    
+                    // Calls the static messageParser class where the incoming message is sent to be parsed.
+                    MessageParser.TokenizedMessage = tokenizedContent;
                 }
 
                 else
@@ -164,8 +199,8 @@ namespace ServerChatApplication
                 int bytesSent = handler.EndSend(ar);
                 Console.WriteLine("Sent {0} bytes to the client.", bytesSent);
 
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
+                //handler.Shutdown(SocketShutdown.Both);
+                //handler.Close();
             }
 
             catch (Exception e)

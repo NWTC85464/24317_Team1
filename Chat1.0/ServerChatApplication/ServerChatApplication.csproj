@@ -111,8 +111,6 @@
     <Compile Include="User.cs">
       <DependentUpon>ChatModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserList.cs" />
-    <Compile Include="UserObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
