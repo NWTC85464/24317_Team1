@@ -32,8 +32,8 @@ namespace Chat1._0
         {
             // I have these hidden on form load instead of on design view
             // so the labels can be seen and modified without going under all controls
-            lblDisplayUsernameError.Visible = false;
-            lblDisplayPasswordError.Visible = false;
+            //lblDisplayUsernameError.Visible = false;
+            //lblDisplayPasswordError.Visible = false;
         }
 
         private void btnSignUp_Click(object sender, EventArgs e)
@@ -64,7 +64,7 @@ namespace Chat1._0
             this.txtPasswordConfirm = new TextBox();
             this.txtPasswordConfirm.Width = 100;
             this.txtPasswordConfirm.Height = 20;
-            p = new Point(103, 124);
+            p = new Point(103, 128);
             this.txtPasswordConfirm.Location = p;
             this.txtPasswordConfirm.PasswordChar = '*';
             this.Controls.Add(txtPasswordConfirm);
@@ -79,21 +79,40 @@ namespace Chat1._0
         // New signup method button click
         private void btnSignUp_SecondClick(object sender, EventArgs e)
         {
-            if(txtPassword.Text == txtPasswordConfirm.Text)
+            //Empty error message texts
+            lblDisplayPasswordError.Text = String.Empty;
+            lblDisplayUsernameError.Text = String.Empty;
+
+            //Username and password validation
+            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
+                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
-                    this.FormClosing -= this.loginForm_FormClosing;
-                    this.Close();
+                    if (txtPassword.Text == txtPasswordConfirm.Text)
+                    {
+                        if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
+                        {
+                            this.FormClosing -= this.loginForm_FormClosing;
+                            this.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Sign up Unsuccessful.");
+                        }
+                    }
+                    else
+                    {
+                        lblDisplayPasswordError.Text = "Passwords Must Match";
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Sign up Unsuccessful.");
+                    lblDisplayPasswordError.Text = "Enter Password";
                 }
             }
             else
             {
-                MessageBox.Show("Passwords don't match.");
+                lblDisplayUsernameError.Text = "Enter Username";
             }
         }
 
@@ -129,26 +148,49 @@ namespace Chat1._0
         // Login Button Logs user into server after checking username and password
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            //if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
-            //{
-            //    //Login successful-Open Chat Manager
-            //    this.FormClosing -= this.loginForm_FormClosing;
-            //    this.Close();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Login Unsuccessful.");
+            //Empty error message texts
+            lblDisplayPasswordError.Text = String.Empty;
+            lblDisplayUsernameError.Text = String.Empty;
+            // Username and password validation
+            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
+                {
 
-            //    //For now have login go to chat manager for testing purposes
-            //    //TODO remove before usage or when testing signup/login
-            //    this.FormClosing -= this.loginForm_FormClosing;
-            //    this.Close();
-            //}
+                    //if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
+                    //{
+                    //    //Login successful-Open Chat Manager
+                    //    this.FormClosing -= this.loginForm_FormClosing;
+                    //    this.Close();
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Login Unsuccessful.");
 
-            //for testing-delete when need to test login
-            // This removes the application.exit event handler from the formclosing event;
-            this.FormClosing -= this.loginForm_FormClosing;
-            this.Close();
+                    //    //For now have login go to chat manager for testing purposes
+                    //    //TODO remove before usage or when testing signup/login
+                    //    this.FormClosing -= this.loginForm_FormClosing;
+                    //    this.Close();
+                    //}
+                    //for testing-delete when need to test login
+                    // This removes the application.exit event handler from the formclosing event;
+                    this.FormClosing -= this.loginForm_FormClosing;
+                    this.Close();
+                }
+                else
+                {
+                    lblDisplayPasswordError.Text = "Enter Password";
+                }
+
+            }
+            else
+            {
+                lblDisplayUsernameError.Text = "Enter Username";
+            }
+                
+            
+            
+            
         }
 
 
@@ -156,6 +198,7 @@ namespace Chat1._0
         private void pwd_show_chk_CheckedChanged(object sender, EventArgs e)
         {
             txtPassword.PasswordChar = (pwd_show_chk.Checked ? '\0' : '*');
+            txtPasswordConfirm.PasswordChar = (pwd_show_chk.Checked ? '\0' : '*');
         }
         private void loginForm_FormClosing(Object sender, FormClosingEventArgs e)
         {
