@@ -30,13 +30,16 @@
         {
             this.messageText = new System.Windows.Forms.TextBox();
             this.messageBox = new System.Windows.Forms.ListBox();
-            this.exitButton = new System.Windows.Forms.Button();
             this.sendBtn = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblChatRoomName = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // messageText
             // 
             this.messageText.Location = new System.Drawing.Point(12, 442);
+            this.messageText.MaxLength = 1000;
             this.messageText.Multiline = true;
             this.messageText.Name = "messageText";
             this.messageText.Size = new System.Drawing.Size(682, 43);
@@ -49,19 +52,6 @@
             this.messageBox.Name = "messageBox";
             this.messageBox.Size = new System.Drawing.Size(755, 381);
             this.messageBox.TabIndex = 2;
-            // 
-            // exitButton
-            // 
-            this.exitButton.BackColor = System.Drawing.Color.Maroon;
-            this.exitButton.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exitButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.exitButton.Location = new System.Drawing.Point(674, 22);
-            this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(93, 23);
-            this.exitButton.TabIndex = 3;
-            this.exitButton.Text = "Exit";
-            this.exitButton.UseVisualStyleBackColor = false;
-            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
             // sendBtn
             // 
@@ -77,19 +67,42 @@
             this.sendBtn.UseVisualStyleBackColor = true;
             this.sendBtn.Click += new System.EventHandler(this.sendBtn_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Chat1._0.Properties.Resources.zchat;
+            this.pictureBox1.Location = new System.Drawing.Point(250, 1);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(85, 44);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 10;
+            this.pictureBox1.TabStop = false;
+            // 
+            // lblChatRoomName
+            // 
+            this.lblChatRoomName.AutoSize = true;
+            this.lblChatRoomName.Font = new System.Drawing.Font("Arial Black", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblChatRoomName.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lblChatRoomName.Location = new System.Drawing.Point(341, 9);
+            this.lblChatRoomName.Name = "lblChatRoomName";
+            this.lblChatRoomName.Size = new System.Drawing.Size(137, 30);
+            this.lblChatRoomName.TabIndex = 11;
+            this.lblChatRoomName.Text = "Chat Room";
+            // 
             // FormChatRoom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.ClientSize = new System.Drawing.Size(794, 512);
-            this.Controls.Add(this.exitButton);
+            this.Controls.Add(this.lblChatRoomName);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.messageBox);
             this.Controls.Add(this.messageText);
             this.Controls.Add(this.sendBtn);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "FormChatRoom";
             this.Text = "FormChatRoom";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -100,7 +113,8 @@
         private System.Windows.Forms.Button sendBtn;
         private System.Windows.Forms.TextBox messageText;
         private System.Windows.Forms.ListBox messageBox;
-        private System.Windows.Forms.Button exitButton;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblChatRoomName;
     }
 }
 

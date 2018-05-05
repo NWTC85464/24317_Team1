@@ -97,11 +97,13 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 2;
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
             this.lblUserName.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserName.ForeColor = System.Drawing.Color.Black;
             this.lblUserName.Location = new System.Drawing.Point(12, 43);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(87, 18);
@@ -112,6 +114,7 @@
             // 
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Arial Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPassword.ForeColor = System.Drawing.Color.Black;
             this.lblPassword.Location = new System.Drawing.Point(12, 81);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(82, 18);
@@ -126,15 +129,18 @@
             this.lblDisplayUsernameError.Name = "lblDisplayUsernameError";
             this.lblDisplayUsernameError.Size = new System.Drawing.Size(118, 20);
             this.lblDisplayUsernameError.TabIndex = 7;
+            this.lblDisplayUsernameError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblDisplayPasswordError
             // 
+            this.lblDisplayPasswordError.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.lblDisplayPasswordError.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDisplayPasswordError.ForeColor = System.Drawing.Color.DarkRed;
             this.lblDisplayPasswordError.Location = new System.Drawing.Point(226, 81);
             this.lblDisplayPasswordError.Name = "lblDisplayPasswordError";
             this.lblDisplayPasswordError.Size = new System.Drawing.Size(118, 20);
             this.lblDisplayPasswordError.TabIndex = 8;
+            this.lblDisplayPasswordError.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 

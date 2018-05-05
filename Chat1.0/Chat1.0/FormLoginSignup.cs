@@ -16,6 +16,9 @@ namespace Chat1._0
         TextBox txtPasswordConfirm;
         Label lblPasswordConfirm;
 
+        //boolean for signup label
+        bool signup = false;
+
         public FormLoginSignup(SocketController sctctrl)
         {
             InitializeComponent();
@@ -38,6 +41,9 @@ namespace Chat1._0
 
         private void btnSignUp_Click(object sender, EventArgs e)
         {
+            //set sign up to true
+            signup = true;
+
             // Resize the form to allow for addition of a verify password field
             // when the user selects sign up 
             this.Height += 31;
@@ -119,6 +125,9 @@ namespace Chat1._0
         // New Login button click to reset the form;
         private void btnLogin_SecondClick(object sender, EventArgs e)
         {
+            //set signup to false
+            signup = false;
+
             this.Height -= 31;
             Point p = new Point(9, 131);
             this.btnExit.Location = p;
@@ -203,6 +212,56 @@ namespace Chat1._0
         private void loginForm_FormClosing(Object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+            if (signup == true)
+            {
+                //empty label when password starts typing
+                lblDisplayPasswordError.Text = String.Empty;
+
+                //show password strengh depending on length and digits
+                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
+                {
+                    if (txtPassword.Text.Length > 8 && txtPassword.Text.Any(char.IsDigit))
+                    {
+                        lblDisplayPasswordError.BackColor = Color.Green;
+                        lblDisplayPasswordError.Text = "STRONG";
+                        lblDisplayPasswordError.ForeColor = Color.White;
+                        lblDisplayPasswordError.Font = new Font("Arial Black", 10, FontStyle.Bold);
+                    }
+                    else if (txtPassword.Text.Length > 4)
+                    {
+                        lblDisplayPasswordError.BackColor = Color.Gold;
+                        lblDisplayPasswordError.Text = "OKAY";
+                        lblDisplayPasswordError.ForeColor = Color.White;
+                        lblDisplayPasswordError.Font = new Font("Arial Black", 10, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        lblDisplayPasswordError.BackColor = Color.DarkRed;
+                        lblDisplayPasswordError.Text = "WEAK";
+                        lblDisplayPasswordError.ForeColor = Color.White;
+                        lblDisplayPasswordError.Font = new Font("Arial Black", 10, FontStyle.Bold);
+                    }
+                }
+                else
+                {
+                    lblDisplayPasswordError.BackColor = SystemColors.GradientActiveCaption;
+                    lblDisplayPasswordError.Text = String.Empty;
+                    lblDisplayPasswordError.ForeColor = Color.DarkRed;
+                    lblDisplayPasswordError.Font = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
+
+                }
+            }
+            else
+            {
+                lblDisplayPasswordError.BackColor = SystemColors.GradientActiveCaption;
+                lblDisplayPasswordError.Text = String.Empty;
+                lblDisplayPasswordError.ForeColor = Color.DarkRed;
+                lblDisplayPasswordError.Font = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
+            }
         }
     }
 }
