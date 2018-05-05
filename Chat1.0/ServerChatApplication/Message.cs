@@ -17,19 +17,19 @@ namespace ServerChatApplication
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Message()
         {
-            this.ChatLogs = new HashSet<ChatLog>();
+            this.ChatRooms = new HashSet<ChatRoom>();
         }
     
-        public int Message_Id { get; set; }
+        public long Message_Id { get; set; }
         public string UserName { get; set; }
-        public int Chat_Id { get; set; }
+        public long Chat_Id { get; set; }
         public System.DateTime Time_Sent { get; set; }
         public string Message_Body { get; set; }
         public System.DateTime Date { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChatLog> ChatLogs { get; set; }
         public virtual ChatRoom ChatRoom { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ChatRoom> ChatRooms { get; set; }
     }
 }

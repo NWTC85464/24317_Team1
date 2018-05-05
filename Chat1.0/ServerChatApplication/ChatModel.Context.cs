@@ -25,9 +25,7 @@ namespace ServerChatApplication
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ChatLog> ChatLogs { get; set; }
         public virtual DbSet<ChatRoom> ChatRooms { get; set; }
-        public virtual DbSet<ChatRoomRoster> ChatRoomRosters { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<User> Users { get; set; }

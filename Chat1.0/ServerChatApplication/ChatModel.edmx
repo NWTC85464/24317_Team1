@@ -4,29 +4,29 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ChatRoomModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=C:\Users\Anton\Source\Repos\24317_Team1\Chat1.0\ServerChatApplication\ChatRoom.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ChatRoomModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=D:\ChatRoom.db" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ChatLog">
           <Key>
-            <PropertyRef Name="ChatLog_Id" />
+            <PropertyRef Name="Message_Id" />
+            <PropertyRef Name="Chat_Id" />
           </Key>
-          <Property Name="ChatLog_Id" Type="int" Nullable="false" />
-          <Property Name="Message_Id" Type="int" Nullable="false" />
-          <Property Name="Chat_Id" Type="int" Nullable="false" />
+          <Property Name="Message_Id" Type="integer" Nullable="false" />
+          <Property Name="Chat_Id" Type="integer" Nullable="false" />
         </EntityType>
         <EntityType Name="ChatRoom">
           <Key>
             <PropertyRef Name="Chat_Id" />
           </Key>
-          <Property Name="Chat_Id" Type="int" Nullable="false" />
+          <Property Name="Chat_Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ChatName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ChatRoomRoster">
           <Key>
-            <PropertyRef Name="Roster_Id" />
+            <PropertyRef Name="Chat_Id" />
+            <PropertyRef Name="UserName" />
           </Key>
-          <Property Name="Roster_Id" Type="int" Nullable="false" />
-          <Property Name="Chat_Id" Type="int" Nullable="false" />
+          <Property Name="Chat_Id" Type="integer" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
         </EntityType>
         <EntityType Name="Friends">
@@ -41,9 +41,9 @@
           <Key>
             <PropertyRef Name="Message_Id" />
           </Key>
-          <Property Name="Message_Id" Type="int" Nullable="false" />
+          <Property Name="Message_Id" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Chat_Id" Type="int" Nullable="false" />
+          <Property Name="Chat_Id" Type="integer" Nullable="false" />
           <Property Name="Time_Sent" Type="datetime" Nullable="false" />
           <Property Name="Message_Body" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
@@ -54,8 +54,8 @@
           </Key>
           <Property Name="UserName" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="IP_Address" Type="decimal" Precision="53" Scale="0" Nullable="false" />
-          <Property Name="Salt" Type="char" MaxLength="8" Nullable="false" />
-          <Property Name="Salt_Hashed" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Password" Type="blob" Nullable="false" />
+          <Property Name="Salt" Type="blob" Nullable="false" />
           <Property Name="Start_Date" Type="datetime" />
           <Property Name="Active" Type="bit" />
         </EntityType>
@@ -184,36 +184,16 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ChatRoomModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ChatLog">
-          <Key>
-            <PropertyRef Name="ChatLog_Id" />
-          </Key>
-          <Property Name="ChatLog_Id" Type="Int32" Nullable="false" />
-          <Property Name="Message_Id" Type="Int32" Nullable="false" />
-          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ChatRoom" Relationship="Self.FK_ChatLog_0_0" FromRole="ChatLog" ToRole="ChatRoom" />
-          <NavigationProperty Name="Message" Relationship="Self.FK_ChatLog_1_0" FromRole="ChatLog" ToRole="Message" />
-        </EntityType>
         <EntityType Name="ChatRoom">
           <Key>
             <PropertyRef Name="Chat_Id" />
           </Key>
-          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
+          <Property Name="Chat_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ChatName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ChatLogs" Relationship="Self.FK_ChatLog_0_0" FromRole="ChatRoom" ToRole="ChatLog" />
-          <NavigationProperty Name="ChatRoomRosters" Relationship="Self.FK_ChatRoomRoster_1_0" FromRole="ChatRoom" ToRole="ChatRoomRoster" />
           <NavigationProperty Name="Messages" Relationship="Self.FK_Message_0_0" FromRole="ChatRoom" ToRole="Message" />
-        </EntityType>
-        <EntityType Name="ChatRoomRoster">
-          <Key>
-            <PropertyRef Name="Roster_Id" />
-          </Key>
-          <Property Name="Roster_Id" Type="Int32" Nullable="false" />
-          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="ChatRoom" Relationship="Self.FK_ChatRoomRoster_1_0" FromRole="ChatRoomRoster" ToRole="ChatRoom" />
-          <NavigationProperty Name="User" Relationship="Self.FK_ChatRoomRoster_0_0" FromRole="ChatRoomRoster" ToRole="User" />
+          <NavigationProperty Name="Messages1" Relationship="Self.ChatLog" FromRole="ChatRoom" ToRole="Message" />
+          <NavigationProperty Name="Users" Relationship="Self.ChatRoomRoster" FromRole="ChatRoom" ToRole="User" />
         </EntityType>
         <EntityType Name="Friend">
           <Key>
@@ -228,15 +208,15 @@
           <Key>
             <PropertyRef Name="Message_Id" />
           </Key>
-          <Property Name="Message_Id" Type="Int32" Nullable="false" />
+          <Property Name="Message_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Chat_Id" Type="Int32" Nullable="false" />
+          <Property Name="Chat_Id" Type="Int64" Nullable="false" />
           <Property Name="Time_Sent" Type="DateTime" Nullable="false" />
           <Property Name="Message_Body" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="ChatLogs" Relationship="Self.FK_ChatLog_1_0" FromRole="Message" ToRole="ChatLog" />
           <NavigationProperty Name="ChatRoom" Relationship="Self.FK_Message_0_0" FromRole="Message" ToRole="ChatRoom" />
           <NavigationProperty Name="User" Relationship="Self.FK_Message_1_0" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="ChatRooms" Relationship="Self.ChatLog" FromRole="Message" ToRole="ChatRoom" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -244,50 +224,14 @@
           </Key>
           <Property Name="UserName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IP_Address" Type="Decimal" Precision="53" Scale="0" Nullable="false" />
-          <Property Name="Salt" Type="String" MaxLength="8" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="Salt_Hashed" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="Binary" MaxLength="2147483647" FixedLength="false" Nullable="false" />
+          <Property Name="Salt" Type="Binary" MaxLength="2147483647" FixedLength="false" Nullable="false" />
           <Property Name="Start_Date" Type="DateTime" />
           <Property Name="Active" Type="Boolean" />
-          <NavigationProperty Name="ChatRoomRosters" Relationship="Self.FK_ChatRoomRoster_0_0" FromRole="User" ToRole="ChatRoomRoster" />
           <NavigationProperty Name="Friends" Relationship="Self.FK_Friends_0_0" FromRole="User" ToRole="Friends" />
           <NavigationProperty Name="Messages" Relationship="Self.FK_Message_1_0" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="ChatRooms" Relationship="Self.ChatRoomRoster" FromRole="User" ToRole="ChatRoom" />
         </EntityType>
-        <Association Name="FK_ChatLog_0_0">
-          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
-          <End Role="ChatLog" Type="Self.ChatLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ChatRoom">
-              <PropertyRef Name="Chat_Id" />
-            </Principal>
-            <Dependent Role="ChatLog">
-              <PropertyRef Name="Chat_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ChatLog_1_0">
-          <End Role="Message" Type="Self.Message" Multiplicity="1" />
-          <End Role="ChatLog" Type="Self.ChatLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Message">
-              <PropertyRef Name="Message_Id" />
-            </Principal>
-            <Dependent Role="ChatLog">
-              <PropertyRef Name="Message_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ChatRoomRoster_1_0">
-          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
-          <End Role="ChatRoomRoster" Type="Self.ChatRoomRoster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ChatRoom">
-              <PropertyRef Name="Chat_Id" />
-            </Principal>
-            <Dependent Role="ChatRoomRoster">
-              <PropertyRef Name="Chat_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Message_0_0">
           <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="1" />
           <End Role="Message" Type="Self.Message" Multiplicity="*" />
@@ -297,18 +241,6 @@
             </Principal>
             <Dependent Role="Message">
               <PropertyRef Name="Chat_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ChatRoomRoster_0_0">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="ChatRoomRoster" Type="Self.ChatRoomRoster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserName" />
-            </Principal>
-            <Dependent Role="ChatRoomRoster">
-              <PropertyRef Name="UserName" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -336,32 +268,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="ChatLog">
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="*" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+        </Association>
+        <Association Name="ChatRoomRoster">
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <End Role="ChatRoom" Type="Self.ChatRoom" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="ChatRoomEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ChatLogs" EntityType="Self.ChatLog" />
           <EntitySet Name="ChatRooms" EntityType="Self.ChatRoom" />
-          <EntitySet Name="ChatRoomRosters" EntityType="Self.ChatRoomRoster" />
           <EntitySet Name="Friends" EntityType="Self.Friend" />
           <EntitySet Name="Messages" EntityType="Self.Message" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_ChatLog_0_0" Association="Self.FK_ChatLog_0_0">
-            <End Role="ChatRoom" EntitySet="ChatRooms" />
-            <End Role="ChatLog" EntitySet="ChatLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChatLog_1_0" Association="Self.FK_ChatLog_1_0">
-            <End Role="Message" EntitySet="Messages" />
-            <End Role="ChatLog" EntitySet="ChatLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChatRoomRoster_1_0" Association="Self.FK_ChatRoomRoster_1_0">
-            <End Role="ChatRoom" EntitySet="ChatRooms" />
-            <End Role="ChatRoomRoster" EntitySet="ChatRoomRosters" />
-          </AssociationSet>
           <AssociationSet Name="FK_Message_0_0" Association="Self.FK_Message_0_0">
             <End Role="ChatRoom" EntitySet="ChatRooms" />
             <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChatRoomRoster_0_0" Association="Self.FK_ChatRoomRoster_0_0">
-            <End Role="User" EntitySet="Users" />
-            <End Role="ChatRoomRoster" EntitySet="ChatRoomRosters" />
           </AssociationSet>
           <AssociationSet Name="FK_Friends_0_0" Association="Self.FK_Friends_0_0">
             <End Role="User" EntitySet="Users" />
@@ -371,6 +293,14 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Message" EntitySet="Messages" />
           </AssociationSet>
+          <AssociationSet Name="ChatLog" Association="Self.ChatLog">
+            <End Role="ChatRoom" EntitySet="ChatRooms" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="ChatRoomRoster" Association="Self.ChatRoomRoster">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ChatRoom" EntitySet="ChatRooms" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -378,30 +308,12 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ChatRoomModelStoreContainer" CdmEntityContainer="ChatRoomEntities">
-          <EntitySetMapping Name="ChatLogs">
-            <EntityTypeMapping TypeName="ChatRoomModel.ChatLog">
-              <MappingFragment StoreEntitySet="ChatLog">
-                <ScalarProperty Name="ChatLog_Id" ColumnName="ChatLog_Id" />
-                <ScalarProperty Name="Message_Id" ColumnName="Message_Id" />
-                <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ChatRooms">
             <EntityTypeMapping TypeName="ChatRoomModel.ChatRoom">
               <MappingFragment StoreEntitySet="ChatRoom">
                 <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
                 <ScalarProperty Name="ChatName" ColumnName="ChatName" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ChatRoomRosters">
-            <EntityTypeMapping TypeName="ChatRoomModel.ChatRoomRoster">
-              <MappingFragment StoreEntitySet="ChatRoomRoster">
-                <ScalarProperty Name="Roster_Id" ColumnName="Roster_Id" />
-                <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -431,13 +343,29 @@
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="IP_Address" ColumnName="IP_Address" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
-                <ScalarProperty Name="Salt_Hashed" ColumnName="Salt_Hashed" />
                 <ScalarProperty Name="Start_Date" ColumnName="Start_Date" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="ChatLog" TypeName="ChatRoomModel.ChatLog" StoreEntitySet="ChatLog">
+            <EndProperty Name="ChatRoom">
+              <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
+            </EndProperty>
+            <EndProperty Name="Message">
+              <ScalarProperty Name="Message_Id" ColumnName="Message_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ChatRoomRoster" TypeName="ChatRoomModel.ChatRoomRoster" StoreEntitySet="ChatRoomRoster">
+            <EndProperty Name="User">
+              <ScalarProperty Name="UserName" ColumnName="UserName" />
+            </EndProperty>
+            <EndProperty Name="ChatRoom">
+              <ScalarProperty Name="Chat_Id" ColumnName="Chat_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

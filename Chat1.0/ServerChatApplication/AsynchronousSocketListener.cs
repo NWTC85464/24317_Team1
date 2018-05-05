@@ -16,8 +16,6 @@ namespace ServerChatApplication
         // Documentation lists as "thread signal" still not sure exactly what it does.
         public static ManualResetEvent allDone = new ManualResetEvent(false);
 
-        // Holds all of the active users
-        public static List<StateObject> userList = new List<StateObject>();
 
         // This needs to be left empty for now "maybe forever".
         public AsynchronousSocketListener()
@@ -148,12 +146,12 @@ namespace ServerChatApplication
                     // iterates through the user list and checks if user socket is already in the list
                     // If so, then that specific entry is replaced with the in memory object.
                     bool userInList = false;
-                    for (int i = 0; i < userList.Count; i++)
+                    for (int i = 0; i < UserList.userList.Count; i++)
                     {
-                        if (userList[i].userID == tokenizedContent[1])
+                        if (UserList.userList[i].userID == tokenizedContent[1])
                         {
                             userInList = true;
-                            userList[i] = state;
+                            UserList.userList[i] = state;
                             break;
                         }
                     }
@@ -161,7 +159,7 @@ namespace ServerChatApplication
                     // If the state object was not found in the loop above, it's then added to the list.
                     if (!userInList)
                     {
-                        userList.Add(state);    
+                        UserList.userList.Add(state);    
                     }
                     
                     // Calls the static messageParser class where the incoming message is sent to be parsed.
@@ -177,7 +175,7 @@ namespace ServerChatApplication
             }
         }
 
-        private static void Send(Socket handler, string data)
+        public static void Send(Socket handler, string data)
         {
             // Convert the string data to byte data using ASCII
             byte[] byteData = Encoding.ASCII.GetBytes(data);

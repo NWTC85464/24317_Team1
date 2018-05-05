@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -50,21 +51,54 @@ namespace ServerChatApplication
         {
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
-            int dataStartLocation = 0;
+            int dataStartLocation = 1;
 
-            
+            // Create a new message an populate the fields.
+            // Once done, then message is saved to the database.
+            Message m = new Message();
+            m.UserName = tokenizedMessage[1];
+            m.Chat_Id = Convert.ToInt32(tokenizedMessage[2]);
+            m.Date = DateTime.Now;
+            m.Time_Sent = DateTime.Now;
+            m.Message_Body = tokenizedMessage[3];
 
-            // TODO request chatroom information about who is participating in the chat so we can redistribute the messages
-            // This process will involve grabbing the usernames which will then be matched up with a list of all clients connected.
-            // Loop logic will pick out the usernames that are connected to the chat and verify that their connections are still active,
-            // then route the message to the active users.
+            db.Messages.Add(m);
+
+            // TODO uncomment this when code is check for validity.
+            //db.SaveChanges();
+
+            // Compiles a list of all users who are associated
+            //  with the chatroom ID that was associated with the message.
+            var users = from u in db.Users
+                where u.ChatRooms.Any(c => c.Chat_Id == m.Chat_Id)
+                select u;
+
+            var replyList = new List<User>(users);
+
+
+
+
+            // Loops through the roster of users and checks which users are also in the active user list.
+            // When it finds a match, it sends the message to said user and breaks to the outer loop 
+            // to find the next user.
+            foreach (User r in replyList)
+            {
+                foreach (StateObject u in UserList.userList)
+                {
+                    if (u.userID == r.UserName)
+                    {
+                        AsynchronousSocketListener.Send(u.workSocket, m.Message_Body);
+                        break;
+                    }
+                }
+            }
         }
 
         private static void ProcessLogin()
         {
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
-            int dataStartLocation = 0;
+            int dataStartLocation = 1;
 
             // The bool that's returned to the client stating if the login has succeeded or failed.
             bool isValidLogin = false;
@@ -94,7 +128,7 @@ namespace ServerChatApplication
         {
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
-            int dataStartLocation = 0;
+            int dataStartLocation = 1;
 
             // Holds result of signup attempt
             bool isValidSignup = false;
@@ -124,19 +158,21 @@ namespace ServerChatApplication
             int dataStartLocation = 1;
 
             // Grabs all of the chatroom rosters that match the userName passed in
-            IEnumerable<ChatRoomRoster> roster = db.ChatRoomRosters
-            .ToList()
-            .Where(x => x.UserName == tokenizedMessage[dataStartLocation]);
+            var chatRooms = from c in db.ChatRooms
+                where c.Users.Any(u => u.UserName == tokenizedMessage[dataStartLocation])
+                select c;
 
             // List that holds all of the chatroomID's and names to be passed back to the client
-            List<string> chatRoomInfo = new List<string>();
+            var chatRoomInfo = new List<ChatRoom>(chatRooms);
+
+            List<string> outputList = new List<string>();
 
             // Iterates through the roster list and grabs the ID's and names while also dividing the
             // data with two different sets of tokens. The foward slash is meant to divide sets of data
             // and the vertical bar divides the ID and name in each set of data.
-            foreach (ChatRoomRoster r in roster)
+            foreach (ChatRoom c in chatRoomInfo)
             {
-                chatRoomInfo.Add(r.Chat_Id + "|" + r.ChatRoom.ChatName + "|");    
+                outputList.Add(c.Chat_Id + "|" + c.ChatName + "|");    
             }
 
             string concatMessage = String.Join("", chatRoomInfo);

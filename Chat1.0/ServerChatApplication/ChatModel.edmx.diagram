@@ -4,20 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8aefac9c0a4a4e78914037898a89f9af" Name="Diagram1">
-        <EntityTypeShape EntityType="ChatRoomModel.ChatLog" Width="1.5" PointX="8.25" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChatRoomModel.ChatRoom" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChatRoomModel.ChatRoomRoster" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChatRoomModel.Friend" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChatRoomModel.Message" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ChatRoomModel.User" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
-        <AssociationConnector Association="ChatRoomModel.FK_ChatLog_0_0" ManuallyRouted="false" />
-        <AssociationConnector Association="ChatRoomModel.FK_ChatLog_1_0" ManuallyRouted="false" />
-        <AssociationConnector Association="ChatRoomModel.FK_ChatRoomRoster_1_0" ManuallyRouted="false" />
+      <Diagram DiagramId="59923a544c8a4cdb8b228b1d5810f9ed" Name="Diagram1" ZoomLevel="95">
+        <EntityTypeShape EntityType="ChatRoomModel.ChatRoom" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChatRoomModel.Friend" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChatRoomModel.Message" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChatRoomModel.User" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
         <AssociationConnector Association="ChatRoomModel.FK_Message_0_0" ManuallyRouted="false" />
-        <AssociationConnector Association="ChatRoomModel.FK_ChatRoomRoster_0_0" ManuallyRouted="false" />
         <AssociationConnector Association="ChatRoomModel.FK_Friends_0_0" ManuallyRouted="false" />
         <AssociationConnector Association="ChatRoomModel.FK_Message_1_0" ManuallyRouted="false" />
+        <AssociationConnector Association="ChatRoomModel.ChatLog" ManuallyRouted="false" />
+        <AssociationConnector Association="ChatRoomModel.ChatRoomRoster" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
