@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
 using System.Linq;
+using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,21 +76,33 @@ namespace ServerChatApplication
 
             var replyList = new List<User>(users);
 
-
-
+            // Builds the output message that will be returned to all of the connected users
+            string output = "<Message>" + "|" +
+                            tokenizedMessage[dataStartLocation] + "|" +
+                            tokenizedMessage[dataStartLocation + 1] + "|" +
+                            m.Message_Body + "|" + "<EOF>";
 
             // Loops through the roster of users and checks which users are also in the active user list.
             // When it finds a match, it sends the message to said user and breaks to the outer loop 
             // to find the next user.
             foreach (User r in replyList)
             {
+                // This variable keeps track of the current selected element in the userList.
+                // That lets us know where to remove a list entry if a connection fails.
+                int indexCount = 0;
+
                 foreach (StateObject u in UserList.userList)
                 {
                     if (u.userID == r.UserName)
                     {
-                        AsynchronousSocketListener.Send(u.workSocket, m.Message_Body);
-                        break;
+                        if (checkSocketStatus(u.workSocket))
+                        {
+                            AsynchronousSocketListener.Send(u.workSocket, output);
+                            break;
+                        }
+                            UserList.userList.RemoveAt(indexCount);    
                     }
+                    indexCount++;
                 }
             }
         }
@@ -115,12 +128,23 @@ namespace ServerChatApplication
                     // so it's run through the salted hash functions and a return value is setup to 
                     // receive the result of the crypto function for comparison to verify that this user 
                     // has the correct password.
-                    byte[] salt = new byte[0]; //needs to be retrieved from database
-                    string pw = "user entered password"; //user entered password from client
-                    byte[] saltedHash = new byte[0]; //needs to be retrieved from database
+                    byte[] salt = u.Salt; //needs to be retrieved from database
+                    string pw = tokenizedMessage[dataStartLocation + 1]; //user entered password from client
+                    byte[] saltedHash = u.Password; //needs to be retrieved from database
                     isValidLogin = SaltedHash.Validate(salt, pw, saltedHash);  //Pass in salt, user password, then salted hash. this should return true/false depending on if password validates
                     //These methods will need to be tested and tweaked if necessary. I'm not sure if they work 100% as I am not able to test them
+                    break;
                 } 
+            }
+
+            foreach (StateObject s in UserList.userList)
+            {
+                if (s.userID == tokenizedMessage[dataStartLocation])
+                {
+                    string output = "<Login>" + "|" + isValidLogin + "<EOF>";
+                    AsynchronousSocketListener.Send(s.workSocket, output);
+                    break;
+                }
             }
         }
 
@@ -141,13 +165,38 @@ namespace ServerChatApplication
             if (!db.Users.Any(x => x.UserName == u.UserName))
             {
                 byte[] salt = SaltedHash.CreateSalt();                        //Store this value in the database for each user
-                string pw = "user entered password";                          //this needs to be the user entered password sent from client
+                string pw = tokenizedMessage[2];                          //this needs to be the user entered password sent from client
                 byte[] saltedpw = SaltedHash.CreateSaltedHash(salt, pw);      //They will then be passed into the method to convert to the saltedhash
                 //both salt and saltedpw need to be stored in db for each user
-            
-                string saltedHash = ""; // will be hooked into Aaron's salted class 
-                
-                // Set boolean if the operation succeeds  
+
+                u.Active = true;
+                u.Salt = salt;
+                u.Password = saltedpw;
+                u.Start_Date = DateTime.Now;
+                u.IP_Address = 0m;
+
+                db.Users.Add(u);
+                db.SaveChanges();
+
+                isValidSignup = true;
+            }
+
+            string output = "<Signup>" + "|" + isValidSignup + "|" + "<EOF>";
+            // Holds the current index value of the userList as it iterates
+            int indexCount = 0;
+
+            foreach (StateObject s in UserList.userList)
+            {
+                if (s.userID == u.UserName)
+                {
+                    if (checkSocketStatus(s.workSocket))
+                    {
+                        AsynchronousSocketListener.Send(s.workSocket, output);
+                        break;
+                    }
+                    UserList.userList.RemoveAt(indexCount);
+                }
+                indexCount++;
             }
         }
 
@@ -176,6 +225,17 @@ namespace ServerChatApplication
             }
 
             string concatMessage = String.Join("", chatRoomInfo);
+        }
+
+        // Checks if the passed in socket is still active
+        private static bool checkSocketStatus(Socket s)
+        {
+            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (s.Available == 0);
+            if (part1 && part2)
+                return false;
+            else
+                return true;
         }
     }
 }
