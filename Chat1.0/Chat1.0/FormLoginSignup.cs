@@ -60,7 +60,7 @@ namespace Chat1._0
             this.lblPasswordConfirm = new Label();
             this.lblPasswordConfirm.Width = 89;
             this.lblPasswordConfirm.Height = 45;
-            p = new Point(12,112);
+            p = new Point(12, 112);
             this.lblPasswordConfirm.Location = p;
             this.lblPasswordConfirm.Text = "Confirm Password:";
             this.lblPasswordConfirm.Font = new Font("Arial Black", 10, FontStyle.Bold);
@@ -88,12 +88,6 @@ namespace Chat1._0
             //Empty error message texts
             lblDisplayPasswordError.Text = String.Empty;
             lblDisplayUsernameError.Text = String.Empty;
-
-            //revert font back
-            lblDisplayPasswordError.BackColor = SystemColors.GradientActiveCaption;
-            lblDisplayPasswordError.Text = String.Empty;
-            lblDisplayPasswordError.ForeColor = Color.DarkRed;
-            lblDisplayPasswordError.Font = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
 
             //Username and password validation
             if (!string.IsNullOrWhiteSpace(txtUsername.Text))
@@ -172,21 +166,21 @@ namespace Chat1._0
                 if (!string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
 
-                    //if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
-                    //{
-                    //    //Login successful-Open Chat Manager
-                    //    this.FormClosing -= this.loginForm_FormClosing;
-                    //    this.Close();
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Login Unsuccessful.");
+                    if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
+                    {
+                        //Login successful-Open Chat Manager
+                        this.FormClosing -= this.loginForm_FormClosing;
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login Unsuccessful.");
 
-                    //    //For now have login go to chat manager for testing purposes
-                    //    //TODO remove before usage or when testing signup/login
-                    //    this.FormClosing -= this.loginForm_FormClosing;
-                    //    this.Close();
-                    //}
+                        //For now have login go to chat manager for testing purposes
+                        //TODO remove before usage or when testing signup/login
+                        this.FormClosing -= this.loginForm_FormClosing;
+                        this.Close();
+                    }
                     //for testing-delete when need to test login
                     // This removes the application.exit event handler from the formclosing event;
                     this.FormClosing -= this.loginForm_FormClosing;
@@ -202,10 +196,10 @@ namespace Chat1._0
             {
                 lblDisplayUsernameError.Text = "Enter Username";
             }
-                
-            
-            
-            
+
+
+
+
         }
 
 
