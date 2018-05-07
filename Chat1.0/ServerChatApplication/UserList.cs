@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ServerChatApplication
 {
-    public class UserList
+    public static class UserList
     {
-        // List that holds all currently active users.
-        public List<UserObject> activeUsers;
+        // Holds all of the active users
 
+        public static List<StateObject> userList = new List<StateObject>();
     }
 }

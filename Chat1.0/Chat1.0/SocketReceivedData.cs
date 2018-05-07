@@ -5,7 +5,7 @@ namespace Chat1._0
 {
     class SocketReceivedData
     {
-        private const int dataSize = 256;
+        private const int dataSize = 1026;
         private Byte[] dataStream = new byte[dataSize];
         private string message = "";
         private Socket sct;

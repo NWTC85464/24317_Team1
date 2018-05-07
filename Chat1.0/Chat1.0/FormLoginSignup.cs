@@ -73,6 +73,8 @@ namespace Chat1._0
             p = new Point(103, 128);
             this.txtPasswordConfirm.Location = p;
             this.txtPasswordConfirm.PasswordChar = '*';
+            this.txtPasswordConfirm.TabIndex = 3;
+            this.txtPasswordConfirm.TabStop = true;
             this.Controls.Add(txtPasswordConfirm);
 
             // Changes the click event on Signup and Login button
@@ -80,6 +82,9 @@ namespace Chat1._0
             this.btnSignUp.Click += btnSignUp_SecondClick;
             this.btnLogin.Click -= btnLogin_Click;
             this.btnLogin.Click += btnLogin_SecondClick;
+
+            // Sets the username textbox as the focus
+            this.txtUsername.Focus();
         }
 
         // New signup method button click
@@ -90,35 +95,26 @@ namespace Chat1._0
             lblDisplayUsernameError.Text = String.Empty;
 
             //Username and password validation
-            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
-                {
-                    if (txtPassword.Text == txtPasswordConfirm.Text)
-                    {
-                        if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
-                        {
-                            this.FormClosing -= this.loginForm_FormClosing;
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Sign up Unsuccessful.");
-                        }
-                    }
-                    else
-                    {
-                        lblDisplayPasswordError.Text = "Passwords Must Match";
-                    }
-                }
-                else
-                {
-                    lblDisplayPasswordError.Text = "Enter Password";
-                }
+                lblDisplayUsernameError.Text = "Enter Username";
+            }
+            else if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                lblDisplayPasswordError.Text = "Enter Password";
+            }
+            else if (txtPassword.Text != txtPasswordConfirm.Text)
+            {
+                lblDisplayPasswordError.Text = "Passwords Must Match";
+            }
+            else if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
+            {
+                this.FormClosing -= this.loginForm_FormClosing;
+                this.Close();
             }
             else
             {
-                lblDisplayUsernameError.Text = "Enter Username";
+                MessageBox.Show("Sign up Unsuccessful.");
             }
         }
 
@@ -146,6 +142,8 @@ namespace Chat1._0
             this.btnLogin.Click += btnLogin_Click;
             this.btnLogin.Click -= btnLogin_SecondClick;
 
+            // Sets the username text box as the focus
+            this.txtUsername.Focus();
         }
 
         // Exit Button Closes the Application
@@ -196,10 +194,6 @@ namespace Chat1._0
             {
                 lblDisplayUsernameError.Text = "Enter Username";
             }
-
-
-
-
         }
 
 

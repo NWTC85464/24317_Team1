@@ -60,25 +60,11 @@ namespace Chat1._0
         // Sets up Async object recieve
         private void Recieve(Socket client)
         {
-            // SocketReceivedData DataReciever = new SocketReceivedData();
+            SocketReceivedData dataReciever = new SocketReceivedData();
 
-            // sct.BeginReceive(DataReciever.DataStream, 0, DataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReciever);
+            sct.BeginReceive(dataReciever.DataStream, 0, dataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), dataReciever);
+        } 
 
-            try
-            {
-                // Create the state object.  
-                StateObject state = new StateObject();
-                state.workSocket = client;
-
-                // Begin receiving the data from the remote device.  
-                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(RecieveCallBack), state);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
 
 
 
@@ -280,7 +266,9 @@ namespace Chat1._0
 
         private void RoomCreateHandler(string[] message)
         {
-            //TODO: add handler code
+            roomJoinSuccessful = true;
+            processSync.Set();
+            processSync.Reset();
         }
 
         private void LoginHandler(string[] message)
@@ -354,13 +342,9 @@ namespace Chat1._0
         // Recieve callback opperation
         private void RecieveCallBack(IAsyncResult results)
         {
-            try
-            {
-                StateObject state = (StateObject)results.AsyncState;
-                Socket client = state.workSocket;
+            SocketReceivedData DataReceiver = (SocketReceivedData)results.AsyncState;
 
-                // Read data from the remote device.  
-                int bytesRead = client.EndReceive(results);
+            int bytesRecieved = this.sct.EndReceive(results);
 
                 //SocketReceivedData DataReceiver = (SocketReceivedData)results.AsyncState;
                 //Socket sct = DataReceiver.Sct;
@@ -370,35 +354,14 @@ namespace Chat1._0
                 // Checks for continued connection
                 if (bytesRead > 0)
                 {
-                    // DataReceiver.Message += Encoding.ASCII.GetString(DataReceiver.DataStream);
-                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-                    // Checks for end of file tag
-
-                    client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                        new AsyncCallback(RecieveCallBack), state);
-
-                    //if (DataReceiver.Message.IndexOf(eof) == -1)
-                    //{
-                    //    // Continues Reading
-                    //    sct.BeginReceive(DataReceiver.DataStream, 0, DataReceiver.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReceiver);
-                    //}
-                    //// If end of file tag is found
-                    //else
-                    //{
-                    //    // Runs message interpreter
-                    //    MessageInterpreter(DataReceiver.Message);
-                    //}
+                    // Continues Reading
+                    this.sct.BeginReceive(DataReceiver.DataStream, 0, DataReceiver.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReceiver);
                 }
                 else
                 {
-                    // All the data has arrived; put it in response.  
-                    if (state.sb.Length > 1)
-                    {
-                        response = state.sb.ToString();
-                    }
-                    MessageInterpreter(response);
-                    // Signal that all bytes have been received.  
-                    connectMarker.Set();
+                    // Runs message interpreter
+                    MessageInterpreter(DataReceiver.Message);
+                    this.Recieve();
                 }
                 //this.Recieve();
 
@@ -407,7 +370,6 @@ namespace Chat1._0
             {
                 Console.WriteLine(e.ToString());
             }
-
         }
 
         public static void ReadCallback(IAsyncResult ar)
@@ -453,11 +415,14 @@ namespace Chat1._0
         // Checks that the socket is still connected to the server;
         public void ConnectionMaintinence()
         {
-            while (sct.Poll(2000000, SelectMode.SelectWrite))
+            do
             {
                 Thread.Sleep(10000);
             }
+            while (sct.Poll(2000000, SelectMode.SelectWrite));
+
             MessageBox.Show("Connection lost.");
+
             // TODO: line below commented out for testing.
             //Application.Restart();
         }
