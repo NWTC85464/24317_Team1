@@ -265,7 +265,9 @@ namespace Chat1._0
 
         private void RoomCreateHandler(string[] message)
         {
-            //TODO: add handler code
+            roomJoinSuccessful = true;
+            processSync.Set();
+            processSync.Reset();
         }
 
         private void LoginHandler(string[] message)
@@ -359,10 +361,9 @@ namespace Chat1._0
                 {
                     // Runs message interpreter
                     MessageInterpreter(DataReceiver.Message);
+                    this.Recieve();
                 }
             }
-            this.Recieve();
-
         }
 
         // Checks that the socket is still connected to the server;

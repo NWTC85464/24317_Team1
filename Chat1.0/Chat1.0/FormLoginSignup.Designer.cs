@@ -50,7 +50,7 @@
             this.btnSignUp.Location = new System.Drawing.Point(133, 133);
             this.btnSignUp.Name = "btnSignUp";
             this.btnSignUp.Size = new System.Drawing.Size(96, 23);
-            this.btnSignUp.TabIndex = 4;
+            this.btnSignUp.TabIndex = 5;
             this.btnSignUp.Text = "Sign Up";
             this.btnSignUp.UseVisualStyleBackColor = false;
             this.btnSignUp.Click += new System.EventHandler(this.btnSignUp_Click);
@@ -63,7 +63,7 @@
             this.btnLogin.Location = new System.Drawing.Point(248, 133);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(96, 23);
-            this.btnLogin.TabIndex = 5;
+            this.btnLogin.TabIndex = 6;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
@@ -76,7 +76,7 @@
             this.btnExit.Location = new System.Drawing.Point(15, 133);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(96, 23);
-            this.btnExit.TabIndex = 3;
+            this.btnExit.TabIndex = 4;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
@@ -106,7 +106,7 @@
             this.lblUserName.ForeColor = System.Drawing.Color.Black;
             this.lblUserName.Location = new System.Drawing.Point(12, 43);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(87, 18);
+            this.lblUserName.Size = new System.Drawing.Size(86, 18);
             this.lblUserName.TabIndex = 5;
             this.lblUserName.Text = "Username:";
             // 

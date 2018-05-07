@@ -73,6 +73,8 @@ namespace Chat1._0
             p = new Point(103, 128);
             this.txtPasswordConfirm.Location = p;
             this.txtPasswordConfirm.PasswordChar = '*';
+            this.txtPasswordConfirm.TabIndex = 3;
+            this.txtPasswordConfirm.TabStop = true;
             this.Controls.Add(txtPasswordConfirm);
 
             // Changes the click event on Signup and Login button
@@ -80,6 +82,9 @@ namespace Chat1._0
             this.btnSignUp.Click += btnSignUp_SecondClick;
             this.btnLogin.Click -= btnLogin_Click;
             this.btnLogin.Click += btnLogin_SecondClick;
+
+            // Sets the username textbox as the focus
+            this.txtUsername.Focus();
         }
 
         // New signup method button click
@@ -90,35 +95,26 @@ namespace Chat1._0
             lblDisplayUsernameError.Text = String.Empty;
 
             //Username and password validation
-            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
-                {
-                    if (txtPassword.Text == txtPasswordConfirm.Text)
-                    {
-                        if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
-                        {
-                            this.FormClosing -= this.loginForm_FormClosing;
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Sign up Unsuccessful.");
-                        }
-                    }
-                    else
-                    {
-                        lblDisplayPasswordError.Text = "Passwords Must Match";
-                    }
-                }
-                else
-                {
-                    lblDisplayPasswordError.Text = "Enter Password";
-                }
+                lblDisplayUsernameError.Text = "Enter Username";
+            }
+            else if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                lblDisplayPasswordError.Text = "Enter Password";
+            }
+            else if (txtPassword.Text != txtPasswordConfirm.Text)
+            {
+                lblDisplayPasswordError.Text = "Passwords Must Match";
+            }
+            else if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
+            {
+                this.FormClosing -= this.loginForm_FormClosing;
+                this.Close();
             }
             else
             {
-                lblDisplayUsernameError.Text = "Enter Username";
+                MessageBox.Show("Sign up Unsuccessful.");
             }
         }
 
@@ -146,6 +142,8 @@ namespace Chat1._0
             this.btnLogin.Click += btnLogin_Click;
             this.btnLogin.Click -= btnLogin_SecondClick;
 
+            // Sets the username text box as the focus
+            this.txtUsername.Focus();
         }
 
         // Exit Button Closes the Application
@@ -157,49 +155,38 @@ namespace Chat1._0
         // Login Button Logs user into server after checking username and password
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            //Empty error message texts
-            lblDisplayPasswordError.Text = String.Empty;
-            lblDisplayUsernameError.Text = String.Empty;
-            // Username and password validation
-            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
-            {
-                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
-                {
+            ////Empty error message texts
+            //lblDisplayPasswordError.Text = String.Empty;
+            //lblDisplayUsernameError.Text = String.Empty;
+            //// Username and password validation
+            //if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            //{
+            //    lblDisplayUsernameError.Text = "Enter Username";
+            //}
+            //else if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            //{
+            //    lblDisplayPasswordError.Text = "Enter Password";
+            //}
 
-                    if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
-                    {
-                        //Login successful-Open Chat Manager
-                        this.FormClosing -= this.loginForm_FormClosing;
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Login Unsuccessful.");
+            //else if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
+            //{
+            //    //Login successful-Open Chat Manager
+            //    this.FormClosing -= this.loginForm_FormClosing;
+            //    this.Close();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Login Unsuccessful.");
 
-                        //For now have login go to chat manager for testing purposes
-                        //TODO remove before usage or when testing signup/login
-                        this.FormClosing -= this.loginForm_FormClosing;
-                        this.Close();
-                    }
-                    //for testing-delete when need to test login
+            //    //For now have login go to chat manager for testing purposes
+            //    //TODO remove before usage or when testing signup/login
+            //    this.FormClosing -= this.loginForm_FormClosing;
+            //    this.Close();
+            //}
+                    // TODO: for testing-delete when need to test login
                     // This removes the application.exit event handler from the formclosing event;
                     this.FormClosing -= this.loginForm_FormClosing;
                     this.Close();
-                }
-                else
-                {
-                    lblDisplayPasswordError.Text = "Enter Password";
-                }
-
-            }
-            else
-            {
-                lblDisplayUsernameError.Text = "Enter Username";
-            }
-
-
-
-
         }
 
 
