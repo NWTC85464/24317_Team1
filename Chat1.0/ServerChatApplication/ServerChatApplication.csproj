@@ -74,9 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsynchronousSocketListener.cs" />
-    <Compile Include="ChatLog.cs">
-      <DependentUpon>ChatModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ChatModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -95,9 +92,6 @@
     <Compile Include="ChatRoom.cs">
       <DependentUpon>ChatModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ChatRoomRoster.cs">
-      <DependentUpon>ChatModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Friend.cs">
       <DependentUpon>ChatModel.tt</DependentUpon>
     </Compile>
@@ -112,7 +106,6 @@
       <DependentUpon>ChatModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserList.cs" />
-    <Compile Include="UserObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

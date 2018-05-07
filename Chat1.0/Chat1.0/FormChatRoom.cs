@@ -19,6 +19,7 @@ namespace Chat1._0
             this.chatRoomID = chatRoomID;
             this.sctctrl = sctctrl;
             this.FormClosing += formChatRoom_FormClosing;
+            this.lblChatRoomName.Text = chatRoomID;
         }
 
         // Private data fields
