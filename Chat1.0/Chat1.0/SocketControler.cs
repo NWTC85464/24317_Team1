@@ -60,9 +60,9 @@ namespace Chat1._0
         // Sets up Async object recieve
         private void Recieve()
         {
-            SocketReceivedData DataReciever = new SocketReceivedData();
+            SocketReceivedData dataReciever = new SocketReceivedData();
 
-            sct.BeginReceive(DataReciever.DataStream, 0, DataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReciever);
+            sct.BeginReceive(dataReciever.DataStream, 0, dataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), dataReciever);
         } 
 
 
@@ -340,9 +340,8 @@ namespace Chat1._0
         private void RecieveCallBack(IAsyncResult results)
         {
             SocketReceivedData DataReceiver = (SocketReceivedData)results.AsyncState;
-            Socket sct = DataReceiver.Sct;
 
-            int bytesRecieved = sct.EndReceive(results);
+            int bytesRecieved = this.sct.EndReceive(results);
 
             // Checks for continued connection
             if (bytesRecieved > 0)
@@ -353,7 +352,7 @@ namespace Chat1._0
                 if(DataReceiver.Message.IndexOf(eof) == -1)
                 {
                     // Continues Reading
-                    sct.BeginReceive(DataReceiver.DataStream, 0, DataReceiver.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReceiver);
+                    this.sct.BeginReceive(DataReceiver.DataStream, 0, DataReceiver.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReceiver);
                 }
                 // If end of file tag is found
                 else
@@ -369,11 +368,14 @@ namespace Chat1._0
         // Checks that the socket is still connected to the server;
         public void ConnectionMaintinence()
         {
-            while (sct.Poll(2000000, SelectMode.SelectWrite))
+            do
             {
                 Thread.Sleep(10000);
             }
+            while (sct.Poll(2000000, SelectMode.SelectWrite));
+
             MessageBox.Show("Connection lost.");
+
             // TODO: line below commented out for testing.
             //Application.Restart();
         }

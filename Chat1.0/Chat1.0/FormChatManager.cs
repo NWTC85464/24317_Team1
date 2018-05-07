@@ -95,20 +95,20 @@ namespace Chat1._0
 
         public void LeaveChatroom(string roomId)
         {
-            int i = -1;
+            bool found = false;
             int count = 0;
             foreach (FormChatRoom f in ChatRoomForms)
             {
                 if (roomId == f.ChatRoomID)
                 {
-                    i = -1;
+                    found = true;
                     break;
                 }
                 count++;
             }
-            if (i != -1)
+            if (found)
             {
-                ChatRoomForms.RemoveAt(i);
+                ChatRoomForms.RemoveAt(count);
             }
             else
             {

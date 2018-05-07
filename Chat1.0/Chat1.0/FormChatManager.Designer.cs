@@ -80,7 +80,6 @@
             this.friendList.Name = "friendList";
             this.friendList.Size = new System.Drawing.Size(103, 147);
             this.friendList.TabIndex = 6;
-            this.friendList.SelectedIndexChanged += new System.EventHandler(this.friendList_SelectedIndexChanged);
             // 
             // friendListLabel
             // 
