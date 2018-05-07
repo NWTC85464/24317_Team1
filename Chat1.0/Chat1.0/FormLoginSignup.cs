@@ -155,38 +155,45 @@ namespace Chat1._0
         // Login Button Logs user into server after checking username and password
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            ////Empty error message texts
-            //lblDisplayPasswordError.Text = String.Empty;
-            //lblDisplayUsernameError.Text = String.Empty;
-            //// Username and password validation
-            //if (string.IsNullOrWhiteSpace(txtUsername.Text))
-            //{
-            //    lblDisplayUsernameError.Text = "Enter Username";
-            //}
-            //else if (string.IsNullOrWhiteSpace(txtPassword.Text))
-            //{
-            //    lblDisplayPasswordError.Text = "Enter Password";
-            //}
+            //Empty error message texts
+            lblDisplayPasswordError.Text = String.Empty;
+            lblDisplayUsernameError.Text = String.Empty;
+            // Username and password validation
+            if (!string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                if (!string.IsNullOrWhiteSpace(txtPassword.Text))
+                {
 
-            //else if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
-            //{
-            //    //Login successful-Open Chat Manager
-            //    this.FormClosing -= this.loginForm_FormClosing;
-            //    this.Close();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Login Unsuccessful.");
+                    if (sctctrl.SendUserLoginRequest(txtUsername.Text, txtPassword.Text))
+                    {
+                        //Login successful-Open Chat Manager
+                        this.FormClosing -= this.loginForm_FormClosing;
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login Unsuccessful.");
 
-            //    //For now have login go to chat manager for testing purposes
-            //    //TODO remove before usage or when testing signup/login
-            //    this.FormClosing -= this.loginForm_FormClosing;
-            //    this.Close();
-            //}
-                    // TODO: for testing-delete when need to test login
+                        //For now have login go to chat manager for testing purposes
+                        //TODO remove before usage or when testing signup/login
+                        this.FormClosing -= this.loginForm_FormClosing;
+                        this.Close();
+                    }
+                    //for testing-delete when need to test login
                     // This removes the application.exit event handler from the formclosing event;
                     this.FormClosing -= this.loginForm_FormClosing;
                     this.Close();
+                }
+                else
+                {
+                    lblDisplayPasswordError.Text = "Enter Password";
+                }
+
+            }
+            else
+            {
+                lblDisplayUsernameError.Text = "Enter Username";
+            }
         }
 
 

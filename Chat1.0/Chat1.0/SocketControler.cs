@@ -18,30 +18,30 @@ namespace Chat1._0
         private char token = '|';
         private string eof = "<EOF>";
         private string ServerAdress = "ec2-13-59-47-57.us-east-2.compute.amazonaws.com";
-        private static ManualResetEvent connectMarker =new ManualResetEvent(false);
+        private static ManualResetEvent connectMarker = new ManualResetEvent(false);
         private static ManualResetEvent processSync = new ManualResetEvent(false);
         private bool loginSuccessful = false;
         private bool roomJoinSuccessful = false;
         private string userID = "default";
         private IPEndPoint endPoint;
         private string newRoomid;
-
+        private static String response = String.Empty;
         public SocketController(FormChatManager chatManager)
         {
             this.chatManager = chatManager;
             // TODO: set up the outgoing and incoming socket info
             sct = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
-                IPHostEntry ipHost = Dns.GetHostEntry(ServerAdress);
-                IPAddress ip = ipHost.AddressList[0];
-                endPoint = new IPEndPoint(ip, 1100);
+            IPHostEntry ipHost = Dns.GetHostEntry(ServerAdress);
+            IPAddress ip = ipHost.AddressList[0];
+            endPoint = new IPEndPoint(ip, 1100);
 
-                // Conect to server with a wait to confirm connection;
-                sct.BeginConnect(endPoint, new AsyncCallback(ConnectCallBack ) , sct);
-                connectMarker.WaitOne();
+            // Conect to server with a wait to confirm connection;
+            sct.BeginConnect(endPoint, new AsyncCallback(ConnectCallBack), sct);
+            connectMarker.WaitOne();
         }
 
-// Basic data send and recieve methods of the socket; 
+        // Basic data send and recieve methods of the socket; 
         // Can only accept formatted strings
         private void Send(string sentString)
         {
@@ -56,9 +56,9 @@ namespace Chat1._0
                 MessageBox.Show("Server Connection Failed.");
             }
         }
-        
+
         // Sets up Async object recieve
-        private void Recieve()
+        private void Recieve(Socket client)
         {
             SocketReceivedData dataReciever = new SocketReceivedData();
 
@@ -67,9 +67,10 @@ namespace Chat1._0
 
 
 
-    // Data preperation and interpretation methods
 
-      // Data prep methods;
+        // Data preperation and interpretation methods
+
+        // Data prep methods;
         //Input screener method
         //Screens for <EOF> and | then removes them
         public String Screen(string input)
@@ -96,7 +97,7 @@ namespace Chat1._0
                 //Find where '|' occurs
                 int index = input.IndexOf('|');
                 do
-                {                    
+                {
                     //Removes '|' from input string
                     input = input.Remove(index, 1);
 
@@ -107,7 +108,7 @@ namespace Chat1._0
 
             }
             return input;
-            
+
         }
         //Message template method for Login and SignUp
         private string Template(string action, string user, string message)
@@ -190,7 +191,7 @@ namespace Chat1._0
         {
             this.Send(this.Template("<FriendsList>", this.userID, "Request for current friends"));
         }
-        
+
         public void SendFriendRequest(string friendID)
         {
             this.Send(this.Template("<FriendRequest>", this.userID, friendID));
@@ -202,13 +203,13 @@ namespace Chat1._0
             this.chatManager.LeaveChatroom(roomId);
         }
 
-// Recieved message interpretation;
+        // Recieved message interpretation;
         private void MessageInterpreter(string message)
         {
             string[] splitMessage = message.Split(token);
 
             // Switch for determining message type
-            switch (splitMessage[0]) 
+            switch (splitMessage[0])
             {
                 case "<Message>":
                     this.ChatMessageHandler(splitMessage);
@@ -222,7 +223,7 @@ namespace Chat1._0
                 case "<Login>":
                     this.LoginHandler(splitMessage);
                     break;
-                case "<SignUp>":
+                case "<Signup>":
                     this.LoginHandler(splitMessage);
                     break;
                 case "<FriendsList>":
@@ -273,19 +274,19 @@ namespace Chat1._0
         private void LoginHandler(string[] message)
         {
 
-            if (message[1] == "fail") 
+            if (message[1] == "fail")
             {
                 loginSuccessful = false;
                 processSync.Set();
                 processSync.Reset();
             }
-            else 
+            else
             {
                 loginSuccessful = true;
                 processSync.Set();
                 processSync.Reset();
             }
-            
+
         }
 
         private void FriendsListHandler(string[] message)
@@ -295,7 +296,7 @@ namespace Chat1._0
 
         private void FriendRequestHandler(string[] message)
         {
-            if(message[1] == "true")
+            if (message[1] == "true")
             {
                 MessageBox.Show("Friend Request successful.");
                 this.SendFriendslistRequest();
@@ -311,8 +312,8 @@ namespace Chat1._0
             MessageBox.Show("Unknown Message Recieved. Tag: " + message[0]);
         }
 
-        
-// Callback methods
+
+        // Callback methods
         // Connect callback opperation
         private void ConnectCallBack(IAsyncResult results)
         {
@@ -321,7 +322,7 @@ namespace Chat1._0
                 Socket sct = (Socket)results.AsyncState;
                 sct.EndConnect(results);
                 connectMarker.Set();
-                this.Recieve();
+                this.Recieve(sct);
             }
             catch (Exception e)
             {
@@ -345,26 +346,71 @@ namespace Chat1._0
 
             int bytesRecieved = this.sct.EndReceive(results);
 
-            // Checks for continued connection
-            if (bytesRecieved > 0)
-            {
-                DataReceiver.Message += Encoding.ASCII.GetString(DataReceiver.DataStream);
+                //SocketReceivedData DataReceiver = (SocketReceivedData)results.AsyncState;
+                //Socket sct = DataReceiver.Sct;
 
-                // Checks for end of file tag
-                if(DataReceiver.Message.IndexOf(eof) == -1)
+                // int bytesRecieved = sct.EndReceive(results);
+
+                // Checks for continued connection
+                if (bytesRead > 0)
                 {
                     // Continues Reading
                     this.sct.BeginReceive(DataReceiver.DataStream, 0, DataReceiver.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReceiver);
                 }
-                // If end of file tag is found
                 else
                 {
                     // Runs message interpreter
                     MessageInterpreter(DataReceiver.Message);
                     this.Recieve();
                 }
+                //this.Recieve();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
             }
         }
+
+        public static void ReadCallback(IAsyncResult ar)
+        {
+            String content = String.Empty;
+
+            // Retrieve the state object and the handler socket  
+            // from the asynchronous state object.  
+            StateObject state = (StateObject)ar.AsyncState;
+            Socket handler = state.workSocket;
+
+            // Read data from the client socket.   
+            int bytesRead = handler.EndReceive(ar);
+
+            if (bytesRead > 0)
+            {
+                // There  might be more data, so store the data received so far.  
+                state.sb.Append(Encoding.ASCII.GetString(
+                    state.buffer, 0, bytesRead));
+
+                // Check for end-of-file tag. If it is not there, read   
+                // more data.  
+                content = state.sb.ToString();
+                if (content.IndexOf("<EOF>") > -1)
+                {
+                    // All the data has been read from the   
+                    // client. Display it on the console.  
+                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
+                        content.Length, content);
+                    // Echo the data back to the client.  
+                    //  Send(handler, content);
+                }
+                else
+                {
+                    // Not all data received. Get more.  
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
+                }
+            }
+        }
+
 
         // Checks that the socket is still connected to the server;
         public void ConnectionMaintinence()
@@ -379,6 +425,18 @@ namespace Chat1._0
 
             // TODO: line below commented out for testing.
             //Application.Restart();
+        }
+
+        public class StateObject
+        {
+            // Client  socket.  
+            public Socket workSocket = null;
+            // Size of receive buffer.  
+            public const int BufferSize = 1024;
+            // Receive buffer.  
+            public byte[] buffer = new byte[BufferSize];
+            // Received data string.  
+            public StringBuilder sb = new StringBuilder();
         }
     }
 }
