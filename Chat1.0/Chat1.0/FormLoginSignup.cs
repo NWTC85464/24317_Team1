@@ -94,6 +94,12 @@ namespace Chat1._0
             lblDisplayPasswordError.Text = String.Empty;
             lblDisplayUsernameError.Text = String.Empty;
 
+            //revert font back
+            lblDisplayPasswordError.BackColor = SystemColors.GradientActiveCaption;
+            lblDisplayPasswordError.Text = String.Empty;
+            lblDisplayPasswordError.ForeColor = Color.DarkRed;
+            lblDisplayPasswordError.Font = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
+
             //Username and password validation
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
