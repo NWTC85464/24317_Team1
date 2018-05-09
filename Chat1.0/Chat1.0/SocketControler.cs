@@ -61,7 +61,7 @@ namespace Chat1._0
         private void Recieve()
         {
             SocketReceivedData DataReciever = new SocketReceivedData();
-
+               DataReciever.Sct = this.sct
             sct.BeginReceive(DataReciever.DataStream, 0, DataReciever.DataSize, 0, new AsyncCallback(RecieveCallBack), DataReciever);
         } 
 
@@ -340,7 +340,6 @@ namespace Chat1._0
         private void RecieveCallBack(IAsyncResult results)
         {
             SocketReceivedData DataReceiver = (SocketReceivedData)results.AsyncState;
-            Socket sct = DataReceiver.Sct;
 
             int bytesRecieved = sct.EndReceive(results);
 
