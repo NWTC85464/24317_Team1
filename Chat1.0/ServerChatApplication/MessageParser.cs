@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
+using System.Data.SQLite;
 using System.Linq;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
@@ -66,7 +67,7 @@ namespace ServerChatApplication
             db.Messages.Add(m);
 
             // TODO uncomment this when code is check for validity.
-            //db.SaveChanges();
+            db.SaveChanges();
 
             // Compiles a list of all users who are associated
             //  with the chatroom ID that was associated with the message.
@@ -174,7 +175,7 @@ namespace ServerChatApplication
                 u.Password = saltedpw;
                 u.Start_Date = DateTime.Now;
                 u.IP_Address = 0m;
-
+                
                 db.Users.Add(u);
                 db.SaveChanges();
 

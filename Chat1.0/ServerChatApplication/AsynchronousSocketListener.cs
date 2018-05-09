@@ -206,10 +206,12 @@ namespace ServerChatApplication
                 Console.WriteLine(e.ToString());
             }
         }
+        private static ChatRoomEntities db = new ChatRoomEntities();
 
         public static void Main(string[] args)
         {
-            StartListening();            
+            StartListening();   
+
         }
     }
 }
