@@ -131,8 +131,9 @@ namespace Chat1._0
             }
             else if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
             {
-                this.FormClosing -= this.loginForm_FormClosing;
-                this.Close();
+                MessageBox.Show("Sign up successful. Please Login.");
+                //this.FormClosing -= this.loginForm_FormClosing;
+                //this.Close();
             }
             else
             {
@@ -208,10 +209,9 @@ namespace Chat1._0
             {
                 MessageBox.Show("Login Unsuccessful.");
 
-                //For now have login go to chat manager for testing purposes
-                //TODO remove before usage or when testing signup/login
-                this.FormClosing -= this.loginForm_FormClosing;
-                this.Close();
+                //uncomment for testing
+                //this.FormClosing -= this.loginForm_FormClosing;
+                //this.Close();
             }
             
         }
