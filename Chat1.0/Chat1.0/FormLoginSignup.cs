@@ -221,7 +221,7 @@ namespace Chat1._0
         private void pwd_show_chk_CheckedChanged(object sender, EventArgs e)
         {
             txtPassword.PasswordChar = (pwd_show_chk.Checked ? '\0' : '*');
-            txtPasswordConfirm.PasswordChar = (pwd_show_chk.Checked ? '\0' : '*');
+        //    txtPasswordConfirm.PasswordChar = (pwd_show_chk.Checked ? '\0' : '*');
         }
         private void loginForm_FormClosing(Object sender, FormClosingEventArgs e)
         {
