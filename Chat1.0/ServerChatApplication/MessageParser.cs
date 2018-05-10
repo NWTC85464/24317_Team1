@@ -182,7 +182,7 @@ namespace ServerChatApplication
                 isValidSignup = true;
             }
 
-            string output = "<Signup>" + "|" + isValidSignup + "|" + "<EOF>";
+            string output = "<SignUp>" + "|" + isValidSignup + "|" + "<EOF>";
             // Holds the current index value of the userList as it iterates
             int indexCount = 0;
 
