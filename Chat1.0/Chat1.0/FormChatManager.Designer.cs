@@ -121,7 +121,12 @@
             // 
             this.chatList1.FormattingEnabled = true;
             this.chatList1.Items.AddRange(new object[] {
-            "000001 ZChat Default"});
+            "100000 Default Chat #1",
+            "200000 Default Chat #2",
+            "300000 Default Chat #3",
+            "400000 Default Chat #4",
+            "500000 Default Chat #5",
+            "600000 Default Chat #6"});
             this.chatList1.Location = new System.Drawing.Point(12, 54);
             this.chatList1.Name = "chatList1";
             this.chatList1.Size = new System.Drawing.Size(218, 446);

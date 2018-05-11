@@ -40,7 +40,7 @@ namespace ServerChatApplication
                 case "<Login>":
                     ProcessLogin();
                     break;
-                case "<Signup>":
+                case "<SignUp>":
                     ProcessSignup();
                     break;
                 case "Chatrooms":

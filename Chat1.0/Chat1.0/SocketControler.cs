@@ -127,7 +127,7 @@ namespace Chat1._0
         public bool SendUserSignUpRequest(string username, string password)
         {
 
-            string message = this.Template("<Signup>", this.Screen(username), this.Screen(password));
+            string message = this.Template("<SignUp>", this.Screen(username), this.Screen(password));
             this.Send(message);
             processSync.WaitOne();
             if (loginSuccessful)

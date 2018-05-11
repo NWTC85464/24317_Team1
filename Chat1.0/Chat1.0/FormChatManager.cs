@@ -61,36 +61,36 @@ namespace Chat1._0
         private void joinButton_Click(object sender, EventArgs e)
         {
             //check for selection
-            //if (chatList1.SelectedItem != null)
-            //    {
-            //        //check list box for selected chatroom
-            //        string chatroom = chatList1.SelectedItem.ToString();
-            //    chatroom = chatroom.Substring(0, chatroom.IndexOf(" "));
-            //    // Need to use join method in socket controller
-            //    if (sctctrl.SendJoinChatroomRequest(chatroom))
-            //    {
+            if (chatList1.SelectedItem != null)
+                {
+                    //check list box for selected chatroom
+                    string chatroom = chatList1.SelectedItem.ToString();
+                    chatroom = chatroom.Substring(0, chatroom.IndexOf(" "));
+                    //Need to use join method in socket controller
+                    if (sctctrl.SendJoinChatroomRequest(chatroom))
+                         {
 
-            //            // Open Chat Manager form if connection is complete
-            //            FormChatRoom F = new FormChatRoom(sctctrl, chatroom);
-            //            ChatRoomForms.Add(F);
-            //            F.Show();
-            //        }
+                            //Open Chat Manager form if connection is complete
+                            FormChatRoom F = new FormChatRoom(sctctrl, chatroom);
+                            ChatRoomForms.Add(F);
+                            F.Show();
+                          }
 
-            //        // tell user join failed
-            //        else
-            //        {
-            //            MessageBox.Show("Join unsuccessful");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Select a Chatroom to join.");
-            //    }
+                         //tell user join failed
+                        else
+                        {
+                        MessageBox.Show("Join unsuccessful");
+                        }
+                }
+                else
+                {
+                    MessageBox.Show("Select a Chatroom to join.");
+                }
 
-            //Used for testing chatroom form - feel free to delete and uncomment above
-            FormChatRoom FormChat = new FormChatRoom(sctctrl, "chatroom");
-            ChatRoomForms.Add(FormChat);
-            FormChat.Show();
+            //Uncomment below and comment above for testing ChatRoom form
+            //FormChatRoom FormChat = new FormChatRoom(sctctrl, "chatroom");
+            //ChatRoomForms.Add(FormChat);
+            //FormChat.Show();
         }
 
         public void LeaveChatroom(string roomId)
