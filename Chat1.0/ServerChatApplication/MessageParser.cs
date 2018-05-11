@@ -207,25 +207,35 @@ namespace ServerChatApplication
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
 
-            // Grabs all of the chatroom rosters that match the userName passed in
-            var chatRooms = from c in db.ChatRooms
-                where c.Users.Any(u => u.UserName == tokenizedMessage[dataStartLocation])
-                select c;
-
-            // List that holds all of the chatroomID's and names to be passed back to the client
-            var chatRoomInfo = new List<ChatRoom>(chatRooms);
-
-            List<string> outputList = new List<string>();
-
-            // Iterates through the roster list and grabs the ID's and names while also dividing the
-            // data with two different sets of tokens. The foward slash is meant to divide sets of data
-            // and the vertical bar divides the ID and name in each set of data.
-            foreach (ChatRoom c in chatRoomInfo)
+            // If the signal for chatroom creation is passed in, this should be true
+            if (tokenizedMessage[dataStartLocation + 1] == "000000")
             {
-                outputList.Add(c.Chat_Id + "|" + c.ChatName + "|");    
+
+            }
+            else
+            {
+                // Grabs all of the chatroom rosters that match the userName passed in
+                var chatRooms = from c in db.ChatRooms
+                    where c.Users.Any(u => u.UserName == tokenizedMessage[dataStartLocation])
+                    select c;
+
+                // List that holds all of the chatroomID's and names to be passed back to the client
+                var chatRoomInfo = new List<ChatRoom>(chatRooms);
+
+                List<string> outputList = new List<string>();
+
+                // Iterates through the roster list and grabs the ID's and names while also dividing the
+                // data with two different sets of tokens. The foward slash is meant to divide sets of data
+                // and the vertical bar divides the ID and name in each set of data.
+                foreach (ChatRoom c in chatRoomInfo)
+                {
+                    outputList.Add(c.Chat_Id + "|" + c.ChatName + "|");
+                }
+
+                string concatMessage = String.Join("", chatRoomInfo);
             }
 
-            string concatMessage = String.Join("", chatRoomInfo);
+
         }
 
         // Checks if the passed in socket is still active
