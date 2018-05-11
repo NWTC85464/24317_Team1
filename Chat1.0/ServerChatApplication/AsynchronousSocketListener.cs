@@ -103,11 +103,6 @@ namespace ServerChatApplication
                 new AsyncCallback(ReadCallBack), state);
         }
 
-        // Either here or one step back, I'm going to add the client side socket to the userList,
-        // or skip this step if the user is already in the list
-        // then redirect this method so it connects to message parser.
-        // Message parser will then call the send callback method after it does its work
-        // and choose the correct socket out of the userList
         public static void ReadCallBack(IAsyncResult ar)
         {
             string content = string.Empty;
@@ -164,6 +159,9 @@ namespace ServerChatApplication
                     
                     // Calls the static messageParser class where the incoming message is sent to be parsed.
                     MessageParser.TokenizedMessage = tokenizedContent;
+
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                        new AsyncCallback(ReadCallBack), state);
                 }
 
                 else
@@ -177,6 +175,7 @@ namespace ServerChatApplication
 
         public static void Send(Socket handler, string data)
         {
+            Console.WriteLine("Sent to client : " + data);
             // Convert the string data to byte data using ASCII
             byte[] byteData = Encoding.ASCII.GetBytes(data);
 
@@ -206,7 +205,6 @@ namespace ServerChatApplication
                 Console.WriteLine(e.ToString());
             }
         }
-        private static ChatRoomEntities db = new ChatRoomEntities();
 
         public static void Main(string[] args)
         {

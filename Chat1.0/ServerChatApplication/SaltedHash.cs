@@ -69,8 +69,6 @@ namespace ServerChatApplication
         //if the two match than return true if not than return false
         public static bool Validate(byte[] salt, string password, byte[] saltedHashreal)
         {
-            // TODO Aaron, I commented this out so I can test the appplication, feel free to uncomment when you work on it.
-
             //Creates object for hashing salted password
             HashAlgorithm alg = new SHA256Managed();
 
@@ -95,6 +93,9 @@ namespace ServerChatApplication
 
             //use the HashAlgorithm ComputeHash method to hash the array that holds the salt and password.
             alg.ComputeHash(saltedHash);
+
+            Console.WriteLine("saltedHash = " + Encoding.Default.GetString(saltedHash));
+            Console.WriteLine("saltedHashreal = " + Encoding.Default.GetString(saltedHashreal));
 
             //Compare the two hashes for verification
             if (saltedHash.Length == saltedHashreal.Length)

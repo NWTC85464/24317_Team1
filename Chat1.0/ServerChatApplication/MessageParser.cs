@@ -133,6 +133,7 @@ namespace ServerChatApplication
             {
                 if (u.UserName == tokenizedMessage[dataStartLocation])
                 {
+                    Console.WriteLine("Found username matching login");
                     // TODO run password through salted hash system to see if there's a match on the password.   
                     // Aaron, all I need is a method call where I can place the incoming password as a parameter
                     // so it's run through the salted hash functions and a return value is setup to 
@@ -143,6 +144,9 @@ namespace ServerChatApplication
                     byte[] saltedHash = u.Password; //needs to be retrieved from database
                     isValidLogin = SaltedHash.Validate(salt, pw, saltedHash);  //Pass in salt, user password, then salted hash. this should return true/false depending on if password validates
                     //These methods will need to be tested and tweaked if necessary. I'm not sure if they work 100% as I am not able to test them
+                    Console.WriteLine("Stored password " + Encoding.Default.GetString(u.Password));
+                    Console.WriteLine("User salt : " + Encoding.Default.GetString(u.Salt));
+                    
                     break;
                 } 
             }
@@ -151,7 +155,7 @@ namespace ServerChatApplication
             {
                 if (s.userID == tokenizedMessage[dataStartLocation])
                 {
-                    string output = "<Login>" + "|" + isValidLogin + "<EOF>";
+                    string output = "<Login>" + "|" + isValidLogin + "|" + "<EOF>";
                     AsynchronousSocketListener.Send(s.workSocket, output);
                     break;
                 }
