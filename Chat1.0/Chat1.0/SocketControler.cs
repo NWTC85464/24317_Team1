@@ -249,7 +249,7 @@ namespace Chat1._0
 
         private void RoomJoinHandler(string[] message)
         {
-            if (message[1] == "false")
+            if (message[1] == "False")
             {
                 roomJoinSuccessful = false;
                 processSync.Set();
@@ -271,7 +271,7 @@ namespace Chat1._0
         private void LoginHandler(string[] message)
         {
 
-            if (message[1] == "fail") 
+            if (message[1] == "False") 
             {
                 loginSuccessful = false;
                 processSync.Set();
@@ -293,7 +293,7 @@ namespace Chat1._0
 
         private void FriendRequestHandler(string[] message)
         {
-            if(message[1] == "true")
+            if(message[1] == "True")
             {
                 MessageBox.Show("Friend Request successful.");
                 this.SendFriendslistRequest();
