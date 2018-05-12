@@ -112,8 +112,19 @@ namespace ServerChatApplication
             StateObject state = (StateObject) ar.AsyncState;
             Socket handler = state.workSocket;
 
-            // read data from the client socket
-            int bytesRead = handler.EndReceive(ar);
+            int bytesRead = 0;
+
+            try
+            {
+                // read data from the client socket
+                bytesRead = handler.EndReceive(ar);
+            }
+            catch (SocketException)
+            {
+                Console.WriteLine("Caught SocketException");    
+            }
+
+            
 
             if (bytesRead > 0)
             {
@@ -158,6 +169,7 @@ namespace ServerChatApplication
                     }
                     
                     // Calls the static messageParser class where the incoming message is sent to be parsed.
+                    Console.WriteLine("Parsing message now");
                     MessageParser.TokenizedMessage = tokenizedContent;
 
                     state.sb = new StringBuilder();

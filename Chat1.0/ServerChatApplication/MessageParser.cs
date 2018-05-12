@@ -32,7 +32,7 @@ namespace ServerChatApplication
         // Tokenize the original message and redirect the program flow
         private static void ParseMessage()
         {
-
+            Console.WriteLine("Checking header");
             switch (tokenizedMessage[0])
             {
                 case "<Message>":
@@ -44,17 +44,19 @@ namespace ServerChatApplication
                 case "<SignUp>":
                     ProcessSignup();
                     break;
-                case "Chatrooms":
+                case "<Chatrooms>":
                     ProcessChatroomsRequest();
                     break;
-                case "RoomJoin":
+                case "<RoomJoin>":
                     ProcessRoomJoin();
                     break;
-                case "RoomCreate":
+                case "<RoomCreate>":
                     ProcessRoomCreate();
                     break;
-                case "RoomLeave":
+                case "<RoomLeave>":
                     ProcessRoomLeave();
+                    break;
+                case "<FriendsList>":
                     break;
             }
         }
@@ -213,15 +215,14 @@ namespace ServerChatApplication
 
         private static void ProcessChatroomsRequest()
         {
+            Console.WriteLine("Processing chatroom request");
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
 
 
-            // Grabs all of the chatroom rosters that match the userName passed in
-            var chatRooms = db.ChatRooms.ToList()
-                .Where(x => x.ChatRoomRosters
-                    .Any(u => u.UserName == tokenizedMessage[dataStartLocation] || u.Chat_Id > 999));
+            // Grabs all of the chatrooms
+            var chatRooms = db.ChatRooms.ToList();
 
             // List that holds all of the chatroomID's and names to be passed back to the client
             var chatRoomInfo = new List<ChatRoom>(chatRooms);
@@ -238,11 +239,15 @@ namespace ServerChatApplication
 
             string concatMessage = string.Join("", outputList);
 
+            Console.WriteLine("Concat message: " + concatMessage);
+
+            string output = $"<Chatrooms>|{concatMessage}<EOF>";
+
             foreach (StateObject s in UserList.userList)
             {
                 if (s.userID == tokenizedMessage[dataStartLocation])
                 {
-                    AsynchronousSocketListener.Send(s.workSocket, concatMessage);
+                    AsynchronousSocketListener.Send(s.workSocket, output);
                 }    
             }
         }
