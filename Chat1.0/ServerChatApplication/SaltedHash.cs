@@ -74,6 +74,8 @@ namespace ServerChatApplication
 
             //convert user password to a byte array
             byte[] passwordByte = Encoding.UTF8.GetBytes(password);
+            Console.WriteLine("User Entered password: " + password);
+            Console.WriteLine("Password Byte: " + passwordByte);
 
             //Create new array to store salted hash
             byte[] saltedHash = new byte[salt.Length + passwordByte.Length];
@@ -92,18 +94,20 @@ namespace ServerChatApplication
             }
 
             //use the HashAlgorithm ComputeHash method to hash the array that holds the salt and password.
-            alg.ComputeHash(saltedHash);
+            byte[] saltedHash2 = alg.ComputeHash(saltedHash);
 
             Console.WriteLine("saltedHash = " + Encoding.Default.GetString(saltedHash));
             Console.WriteLine("saltedHashreal = " + Encoding.Default.GetString(saltedHashreal));
+            Console.WriteLine("Salt value in validate method: " + Encoding.Default.GetString(salt));
+            Console.WriteLine("SaltedHash2= " + Encoding.Default.GetString(salt));
 
             //Compare the two hashes for verification
-            if (saltedHash.Length == saltedHashreal.Length)
+            if (saltedHash2.Length == saltedHashreal.Length)
             {
-                for (int i = 0; i < saltedHash.Length; i++)
+                for (int i = 0; i < saltedHash2.Length; i++)
                 {
                     //return false if a value doesn't match
-                    if (saltedHash[i] != saltedHashreal[i])
+                    if (saltedHash2[i] != saltedHashreal[i])
                     {
                         return false;
                     }
