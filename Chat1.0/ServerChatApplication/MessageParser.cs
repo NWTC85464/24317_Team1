@@ -96,23 +96,7 @@ namespace ServerChatApplication
             // to find the next user.
             foreach (User r in replyList)
             {
-                // This variable keeps track of the current selected element in the userList.
-                // That lets us know where to remove a list entry if a connection fails.
-                int indexCount = 0;
-
-                foreach (StateObject u in UserList.userList)
-                {
-                    if (u.userID == r.UserName)
-                    {
-                        if (checkSocketStatus(u.workSocket))
-                        {
-                            AsynchronousSocketListener.Send(u.workSocket, output);
-                            break;
-                        }
-                            UserList.userList.RemoveAt(indexCount);    
-                    }
-                    indexCount++;
-                }
+                CheckStatusAndSend(output, r.UserName);
             }
         }
 
@@ -132,38 +116,20 @@ namespace ServerChatApplication
             {
                 if (u.UserName == tokenizedMessage[dataStartLocation])
                 {
-                    Console.WriteLine("Found username matching login");
-                    // TODO run password through salted hash system to see if there's a match on the password.   
-                    // Aaron, all I need is a method call where I can place the incoming password as a parameter
-                    // so it's run through the salted hash functions and a return value is setup to 
-                    // receive the result of the crypto function for comparison to verify that this user 
-                    // has the correct password.
-                    byte[] salt = u.Salt; //needs to be retrieved from database
-                    string pw = tokenizedMessage[dataStartLocation + 1]; //user entered password from client
-                    byte[] saltedHash = u.Password; //needs to be retrieved from database
-                    isValidLogin = SaltedHash.Validate(salt, pw, saltedHash);  //Pass in salt, user password, then salted hash. this should return true/false depending on if password validates
-                    //These methods will need to be tested and tweaked if necessary. I'm not sure if they work 100% as I am not able to test them
-                    Console.WriteLine("Stored password " + Encoding.Default.GetString(u.Password));
-                    Console.WriteLine("User salt : " + Encoding.Default.GetString(u.Salt));
-                    
+                    byte[] salt = u.Salt; 
+                    string pw = tokenizedMessage[dataStartLocation + 1]; 
+                    byte[] saltedHash = u.Password; 
+                    isValidLogin = SaltedHash.Validate(salt, pw, saltedHash);  
                     break;
                 } 
             }
+            string output = "<Login>" + "|" + isValidLogin + "|" + "<EOF>";
 
-            foreach (StateObject s in UserList.userList)
-            {
-                if (s.userID == tokenizedMessage[dataStartLocation])
-                {
-                    string output = "<Login>" + "|" + isValidLogin + "|" + "<EOF>";
-                    AsynchronousSocketListener.Send(s.workSocket, output);
-                    break;
-                }
-            }
+            CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
         }
 
         private static void ProcessSignup()
         {
-            // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
 
@@ -177,10 +143,10 @@ namespace ServerChatApplication
             // Checks if the username exists in the database
             if (!db.Users.Any(x => x.UserName == u.UserName))
             {
-                byte[] salt = SaltedHash.CreateSalt();                        //Store this value in the database for each user
-                string pw = tokenizedMessage[2];                          //this needs to be the user entered password sent from client
-                byte[] saltedpw = SaltedHash.CreateSaltedHash(salt, pw);      //They will then be passed into the method to convert to the saltedhash
-                //both salt and saltedpw need to be stored in db for each user
+                byte[] salt = SaltedHash.CreateSalt();                      
+                string pw = tokenizedMessage[2];                          
+                byte[] saltedpw = SaltedHash.CreateSaltedHash(salt, pw);      
+                
 
                 u.Active = true;
                 u.Salt = salt;
@@ -195,12 +161,17 @@ namespace ServerChatApplication
             }
 
             string output = "<SignUp>" + "|" + isValidSignup + "|" + "<EOF>";
-            // Holds the current index value of the userList as it iterates
+           
+            CheckStatusAndSend(output, u.UserName);
+        }
+
+        private static void CheckStatusAndSend(string output, string userName)
+        {
             int indexCount = 0;
 
             foreach (StateObject s in UserList.userList)
             {
-                if (s.userID == u.UserName)
+                if (s.userID == userName)
                 {
                     if (checkSocketStatus(s.workSocket))
                     {
@@ -243,25 +214,25 @@ namespace ServerChatApplication
 
             string output = $"<Chatrooms>|{concatMessage}<EOF>";
 
-            foreach (StateObject s in UserList.userList)
-            {
-                if (s.userID == tokenizedMessage[dataStartLocation])
-                {
-                    AsynchronousSocketListener.Send(s.workSocket, output);
-                }    
-            }
+            CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
         }
 
         private static void ProcessRoomJoin()
         {
+            // TDB based off tokenizing pattern. When design is concluded,
+            // variable dataStartLocation will indicate where the data portion is held in the array
+            int dataStartLocation = 1;
+
             var chatRoster = new ChatRoomRoster();
             chatRoster.Chat_Id = long.Parse(tokenizedMessage[2]);
             chatRoster.UserName = tokenizedMessage[1];
 
             db.ChatRoomRosters.Add(chatRoster);
             db.SaveChanges();
-        
-            ProcessChatroomsRequest();     
+
+            string output = $"<RoomJoin>|True|<EOF>";
+
+            CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]); 
         }
 
         private static void ProcessRoomCreate()
@@ -278,17 +249,24 @@ namespace ServerChatApplication
             db.ChatRooms.Add(c);
             db.SaveChanges();
 
+            string output = $"<RoomCreate>|True|<EOF>";
+            CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
+
             ProcessRoomJoin();
         }
 
         private static void ProcessRoomLeave()
         {
+            // variable dataStartLocation will indicate where the data portion is held in the array
+            int dataStartLocation = 1;
+
             var chatRost = new ChatRoomRoster();
             chatRost.Chat_Id = Convert.ToInt64(tokenizedMessage[2]);
             db.Entry(chatRost).State = EntityState.Deleted;
             db.SaveChanges();
 
-            ProcessChatroomsRequest();
+            string output = $"<RoomLeave>|True|<EOF>";
+            CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
         }
 
 
