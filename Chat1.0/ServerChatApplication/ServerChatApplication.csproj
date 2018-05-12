@@ -92,6 +92,10 @@
     <Compile Include="ChatRoom.cs">
       <DependentUpon>ChatModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ChatroomContext.cs" />
+    <Compile Include="ChatRoomRoster.cs">
+      <DependentUpon>ChatModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Friend.cs">
       <DependentUpon>ChatModel.tt</DependentUpon>
     </Compile>
@@ -108,7 +112,9 @@
     <Compile Include="UserList.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="ChatModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ChatModel.Designer.cs</LastGenOutput>

@@ -160,6 +160,7 @@ namespace ServerChatApplication
                     // Calls the static messageParser class where the incoming message is sent to be parsed.
                     MessageParser.TokenizedMessage = tokenizedContent;
 
+                    state.sb = new StringBuilder();
                     handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                         new AsyncCallback(ReadCallBack), state);
                 }
@@ -198,6 +199,7 @@ namespace ServerChatApplication
 
                 //handler.Shutdown(SocketShutdown.Both);
                 //handler.Close();
+
             }
 
             catch (Exception e)

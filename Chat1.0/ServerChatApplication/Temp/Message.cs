@@ -12,25 +12,24 @@ namespace ServerChatApplication
     using System;
     using System.Collections.Generic;
     
-    public partial class ChatRoom
+    public partial class Message
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ChatRoom()
+        public Message()
         {
-            this.ChatRoomRosters = new HashSet<ChatRoomRoster>();
-            this.Messages = new HashSet<Message>();
-            this.Messages1 = new HashSet<Message>();
+            this.ChatRooms = new HashSet<ChatRoom>();
         }
     
+        public long Message_Id { get; set; }
+        public string UserName { get; set; }
         public long Chat_Id { get; set; }
-        public string ChatName { get; set; }
-        public bool Active { get; set; }
+        public System.DateTime Time_Sent { get; set; }
+        public string Message_Body { get; set; }
+        public System.DateTime Date { get; set; }
     
+        public virtual ChatRoom ChatRoom { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChatRoomRoster> ChatRoomRosters { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> Messages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> Messages1 { get; set; }
+        public virtual ICollection<ChatRoom> ChatRooms { get; set; }
     }
 }

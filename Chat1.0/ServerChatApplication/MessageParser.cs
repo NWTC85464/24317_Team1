@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
 using System.Data.SQLite;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace ServerChatApplication
     public static class MessageParser
     {
         // Setup DB object
-        private static ChatRoomEntities db = new ChatRoomEntities();
+        private static ChatRoomEntities1 db = new ChatRoomEntities1();
 
         // Holds the tokenized message
         private static string[] tokenizedMessage;
@@ -80,11 +81,7 @@ namespace ServerChatApplication
 
             // Compiles a list of all users who are associated
             //  with the chatroom ID that was associated with the message.
-            var users = from u in db.Users
-                where u.ChatRooms.Any(c => c.Chat_Id == m.Chat_Id)
-                select u;
-
-            var replyList = new List<User>(users);
+            var replyList = db.Users.ToList().Where(x => x.ChatRoomRosters.Any(u => u.Chat_Id == m.Chat_Id));
 
             // Builds the output message that will be returned to all of the connected users
             string output = "<Message>" + "|" +
@@ -222,9 +219,9 @@ namespace ServerChatApplication
 
 
             // Grabs all of the chatroom rosters that match the userName passed in
-            var chatRooms = from c in db.ChatRooms
-                where c.Users.Any(u => u.UserName == tokenizedMessage[dataStartLocation] || c.ChatName.Contains("Default Chat"))
-                select c;
+            var chatRooms = db.ChatRooms.ToList()
+                .Where(x => x.ChatRoomRosters
+                    .Any(u => u.UserName == tokenizedMessage[dataStartLocation] || u.Chat_Id > 999));
 
             // List that holds all of the chatroomID's and names to be passed back to the client
             var chatRoomInfo = new List<ChatRoom>(chatRooms);
@@ -239,7 +236,7 @@ namespace ServerChatApplication
                 outputList.Add(c.Chat_Id + "|" + c.ChatName + "|");
             }
 
-            string concatMessage = String.Join("", chatRoomInfo);
+            string concatMessage = string.Join("", outputList);
 
             foreach (StateObject s in UserList.userList)
             {
@@ -252,7 +249,12 @@ namespace ServerChatApplication
 
         private static void ProcessRoomJoin()
         {
-            
+            var chatRoster = new ChatRoomRoster();
+            chatRoster.Chat_Id = long.Parse(tokenizedMessage[2]);
+            chatRoster.UserName = tokenizedMessage[1];
+
+            db.ChatRoomRosters.Add(chatRoster);
+            db.SaveChanges();
         
             ProcessChatroomsRequest();     
         }
@@ -276,7 +278,10 @@ namespace ServerChatApplication
 
         private static void ProcessRoomLeave()
         {
-
+            var chatRost = new ChatRoomRoster();
+            chatRost.Chat_Id = Convert.ToInt64(tokenizedMessage[2]);
+            db.Entry(chatRost).State = EntityState.Deleted;
+            db.SaveChanges();
 
             ProcessChatroomsRequest();
         }

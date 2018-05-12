@@ -17,9 +17,9 @@ namespace ServerChatApplication
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.ChatRoomRosters = new HashSet<ChatRoomRoster>();
             this.Friends = new HashSet<Friend>();
             this.Messages = new HashSet<Message>();
-            this.ChatRooms = new HashSet<ChatRoom>();
         }
     
         public string UserName { get; set; }
@@ -30,10 +30,10 @@ namespace ServerChatApplication
         public Nullable<bool> Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ChatRoomRoster> ChatRoomRosters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Friend> Friends { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Message> Messages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChatRoom> ChatRooms { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace ServerChatApplication
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ChatRoomEntities : DbContext
+    public partial class ChatRoomEntities1 : DbContext
     {
-        public ChatRoomEntities()
-            : base("name=ChatRoomEntities")
+        public ChatRoomEntities1()
+            : base("name=ChatRoomEntities1")
         {
         }
     
@@ -26,6 +26,7 @@ namespace ServerChatApplication
         }
     
         public virtual DbSet<ChatRoom> ChatRooms { get; set; }
+        public virtual DbSet<ChatRoomRoster> ChatRoomRosters { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<User> Users { get; set; }
