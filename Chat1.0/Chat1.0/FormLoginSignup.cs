@@ -131,9 +131,9 @@ namespace Chat1._0
             }
             else if (sctctrl.SendUserSignUpRequest(this.txtUsername.Text, this.txtPassword.Text))
             {
-                MessageBox.Show("Sign up successful. Please Login.");
-                //this.FormClosing -= this.loginForm_FormClosing;
-                //this.Close();
+                MessageBox.Show("Sign up Successful.");
+                this.FormClosing -= this.loginForm_FormClosing;
+                this.Close();
             }
             else
             {
