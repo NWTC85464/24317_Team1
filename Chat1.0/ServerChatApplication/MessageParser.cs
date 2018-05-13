@@ -15,7 +15,7 @@ namespace ServerChatApplication
     public static class MessageParser
     {
         // Setup DB object
-        private static ChatRoomEntities1 db = new ChatRoomEntities1();
+        
 
         // Holds the tokenized message
         private static string[] tokenizedMessage;
@@ -66,7 +66,7 @@ namespace ServerChatApplication
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
-
+            ChatRoomEntities1 db = new ChatRoomEntities1();
             // Create a new message an populate the fields.
             // Once done, then message is saved to the database.
             Message m = new Message();
@@ -105,7 +105,7 @@ namespace ServerChatApplication
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
-
+            ChatRoomEntities1 db = new ChatRoomEntities1();
             // The bool that's returned to the client stating if the login has succeeded or failed.
             bool isValidLogin = false;
 
@@ -132,7 +132,7 @@ namespace ServerChatApplication
         {
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
-
+            ChatRoomEntities1 db = new ChatRoomEntities1();
             // Holds result of signup attempt
             bool isValidSignup = false;
 
@@ -190,7 +190,7 @@ namespace ServerChatApplication
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
-
+            ChatRoomEntities1 db = new ChatRoomEntities1();
 
             // Grabs all of the chatrooms
             var chatRooms = db.ChatRooms.ToList();
@@ -222,16 +222,29 @@ namespace ServerChatApplication
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
-
+            ChatRoomEntities1 db = new ChatRoomEntities1();
             var chatRoster = new ChatRoomRoster();
             chatRoster.Chat_Id = long.Parse(tokenizedMessage[2]);
             chatRoster.UserName = tokenizedMessage[1];
+            string chatID = tokenizedMessage[dataStartLocation + 1];
+            string userName = tokenizedMessage[dataStartLocation];
+            bool isValid = false;
 
-            db.ChatRoomRosters.Add(chatRoster);
-            db.SaveChanges();
+            if (db.ChatRoomRosters.Any(x=>x.Chat_Id.ToString() == chatID))
+                if (db.ChatRoomRosters.Any(x => x.UserName == userName))
+                    isValid = true;
+                    Console.WriteLine("record match found");
 
-            string output = $"<RoomJoin>|True|<EOF>";
 
+            if (!isValid)
+            {
+                db.ChatRoomRosters.Add(chatRoster);
+                db.SaveChanges();
+            }
+
+
+            isValid = true;
+            string output = $"<RoomJoin>|{isValid}|<EOF>";
             CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]); 
         }
 
@@ -240,7 +253,7 @@ namespace ServerChatApplication
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
-
+            ChatRoomEntities1 db = new ChatRoomEntities1();
             ChatRoom c = new ChatRoom();
             c.Chat_Id = db.ChatRooms.Count();
             c.ChatName = tokenizedMessage[dataStartLocation + 1];
@@ -262,7 +275,10 @@ namespace ServerChatApplication
 
             var chatRost = new ChatRoomRoster();
             chatRost.Chat_Id = Convert.ToInt64(tokenizedMessage[2]);
-            db.Entry(chatRost).State = EntityState.Deleted;
+            chatRost.UserName = tokenizedMessage[dataStartLocation];
+            ChatRoomEntities1 db = new ChatRoomEntities1();
+            db.ChatRoomRosters.Attach(chatRost);
+            db.ChatRoomRosters.Remove(chatRost);
             db.SaveChanges();
 
             string output = $"<RoomLeave>|True|<EOF>";
