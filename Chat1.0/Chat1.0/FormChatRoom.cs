@@ -46,6 +46,7 @@ namespace Chat1._0
                     this.messageBox.Invoke(new Action(() =>
                     {
                         this.messageBox.Items.Add(message.Substring(i, 100));
+                        this.messageBox.SelectedIndex = messageBox.Items.Count - 1;
                     }));
                     
                 }
@@ -54,6 +55,7 @@ namespace Chat1._0
                     this.messageBox.Invoke(new Action(() =>
                     {
                         this.messageBox.Items.Add(message.Substring(i));
+                        this.messageBox.SelectedIndex = messageBox.Items.Count - 1;
                     }));
                     break;
                 }
