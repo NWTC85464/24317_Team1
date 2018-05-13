@@ -34,17 +34,27 @@ namespace Chat1._0
         }
 
         public void AddMessageToChatBox(string username, string message) {
-
-            this.messageBox.Items.Add(username + ": " + DateTime.Now.TimeOfDay);
+            this.messageBox.Invoke(new Action(() =>
+            {
+                this.messageBox.Items.Add(username + ": " + DateTime.Now.TimeOfDay);
+            }));
+            
             for (int i = 0;; i += 100)
             {
                 if (i < message.Length - 100)
                 {
-                    this.messageBox.Items.Add(message.Substring(i, 100));
+                    this.messageBox.Invoke(new Action(() =>
+                    {
+                        this.messageBox.Items.Add(message.Substring(i, 100));
+                    }));
+                    
                 }
                 else
                 {
-                    this.messageBox.Items.Add(message.Substring(i));
+                    this.messageBox.Invoke(new Action(() =>
+                    {
+                        this.messageBox.Items.Add(message.Substring(i));
+                    }));
                     break;
                 }
                 

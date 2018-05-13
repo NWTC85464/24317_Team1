@@ -140,12 +140,23 @@ namespace Chat1._0
         public void FillChatList(string[] recievedChatList)
         {
             // Clears out old data and refills with new data.
-            this.chatList1.Items.Clear();
-            for (int i = 2; i < recievedChatList.Length - 1; i += 2)
+            chatList1.Invoke(new Action(() =>
             {
-                this.chatList1.Items.Add(recievedChatList[i] + " " + recievedChatList[i+1]);
+                chatList1.Items.Clear();
+            }));
+
+            
+            for (int i = 1; i < recievedChatList.Length - 2; i += 2)
+            {
+                chatList1.Invoke(new Action(() =>
+                {
+                    chatList1.Items.Add(recievedChatList[i] + " " + recievedChatList[i + 1]);
+                }));
+                
             }
         }
+
+
 
         // Method for filling friends list with string data recieved from server side application.
         public void FillFriendsList(string[] recievedFriendsList)
