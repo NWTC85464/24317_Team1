@@ -256,7 +256,7 @@ namespace ServerChatApplication
             ChatRoomEntities1 db = new ChatRoomEntities1();
             ChatRoom c = new ChatRoom();
             c.Chat_Id = db.ChatRooms.Count();
-            c.ChatName = tokenizedMessage[dataStartLocation + 1];
+            c.ChatName = tokenizedMessage[dataStartLocation + 2];
             c.Active = true;
 
             db.ChatRooms.Add(c);
