@@ -265,7 +265,9 @@ namespace Chat1._0
 
         private void RoomCreateHandler(string[] message)
         {
-            //TODO: add handler code
+            this.newRoomid = message[2];
+            processSync.Set();
+            processSync.Reset();
         }
 
         private void LoginHandler(string[] message)
@@ -306,7 +308,7 @@ namespace Chat1._0
 
         private void UnknownMessage(string[] message)
         {
-            MessageBox.Show("Unknown Message Recieved. Tag: " + message[0]);
+            //MessageBox.Show("Unknown Message Recieved. Tag: " + message[0]);
         }
 
         

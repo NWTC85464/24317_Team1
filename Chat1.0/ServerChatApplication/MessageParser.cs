@@ -217,19 +217,30 @@ namespace ServerChatApplication
             CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
         }
 
-        private static void ProcessRoomJoin()
+        private static void ProcessRoomJoin(bool isChatroomCreationJoin = false)
         {
             // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
             ChatRoomEntities1 db = new ChatRoomEntities1();
             var chatRoster = new ChatRoomRoster();
-            chatRoster.Chat_Id = long.Parse(tokenizedMessage[2]);
+            long tempChatID;
+
+            // If this is true, then the room join is because the room was just created and the client doesn't have access to the 
+            // chatID yet, so this is a workaround that will grab the value of the last created chatroom.
+            if (isChatroomCreationJoin)
+                tempChatID = db.ChatRooms.Max(c => c.Chat_Id);
+            else 
+                tempChatID = long.Parse(tokenizedMessage[2]);
+
+            chatRoster.Chat_Id = tempChatID;
             chatRoster.UserName = tokenizedMessage[1];
-            string chatID = tokenizedMessage[dataStartLocation + 1];
+            string chatID = chatRoster.Chat_Id.ToString();
             string userName = tokenizedMessage[dataStartLocation];
             bool isValid = false;
 
+            // Checks if the relationship between user and chatroom has already been created.
+            // It's probably unecessary, but it's an extra level of assurance.
             if (db.ChatRoomRosters.Any(x=>x.Chat_Id.ToString() == chatID))
                 if (db.ChatRoomRosters.Any(x => x.UserName == userName))
                     isValid = true;
@@ -250,7 +261,6 @@ namespace ServerChatApplication
 
         private static void ProcessRoomCreate()
         {
-            // TDB based off tokenizing pattern. When design is concluded,
             // variable dataStartLocation will indicate where the data portion is held in the array
             int dataStartLocation = 1;
             ChatRoomEntities1 db = new ChatRoomEntities1();
@@ -262,10 +272,13 @@ namespace ServerChatApplication
             db.ChatRooms.Add(c);
             db.SaveChanges();
 
-            string output = $"<RoomCreate>|True|<EOF>";
+            string output = $"<RoomCreate>|True|{c.Chat_Id}|<EOF>";
             CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
 
-            ProcessRoomJoin();
+            // Since the process for roomJoining is slightly different when preceded by roomCreation
+            // This is accounted by sending the RoomJoin method a boolean value that will tell it to pursue
+            // a slightly different set of actions.
+            ProcessRoomJoin(true);
         }
 
         private static void ProcessRoomLeave()
