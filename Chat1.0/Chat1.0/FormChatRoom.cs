@@ -65,10 +65,18 @@ namespace Chat1._0
 
         private void sendBtn_Click(object sender, EventArgs e)
         {
-            //send message to method in socket controller
-            sctctrl.SendMessage(ChatRoomID, messageText.Text);
-            //Empty textbox after sent to listbox
-            messageText.Text = string.Empty;
+            if (messageText.Text.Length <= 500)
+            {
+                //send message to method in socket controller
+                sctctrl.SendMessage(ChatRoomID, messageText.Text);
+                //Empty textbox after sent to listbox
+                messageText.Text = string.Empty;
+            }
+            else
+            {
+                MessageBox.Show("Messages are limited to 500 characters or less");
+            }
+
         }
 
         private void exitButton_Click(object sender, EventArgs e)

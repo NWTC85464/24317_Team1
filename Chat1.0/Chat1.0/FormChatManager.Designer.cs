@@ -59,6 +59,7 @@
             this.searchTextbox.Name = "searchTextbox";
             this.searchTextbox.Size = new System.Drawing.Size(110, 20);
             this.searchTextbox.TabIndex = 2;
+            this.searchTextbox.Visible = false;
             // 
             // searchButton
             // 
@@ -71,6 +72,7 @@
             this.searchButton.TabIndex = 3;
             this.searchButton.Text = "Search Chat";
             this.searchButton.UseVisualStyleBackColor = false;
+            this.searchButton.Visible = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // friendList
@@ -80,6 +82,7 @@
             this.friendList.Name = "friendList";
             this.friendList.Size = new System.Drawing.Size(103, 147);
             this.friendList.TabIndex = 6;
+            this.friendList.Visible = false;
             // 
             // friendListLabel
             // 
@@ -90,6 +93,7 @@
             this.friendListLabel.Size = new System.Drawing.Size(103, 23);
             this.friendListLabel.TabIndex = 7;
             this.friendListLabel.Text = "Friend List";
+            this.friendListLabel.Visible = false;
             // 
             // btnExit
             // 
