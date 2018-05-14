@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
+using System.Data.Entity.Infrastructure;
 using System.Data.SQLite;
 using System.Linq;
 using System.Net.Sockets;
@@ -184,7 +185,7 @@ namespace ServerChatApplication
             }
         }
 
-        private static void ProcessChatroomsRequest()
+        private static void ProcessChatroomsRequest(string userName = "")
         {
             Console.WriteLine("Processing chatroom request");
             // TDB based off tokenizing pattern. When design is concluded,
@@ -214,7 +215,10 @@ namespace ServerChatApplication
 
             string output = $"<Chatrooms>|{concatMessage}<EOF>";
 
-            CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
+            if (userName == "")
+                userName = tokenizedMessage[dataStartLocation];
+
+            CheckStatusAndSend(output, userName);
         }
 
         private static void ProcessRoomJoin(bool isChatroomCreationJoin = false)
@@ -237,24 +241,26 @@ namespace ServerChatApplication
             chatRoster.UserName = tokenizedMessage[1];
             string chatID = chatRoster.Chat_Id.ToString();
             string userName = tokenizedMessage[dataStartLocation];
-            bool isValid = false;
+            bool isValid = true;
 
             // Checks if the relationship between user and chatroom has already been created.
-            // It's probably unecessary, but it's an extra level of assurance.
-            if (db.ChatRoomRosters.Any(x=>x.Chat_Id.ToString() == chatID))
-                if (db.ChatRoomRosters.Any(x => x.UserName == userName))
-                    isValid = true;
-                    Console.WriteLine("record match found");
-
-
-            if (!isValid)
+            if (db.ChatRoomRosters.Any(x => x.Chat_Id.ToString() == chatID && x.UserName == userName))
+                Console.WriteLine("Matching relationship already existed");
+            else
             {
-                db.ChatRoomRosters.Add(chatRoster);
-                db.SaveChanges();
+                try
+                {
+                    db.ChatRoomRosters.Add(chatRoster);
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException)
+                {
+                    Console.WriteLine("Caught DB update exception on room join");
+                    isValid = false;
+                }
             }
 
 
-            isValid = true;
             string output = $"<RoomJoin>|{isValid}|<EOF>";
             CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]); 
         }
@@ -275,6 +281,14 @@ namespace ServerChatApplication
             string output = $"<RoomCreate>|True|{c.Chat_Id}|<EOF>";
             CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
 
+            string userName = tokenizedMessage[dataStartLocation];
+            IEnumerable<User> replyList = db.Users.Where(x => x.UserName != userName);
+
+            foreach (User u in replyList)
+            {
+                ProcessChatroomsRequest(u.UserName);    
+            }
+
             // Since the process for roomJoining is slightly different when preceded by roomCreation
             // This is accounted by sending the RoomJoin method a boolean value that will tell it to pursue
             // a slightly different set of actions.
@@ -290,9 +304,17 @@ namespace ServerChatApplication
             chatRost.Chat_Id = Convert.ToInt64(tokenizedMessage[2]);
             chatRost.UserName = tokenizedMessage[dataStartLocation];
             ChatRoomEntities1 db = new ChatRoomEntities1();
-            db.ChatRoomRosters.Attach(chatRost);
-            db.ChatRoomRosters.Remove(chatRost);
-            db.SaveChanges();
+            try
+            {
+                db.ChatRoomRosters.Attach(chatRost);
+                db.ChatRoomRosters.Remove(chatRost);
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Console.WriteLine("Caught DB exception on leaving room");    
+            }
+
 
             string output = $"<RoomLeave>|True|<EOF>";
             CheckStatusAndSend(output, tokenizedMessage[dataStartLocation]);
